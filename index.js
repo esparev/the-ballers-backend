@@ -10,23 +10,22 @@ app.get('/', (req, res) => {
 
 // News route
 app.get('/noticias', (req, res) => {
-	res.json([
-		{
-			news: 'Noticia 1',
-			title: 'BEISMICH liga mundial',
-			fecha: '24, octubre 2021',
-		},
-		{
-			news: 'Noticia 2',
-			title: 'BEISMICH liga mundial',
-			fecha: '25, octubre 2021',
-		},
-		{
-			news: 'Noticia 3',
-			title: 'BEISMICH liga mundial',
-			fecha: '26, octubre 2021',
-		},
-	]);
+	const news = [];
+	const { size } = req.query;
+	const limit = size || 5;
+
+	for (let i = 0; i < limit; i++) {
+		news.push({
+			title: `Noticia ${i}`,
+			date: '26, octubre, 2021',
+		});
+	}
+
+	res.json(news);
+});
+
+app.get('/noticias/nueva-noticia', (req, res) => {
+	res.send('Agregar nueva noticia');
 });
 
 // Individual news route
