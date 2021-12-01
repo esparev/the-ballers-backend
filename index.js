@@ -10,34 +10,43 @@ app.get('/', (req, res) => {
 
 // News route
 app.get('/noticias', (req, res) => {
-	res.json({
-		news: [
-			{
-				title: 'BEISMICH liga mundial',
-				fecha: '26, octubre 2021',
-				message: 'Esta es una noticia individual',
-			},
-			{
-				title: 'BEISMICH liga mundial',
-				fecha: '26, octubre 2021',
-				message: 'Esta es una noticia individual',
-			},
-			{
-				title: 'BEISMICH liga mundial',
-				fecha: '26, octubre 2021',
-				message: 'Esta es una noticia individual',
-			},
-		],
-		message: 'Estas son varias noticias'
-	});
+	res.json([
+		{
+			news: 'Noticia 1',
+			title: 'BEISMICH liga mundial',
+			fecha: '24, octubre 2021',
+		},
+		{
+			news: 'Noticia 2',
+			title: 'BEISMICH liga mundial',
+			fecha: '25, octubre 2021',
+		},
+		{
+			news: 'Noticia 3',
+			title: 'BEISMICH liga mundial',
+			fecha: '26, octubre 2021',
+		},
+	]);
 });
 
 // Individual news route
-app.get('/noticias/noticia', (req, res) => {
+app.get('/noticias/:id', (req, res) => {
+	const { id } = req.params;
 	res.json({
+		id,
+		news: 'Noticia 3',
 		title: 'BEISMICH liga mundial',
 		fecha: '26, octubre 2021',
-		message: 'Esta es una noticia individual',
+	});
+});
+
+// Dynamic routing for a player with different params
+app.get('/ligas/:ligaId/:equipoId/:jugadorId', (req, res) => {
+	const { ligaId, equipoId, jugadorId } = req.params;
+	res.json({
+		ligaId,
+		equipoId,
+		jugadorId,
 	});
 });
 
