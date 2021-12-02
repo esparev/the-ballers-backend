@@ -7,8 +7,10 @@ const service = new CoachesService();
 // Add coach route
 router.post('/', (req, res) => {
 	const body = req.body;
+	const newCoach = service.create(body);
+
 	res.status(201).json({
-		data: body,
+		newCoach,
 		message: 'entrenador creado',
 	});
 });
@@ -29,9 +31,10 @@ router.get('/:id', (req, res) => {
 router.patch('/:id', (req, res) => {
 	const { id } = req.params;
 	const { body } = req.body;
+	const coach = service.update(id, body);
+
 	res.status(200).json({
-		id,
-		data: body,
+		coach,
 		message: 'entrenador actualizado',
 	});
 });
@@ -39,8 +42,10 @@ router.patch('/:id', (req, res) => {
 // Delete coach route
 router.delete('/:id', (req, res) => {
 	const { id } = req.params;
+	const coach = service.delete(id);
+
 	res.status(200).json({
-		id,
+		coach,
 		message: 'entrenador eliminado',
 	});
 });

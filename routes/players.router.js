@@ -7,8 +7,10 @@ const service = new PlayersService();
 // Add player route
 router.post('/', (req, res) => {
 	const body = req.body;
+	const newPlayer = service.create(body);
+
 	res.status(201).json({
-		data: body,
+		newPlayer,
 		message: 'player created',
 	});
 });
@@ -17,6 +19,7 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
 	const { id, ligaId, equipoId } = req.params;
 	const player = service.findOne(id);
+
 	res.status(200).json({
 		ligaId,
 		equipoId,
@@ -28,9 +31,10 @@ router.get('/:id', (req, res) => {
 router.patch('/:id', (req, res) => {
 	const { id } = req.params;
 	const { body } = req.body;
+	const player = service.update(id, body);
+
 	res.status(200).json({
-		id,
-		data: body,
+		player,
 		message: 'jugador actualizado',
 	});
 });
@@ -38,8 +42,10 @@ router.patch('/:id', (req, res) => {
 // Delete player route
 router.delete('/:id', (req, res) => {
 	const { id } = req.params;
+	const player = service.delete(id);
+
 	res.status(200).json({
-		id,
+		player,
 		message: 'jugador eliminado',
 	});
 });

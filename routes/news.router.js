@@ -7,14 +7,17 @@ const service = new NewsService();
 // News main route
 router.get('/', (req, res) => {
 	const news = service.find();
+
 	res.status(200).json(news);
 });
 
 // Add news route
 router.post('/', (req, res) => {
 	const body = req.body;
+	const newNews = service.create(body);
+
 	res.status(201).json({
-		data: body,
+		newNews,
 		message: 'noticia creada',
 	});
 });
@@ -23,25 +26,29 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
 	const { id } = req.params;
 	const oneNews = service.findOne(id);
+
 	res.status(200).json(oneNews);
 });
 
-// Edit tournament route
+// Edit news route
 router.patch('/:id', (req, res) => {
 	const { id } = req.params;
 	const { body } = req.body;
+	const oneNews = service.update(id, body);
+
 	res.status(200).json({
-		id,
-		data: body,
+		oneNews,
 		message: 'noticia actualizada',
 	});
 });
 
-// Delete tournament route
+// Delete news route
 router.delete('/:id', (req, res) => {
 	const { id } = req.params;
+	const oneNews = service.delete(id);
+
 	res.status(200).json({
-		id,
+		oneNews,
 		message: 'noticia eliminada',
 	});
 });

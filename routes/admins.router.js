@@ -7,14 +7,17 @@ const service = new AdminsService();
 // Admins main route
 router.get('/', (req, res) => {
 	const admins = service.find();
+
 	res.status(200).json(admins);
 });
 
 // Add admin route
 router.post('/', (req, res) => {
 	const body = req.body;
+	const newAdmin = service.create(body);
+
 	res.status(201).json({
-		data: body,
+		newAdmin,
 		message: 'admin creado',
 	});
 });
@@ -23,6 +26,7 @@ router.post('/', (req, res) => {
 router.get('/:id', (req, res) => {
 	const { id } = req.params;
 	const admin = service.findOne(id);
+
 	res.status(200).json(admin);
 });
 
@@ -30,9 +34,10 @@ router.get('/:id', (req, res) => {
 router.patch('/:id', (req, res) => {
 	const { id } = req.params;
 	const { body } = req.body;
+	const admin = service.update(id, body);
+
 	res.status(200).json({
-		id,
-		data: body,
+		admin,
 		message: 'admin actualizado',
 	});
 });
@@ -40,8 +45,10 @@ router.patch('/:id', (req, res) => {
 // Delete admin route
 router.delete('/:id', (req, res) => {
 	const { id } = req.params;
+	const admin = service.delete(id);
+
 	res.status(200).json({
-		id,
+		admin,
 		message: 'admin eliminado',
 	});
 });
