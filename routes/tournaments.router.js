@@ -18,8 +18,12 @@ router.get('/', (req, res) => {
 });
 
 // Add tournament route
-router.get('/nuevo', (req, res) => {
-	res.send('Agregar nuevo torneo');
+router.post('/', (req, res) => {
+	const body = req.body;
+	res.json({
+		body,
+		message: 'torneo creado',
+	});
 });
 
 // Individual tournament route

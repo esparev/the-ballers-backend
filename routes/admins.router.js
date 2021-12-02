@@ -17,8 +17,12 @@ router.get('/', (req, res) => {
 });
 
 // Add admin route
-router.get('/nuevo', (req, res) => {
-	res.send('Agregar nuevo admin');
+router.post('/', (req, res) => {
+	const body = req.body;
+	res.json({
+		body,
+		message: 'admin creado',
+	});
 });
 
 // Individual admin route

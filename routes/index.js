@@ -1,4 +1,5 @@
-const homeRouter = require('./home.router');
+const express = require('express');
+
 const newsRouter = require('./news.router');
 const tournamentsRouter = require('./tournaments.router');
 const leaguesRouter = require('./leagues.router');
@@ -8,14 +9,18 @@ const coachesRouter = require('./coaches.router');
 const adminsRouter = require('./admins.router');
 
 function routerApi(app) {
-	app.use('/', homeRouter);
-	app.use('/noticias', newsRouter);
-	app.use('/torneos', tournamentsRouter);
-	app.use('/ligas', leaguesRouter);
-	app.use('/ligas/:ligaId', teamsRouter);
-	app.use('/ligas/:ligaId/:equipoId/jugador', playersRouter);
-	app.use('/ligas/:ligaId/:equipoId/entrenador', coachesRouter);
-	app.use('/admins', adminsRouter);
+	const router = express.Router();
+
+	// Parent route
+	app.use('/api/v1', router);
+
+	router.use('/noticias', newsRouter);
+	router.use('/torneos', tournamentsRouter);
+	router.use('/ligas', leaguesRouter);
+	router.use('/ligas/:ligaId', teamsRouter);
+	router.use('/ligas/:ligaId/:equipoId/jugador', playersRouter);
+	router.use('/ligas/:ligaId/:equipoId/entrenador', coachesRouter);
+	router.use('/admins', adminsRouter);
 }
 
 module.exports = routerApi;

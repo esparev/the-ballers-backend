@@ -18,8 +18,12 @@ router.get('/', (req, res) => {
 });
 
 // Add news route
-router.get('/nueva', (req, res) => {
-	res.send('Agregar nueva noticia');
+router.post('/', (req, res) => {
+	const body = req.body;
+	res.json({
+		body,
+		message: 'noticia creada',
+	});
 });
 
 // Individual news route

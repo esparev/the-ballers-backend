@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 
 // Add coach route
-router.get('/nuevo', (req, res) => {
-	const { ligaId, equipoId } = req.params;
-	res.send(
-		`Agregar nuevo entrenador en el equipo ${equipoId} de la liga ${ligaId} `
-	);
+router.post('/', (req, res) => {
+	const body = req.body;
+	res.json({
+		body,
+		message: 'entrenador creado',
+	});
 });
 
 // Individual coach route

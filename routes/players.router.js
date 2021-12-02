@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router({ mergeParams: true });
 
 // Add player route
-router.get('/nuevo', (req, res) => {
-	const { ligaId, equipoId } = req.params;
-	res.send(
-		`Agregar nuevo jugador en el equipo ${equipoId} de la liga ${ligaId} `
-	);
+router.post('/', (req, res) => {
+	const body = req.body;
+	res.json({
+		body,
+		message: 'player created',
+	});
 });
 
 // Individual player route

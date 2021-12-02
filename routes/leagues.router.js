@@ -17,8 +17,12 @@ router.get('/', (req, res) => {
 });
 
 // Add league route
-router.get('/nueva', (req, res) => {
-	res.send('Agregar nueva liga');
+router.post('/', (req, res) => {
+	const body = req.body;
+	res.json({
+		body,
+		message: 'liga creada',
+	});
 });
 
 // Individual league route
