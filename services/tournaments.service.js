@@ -28,7 +28,7 @@ class TournamentsService {
 	 * Finds all tournaments in the object array
 	 * @returns all the tournaments in the array
 	 */
-	find() {
+	async find() {
 		return this.tournaments;
 	}
 
@@ -37,7 +37,7 @@ class TournamentsService {
 	 * @param {*} id tournament id
 	 * @returns tournament that matches the id
 	 */
-	findOne(id) {
+	async findOne(id) {
 		return this.tournaments.find((item) => item.id === id);
 	}
 
@@ -46,7 +46,7 @@ class TournamentsService {
 	 * @param {*} data tournament data
 	 * @returns tournament created
 	 */
-	create(data) {
+	async create(data) {
 		const newTournament = {
 			id: faker.datatype.uuid(),
 			...data,
@@ -61,7 +61,7 @@ class TournamentsService {
 	 * @param {*} changes tournament data to update
 	 * @returns tournament updated
 	 */
-	update(id, changes) {
+	async update(id, changes) {
 		const index = this.tournaments.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('torneo no encontrado');
@@ -79,7 +79,7 @@ class TournamentsService {
 	 * @param {*} id tournament id
 	 * @returns tournament deleted
 	 */
-	delete(id) {
+	async delete(id) {
 		const index = this.tournaments.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('torneo no encontrado');

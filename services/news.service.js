@@ -28,7 +28,7 @@ class NewsService {
 	 * Finds all news in the object array
 	 * @returns all the news in the array
 	 */
-	find() {
+	async find() {
 		return this.news;
 	}
 
@@ -37,7 +37,7 @@ class NewsService {
 	 * @param {*} id news id
 	 * @returns news that matches the id
 	 */
-	findOne(id) {
+	async findOne(id) {
 		return this.news.find((item) => item.id === id);
 	}
 
@@ -46,7 +46,7 @@ class NewsService {
 	 * @param {*} data news data
 	 * @returns news created
 	 */
-	create(data) {
+	async create(data) {
 		const newNews = {
 			id: faker.datatype.uuid(),
 			...data,
@@ -61,7 +61,7 @@ class NewsService {
 	 * @param {*} changes news data to update
 	 * @returns news updated
 	 */
-	update(id, changes) {
+	async update(id, changes) {
 		const index = this.news.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('noticia no encontrada');
@@ -79,7 +79,7 @@ class NewsService {
 	 * @param {*} id news id
 	 * @returns news deleted
 	 */
-	delete(id) {
+	async delete(id) {
 		const index = this.news.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('noticia no encontrada');

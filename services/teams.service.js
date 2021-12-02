@@ -28,7 +28,7 @@ class TeamsService {
 	 * Finds all teams in the object array
 	 * @returns all the teams in the array
 	 */
-	find() {
+	async find() {
 		return this.teams;
 	}
 
@@ -37,7 +37,7 @@ class TeamsService {
 	 * @param {*} id team id
 	 * @returns team that matches the id
 	 */
-	findOne(id) {
+	async findOne(id) {
 		return this.teams.find((item) => item.id === id);
 	}
 
@@ -46,7 +46,7 @@ class TeamsService {
 	 * @param {*} data team data
 	 * @returns team created
 	 */
-	create(data) {
+	async create(data) {
 		const newTeam = {
 			id: faker.datatype.uuid(),
 			...data,
@@ -61,7 +61,7 @@ class TeamsService {
 	 * @param {*} changes team data to update
 	 * @returns team updated
 	 */
-	update(id, changes) {
+	async update(id, changes) {
 		const index = this.teams.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('equipo no encontrado');
@@ -79,7 +79,7 @@ class TeamsService {
 	 * @param {*} id team id
 	 * @returns team deleted
 	 */
-	delete(id) {
+	async delete(id) {
 		const index = this.teams.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('equipo no encontrado');

@@ -1,17 +1,20 @@
 const express = require('express');
-const PlayersService = require('../services/players.service');
-const CoachesService = require('../services/coaches.service');
 const TeamsService = require('../services/teams.service');
 
 const router = express.Router({ mergeParams: true });
-const playersService = new PlayersService();
-const coachesService = new CoachesService();
-const teamsService = new TeamsService();
+const service = new TeamsService();
+
+// Teams main route
+router.get('/', async (req, res) => {
+	const teams = await service.find();
+
+	res.status(200).json(teams);
+});
 
 // Add team route
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
 	const body = req.body;
-	const newTeam = teamsService.create(body);
+	const newTeam = await service.create(body);
 
 	res.status(201).json({
 		newTeam,
@@ -20,41 +23,49 @@ router.post('/', (req, res) => {
 });
 
 // Individual team route
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
 	const { id, ligaId } = req.params;
-	const team = teamsService.findOne(id);
-	const players = playersService.find();
-	const coaches = coachesService.find();
+	const team = await service.findOne(id);
 
 	res.status(200).json({
 		ligaId,
 		team,
-		coaches,
-		players,
 	});
 });
 
 // Edit team route
-router.patch('/:id', (req, res) => {
-	const { id } = req.params;
-	const { body } = req.body;
-	const team = teamsService.update(id, body);
+router.patch('/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+		const { body } = req.body;
+		const team = await service.update(id, body);
 
-	res.status(200).json({
-		team,
-		message: 'equipo actualizado',
-	});
+		res.status(200).json({
+			team,
+			message: 'equipo actualizado',
+		});
+	} catch (error) {
+		res.status(404).json({
+			message: error.message,
+		});
+	}
 });
 
 // Delete team route
-router.delete('/:id', (req, res) => {
-	const { id } = req.params;
-	const team = teamsService.delete(id);
+router.delete('/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+		const team = await service.delete(id);
 
-	res.status(200).json({
-		team,
-		message: 'equipo eliminado',
-	});
+		res.status(200).json({
+			team,
+			message: 'equipo eliminado',
+		});
+	} catch (error) {
+		res.status(404).json({
+			message: error.message,
+		});
+	}
 });
 
 module.exports = router;

@@ -28,7 +28,7 @@ class CoachesService {
 	 * Finds all coaches in the object array
 	 * @returns all the coaches in the array
 	 */
-	find() {
+	async find() {
 		return this.coaches;
 	}
 
@@ -37,7 +37,7 @@ class CoachesService {
 	 * @param {*} id coach id
 	 * @returns coach that matches the id
 	 */
-	findOne(id) {
+	async findOne(id) {
 		return this.coaches.find((item) => item.id === id);
 	}
 
@@ -46,7 +46,7 @@ class CoachesService {
 	 * @param {*} data coach data
 	 * @returns coach created
 	 */
-	create(data) {
+	async create(data) {
 		const newCoach = {
 			id: faker.datatype.uuid(),
 			...data,
@@ -61,7 +61,7 @@ class CoachesService {
 	 * @param {*} changes coach data to update
 	 * @returns coach updated
 	 */
-	update(id, changes) {
+	async update(id, changes) {
 		const index = this.coaches.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('entrenador no encontrado');
@@ -79,7 +79,7 @@ class CoachesService {
 	 * @param {*} id coach id
 	 * @returns coach deleted
 	 */
-	delete(id) {
+	async delete(id) {
 		const index = this.coaches.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('entrenador no encontrado');

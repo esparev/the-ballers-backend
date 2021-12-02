@@ -33,7 +33,7 @@ class LeaguesService {
 	 * Finds all leagues in the object array
 	 * @returns all the leagues in the array
 	 */
-	find() {
+	async find() {
 		return this.leagues;
 	}
 
@@ -42,7 +42,7 @@ class LeaguesService {
 	 * @param {*} id league id
 	 * @returns league that matches the id
 	 */
-	findOne(id) {
+	async findOne(id) {
 		return this.leagues.find((item) => item.id === id);
 	}
 
@@ -51,7 +51,7 @@ class LeaguesService {
 	 * @param {*} data league data
 	 * @returns league created
 	 */
-	create(data) {
+	async create(data) {
 		const newLeague = {
 			id: faker.datatype.uuid(),
 			...data,
@@ -66,7 +66,7 @@ class LeaguesService {
 	 * @param {*} changes league data to update
 	 * @returns league updated
 	 */
-	update(id, changes) {
+	async update(id, changes) {
 		const index = this.leagues.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('liga no encontrada');
@@ -84,7 +84,7 @@ class LeaguesService {
 	 * @param {*} id league id
 	 * @returns league deleted
 	 */
-	delete(id) {
+	async delete(id) {
 		const index = this.leagues.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('liga no encontrada');

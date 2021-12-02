@@ -29,7 +29,7 @@ class AdminsService {
 	 * Finds all admins in the object array
 	 * @returns all the admins in the array
 	 */
-	find() {
+	async find() {
 		return this.admins;
 	}
 
@@ -38,7 +38,7 @@ class AdminsService {
 	 * @param {*} id admin id
 	 * @returns admin that matches the id
 	 */
-	findOne(id) {
+	async findOne(id) {
 		return this.admins.find((item) => item.id === id);
 	}
 
@@ -47,7 +47,7 @@ class AdminsService {
 	 * @param {*} data admin data
 	 * @returns admin created
 	 */
-	create(data) {
+	async create(data) {
 		const newAdmin = {
 			id: faker.datatype.uuid(),
 			...data,
@@ -62,7 +62,7 @@ class AdminsService {
 	 * @param {*} changes admin data to update
 	 * @returns admin updated
 	 */
-	update(id, changes) {
+	async update(id, changes) {
 		const index = this.admins.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('admin no encontrado');
@@ -80,7 +80,7 @@ class AdminsService {
 	 * @param {*} id admin id
 	 * @returns admin deleted
 	 */
-	delete(id) {
+	async delete(id) {
 		const index = this.admins.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('admin no encontrado');

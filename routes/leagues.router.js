@@ -1,22 +1,20 @@
 const express = require('express');
 const LeaguesService = require('../services/leagues.service');
-const TeamsService = require('../services/teams.service');
 
 const router = express.Router();
-const leaguesService = new LeaguesService();
-const teamsService = new TeamsService();
+const service = new LeaguesService();
 
 // Leagues main route
-router.get('/', (req, res) => {
-	const leagues = leaguesService.find();
+router.get('/', async (req, res) => {
+	const leagues = await service.find();
 
 	res.status(200).json(leagues);
 });
 
 // Add league route
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
 	const body = req.body;
-	const newLeague = leaguesService.create(body);
+	const newLeague = await service.create(body);
 
 	res.status(201).json({
 		newLeague,
@@ -25,38 +23,48 @@ router.post('/', (req, res) => {
 });
 
 // Individual league route
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
 	const { id } = req.params;
-	const league = leaguesService.findOne(id);
-	const teams = teamsService.find();
+	const league = await service.findOne(id);
 
 	res.status(200).json({
 		league,
-		teams,
 	});
 });
 
 // Edit league route
-router.patch('/:id', (req, res) => {
-	const { id } = req.params;
-	const { body } = req.body;
-	const league = leaguesService.update(id, body);
+router.patch('/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+		const { body } = req.body;
+		const league = await service.update(id, body);
 
-	res.status(200).json({
-		league,
-		message: 'liga actualizada',
-	});
+		res.status(200).json({
+			league,
+			message: 'liga actualizada',
+		});
+	} catch (error) {
+		res.status(404).json({
+			message: error.message,
+		});
+	}
 });
 
 // Delete league route
-router.delete('/:id', (req, res) => {
-	const { id } = req.params;
-	const league = leaguesService.delete(id);
+router.delete('/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+		const league = await service.delete(id);
 
-	res.status(200).json({
-		league,
-		message: 'liga eliminada',
-	});
+		res.status(200).json({
+			league,
+			message: 'liga eliminada',
+		});
+	} catch (error) {
+		res.status(404).json({
+			message: error.message,
+		});
+	}
 });
 
 module.exports = router;

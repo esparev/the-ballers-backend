@@ -21,9 +21,9 @@ function routerApi(app) {
 	router.use('/noticias', newsRouter);
 	router.use('/torneos', tournamentsRouter);
 	router.use('/ligas', leaguesRouter);
-	router.use('/ligas/:ligaId', teamsRouter);
-	router.use('/ligas/:ligaId/:equipoId/jugador', playersRouter);
-	router.use('/ligas/:ligaId/:equipoId/entrenador', coachesRouter);
+	router.use('/ligas/:ligaId/equipos', teamsRouter);
+	router.use('/ligas/:ligaId/equipos/:equipoId/jugadores', playersRouter);
+	router.use('/ligas/:ligaId/equipos/:equipoId/entrenadores', coachesRouter);
 	router.use('/admins', adminsRouter);
 }
 

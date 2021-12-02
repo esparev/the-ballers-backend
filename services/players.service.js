@@ -28,7 +28,7 @@ class PlayersService {
 	 * Finds all players in the object array
 	 * @returns all the players in the array
 	 */
-	find() {
+	async find() {
 		return this.players;
 	}
 
@@ -37,7 +37,7 @@ class PlayersService {
 	 * @param {*} id player id
 	 * @returns player that matches the id
 	 */
-	findOne(id) {
+	async findOne(id) {
 		return this.players.find((item) => item.id === id);
 	}
 
@@ -46,7 +46,7 @@ class PlayersService {
 	 * @param {*} data player data
 	 * @returns player created
 	 */
-	create(data) {
+	async create(data) {
 		const newPlayer = {
 			id: faker.datatype.uuid(),
 			...data,
@@ -61,7 +61,7 @@ class PlayersService {
 	 * @param {*} changes player data to update
 	 * @returns player updated
 	 */
-	update(id, changes) {
+	async update(id, changes) {
 		const index = this.players.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('jugador no encontrado');
@@ -79,7 +79,7 @@ class PlayersService {
 	 * @param {*} id player id
 	 * @returns player deleted
 	 */
-	delete(id) {
+	async delete(id) {
 		const index = this.players.findIndex((item) => item.id === id);
 		if (index === -1) {
 			throw new Error('jugador no encontrado');
