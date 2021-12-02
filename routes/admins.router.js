@@ -13,13 +13,13 @@ router.get('/', (req, res) => {
 		});
 	}
 
-	res.json(admins);
+	res.status(200).json(admins);
 });
 
 // Add admin route
 router.post('/', (req, res) => {
 	const body = req.body;
-	res.json({
+	res.status(201).json({
 		data: body,
 		message: 'admin creado',
 	});
@@ -27,22 +27,11 @@ router.post('/', (req, res) => {
 
 // Individual admin route
 router.get('/:adminId', (req, res) => {
-	const moreAdmins = [];
-	const { size } = req.query;
 	const { adminId } = req.params;
-	const limit = size || 5;
 
-	for (let i = 0; i < limit; i++) {
-		moreAdmins.push({
-			adminId,
-			name: `Otro admin ${i}`,
-		});
-	}
-
-	res.json({
+	res.status(200).json({
 		adminId,
 		name: 'Admin 1',
-		moreAdmins,
 	});
 });
 
@@ -50,7 +39,7 @@ router.get('/:adminId', (req, res) => {
 router.patch('/:adminId', (req, res) => {
 	const { adminId } = req.params;
 	const { body } = req.body;
-	res.json({
+	res.status(200).json({
 		adminId,
 		data: body,
 		message: 'admin actualizado',
@@ -60,7 +49,7 @@ router.patch('/:adminId', (req, res) => {
 // Delete admin route
 router.delete('/:adminId', (req, res) => {
 	const { adminId } = req.params;
-	res.json({
+	res.status(200).json({
 		adminId,
 		message: 'admin eliminado',
 	});

@@ -4,7 +4,7 @@ const router = express.Router({ mergeParams: true });
 // Add coach route
 router.post('/', (req, res) => {
 	const body = req.body;
-	res.json({
+	res.status(201).json({
 		data: body,
 		message: 'entrenador creado',
 	});
@@ -12,24 +12,13 @@ router.post('/', (req, res) => {
 
 // Individual coach route
 router.get('/:entrenadorId', (req, res) => {
-	const moreCoaches = [];
-	const { size } = req.query;
 	const { ligaId, equipoId, entrenadorId } = req.params;
-	const limit = size || 5;
 
-	for (let i = 0; i < limit; i++) {
-		moreCoaches.push({
-			equipoId,
-			name: `Otro entrenador ${i}`,
-		});
-	}
-
-	res.json({
+	res.status(200).json({
 		ligaId,
 		equipoId,
 		entrenadorId,
 		name: 'Entrenador 1',
-		moreCoaches,
 	});
 });
 
@@ -37,7 +26,7 @@ router.get('/:entrenadorId', (req, res) => {
 router.patch('/:entrenadorId', (req, res) => {
 	const { entrenadorId } = req.params;
 	const { body } = req.body;
-	res.json({
+	res.status(200).json({
 		entrenadorId,
 		data: body,
 		message: 'entrenador actualizado',
@@ -47,7 +36,7 @@ router.patch('/:entrenadorId', (req, res) => {
 // Delete coach route
 router.delete('/:entrenadorId', (req, res) => {
 	const { entrenadorId } = req.params;
-	res.json({
+	res.status(200).json({
 		entrenadorId,
 		message: 'entrenador eliminado',
 	});

@@ -14,13 +14,13 @@ router.get('/', (req, res) => {
 		});
 	}
 
-	res.json(news);
+	res.status(200).json(news);
 });
 
 // Add news route
 router.post('/', (req, res) => {
 	const body = req.body;
-	res.json({
+	res.status(201).json({
 		data: body,
 		message: 'noticia creada',
 	});
@@ -29,7 +29,7 @@ router.post('/', (req, res) => {
 // Individual news route
 router.get('/:noticiaId', (req, res) => {
 	const { noticiaId } = req.params;
-	res.json({
+	res.status(200).json({
 		noticiaId,
 		title: 'Noticia 1',
 		fecha: '26, octubre 2021',
@@ -40,7 +40,7 @@ router.get('/:noticiaId', (req, res) => {
 router.patch('/:noticiaId', (req, res) => {
 	const { noticiaId } = req.params;
 	const { body } = req.body;
-	res.json({
+	res.status(200).json({
 		noticiaId,
 		data: body,
 		message: 'noticia actualizada',
@@ -50,7 +50,7 @@ router.patch('/:noticiaId', (req, res) => {
 // Delete tournament route
 router.delete('/:noticiaId', (req, res) => {
 	const { noticiaId } = req.params;
-	res.json({
+	res.status(200).json({
 		noticiaId,
 		message: 'noticia eliminada',
 	});

@@ -14,13 +14,13 @@ router.get('/', (req, res) => {
 		});
 	}
 
-	res.json(tournaments);
+	res.status(200).json(tournaments);
 });
 
 // Add tournament route
 router.post('/', (req, res) => {
 	const body = req.body;
-	res.json({
+	res.status(201).json({
 		data: body,
 		message: 'torneo creado',
 	});
@@ -29,7 +29,7 @@ router.post('/', (req, res) => {
 // Individual tournament route
 router.get('/:torneoId', (req, res) => {
 	const { torneoId } = req.params;
-	res.json({
+	res.status(200).json({
 		torneoId,
 		title: 'Torneo 3',
 		fecha: '26, octubre 2021',
@@ -40,7 +40,7 @@ router.get('/:torneoId', (req, res) => {
 router.patch('/:torneoId', (req, res) => {
 	const { torneoId } = req.params;
 	const { body } = req.body;
-	res.json({
+	res.status(200).json({
 		torneoId,
 		data: body,
 		message: 'torneo actualizado',
@@ -50,7 +50,7 @@ router.patch('/:torneoId', (req, res) => {
 // Delete tournament route
 router.delete('/:torneoId', (req, res) => {
 	const { torneoId } = req.params;
-	res.json({
+	res.status(200).json({
 		torneoId,
 		message: 'torneo eliminado',
 	});

@@ -4,7 +4,7 @@ const router = express.Router({ mergeParams: true });
 // Add player route
 router.post('/', (req, res) => {
 	const body = req.body;
-	res.json({
+	res.status(201).json({
 		data: body,
 		message: 'player created',
 	});
@@ -12,24 +12,13 @@ router.post('/', (req, res) => {
 
 // Individual player route
 router.get('/:jugadorId', (req, res) => {
-	const morePlayers = [];
-	const { size } = req.query;
 	const { ligaId, equipoId, jugadorId } = req.params;
-	const limit = size || 5;
 
-	for (let i = 0; i < limit; i++) {
-		morePlayers.push({
-			equipoId,
-			name: `Otro jugador ${i}`,
-		});
-	}
-
-	res.json({
+	res.status(200).json({
 		ligaId,
 		equipoId,
 		jugadorId,
 		name: 'Jugador 1',
-		morePlayers,
 	});
 });
 
@@ -37,7 +26,7 @@ router.get('/:jugadorId', (req, res) => {
 router.patch('/:jugadorId', (req, res) => {
 	const { jugadorId } = req.params;
 	const { body } = req.body;
-	res.json({
+	res.status(200).json({
 		jugadorId,
 		data: body,
 		message: 'jugador actualizado',
@@ -47,7 +36,7 @@ router.patch('/:jugadorId', (req, res) => {
 // Delete player route
 router.delete('/:jugadorId', (req, res) => {
 	const { jugadorId } = req.params;
-	res.json({
+	res.status(200).json({
 		jugadorId,
 		message: 'jugador eliminado',
 	});

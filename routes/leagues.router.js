@@ -13,13 +13,13 @@ router.get('/', (req, res) => {
 		});
 	}
 
-	res.json(leagues);
+	res.status(200).json(leagues);
 });
 
 // Add league route
 router.post('/', (req, res) => {
 	const body = req.body;
-	res.json({
+	res.status(201).json({
 		data: body,
 		message: 'liga creada',
 	});
@@ -39,7 +39,7 @@ router.get('/:ligaId', (req, res) => {
 		});
 	}
 
-	res.json({
+	res.status(200).json({
 		ligaId,
 		name: 'Liga 1',
 		teams,
@@ -50,7 +50,7 @@ router.get('/:ligaId', (req, res) => {
 router.patch('/:ligaId', (req, res) => {
 	const { ligaId } = req.params;
 	const { body } = req.body;
-	res.json({
+	res.status(200).json({
 		ligaId,
 		data: body,
 		message: 'liga actualizada',
@@ -60,7 +60,7 @@ router.patch('/:ligaId', (req, res) => {
 // Delete league route
 router.delete('/:ligaId', (req, res) => {
 	const { ligaId } = req.params;
-	res.json({
+	res.status(200).json({
 		ligaId,
 		message: 'liga eliminada',
 	});
