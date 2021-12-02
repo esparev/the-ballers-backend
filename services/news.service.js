@@ -1,4 +1,5 @@
 const faker = require('faker/locale/es_MX');
+const boom = require('@hapi/boom');
 
 /**
  * Service layer with CRUD methods
@@ -29,7 +30,11 @@ class NewsService {
 	 * @returns all the news in the array
 	 */
 	async find() {
-		return this.news;
+		const news = this.news;
+		if (!news) {
+			throw boom.notFound('no hay noticias');
+		}
+		return news;
 	}
 
 	/**
@@ -38,7 +43,11 @@ class NewsService {
 	 * @returns news that matches the id
 	 */
 	async findOne(id) {
-		return this.news.find((item) => item.id === id);
+		const oneNews = this.news.find((item) => item.id === id);
+		if (!oneNews) {
+			throw boom.notFound('noticia no encontrada');
+		}
+		return oneNews;
 	}
 
 	/**
@@ -63,14 +72,17 @@ class NewsService {
 	 */
 	async update(id, changes) {
 		const index = this.news.findIndex((item) => item.id === id);
-		if (index === -1) {
-			throw new Error('noticia no encontrada');
-		}
 		const oneNews = this.news[index];
+
+		if (index === -1) {
+			throw boom.notFound('noticia no encontrada');
+		}
+
 		this.news[index] = {
 			...oneNews,
 			...changes,
 		};
+
 		return this.news[index];
 	}
 
@@ -82,7 +94,7 @@ class NewsService {
 	async delete(id) {
 		const index = this.news.findIndex((item) => item.id === id);
 		if (index === -1) {
-			throw new Error('noticia no encontrada');
+			throw boom.notFound('noticia no encontrada');
 		}
 		this.news.splice(index, 1);
 		return { id };

@@ -5,10 +5,14 @@ const router = express.Router();
 const service = new TournamentsService();
 
 // Tournaments main route
-router.get('/', async (req, res) => {
-	const tournaments = await service.find();
+router.get('/', async (req, res, next) => {
+	try {
+		const tournaments = await service.find();
 
-	res.status(200).json(tournaments);
+		res.status(200).json(tournaments);
+	} catch (error) {
+		next(error);
+	}
 });
 
 // Add tournament route
@@ -23,18 +27,22 @@ router.post('/', async (req, res) => {
 });
 
 // Individual tournament route
-router.get('/:id', async (req, res) => {
-	const { id } = req.params;
-	const tournament = await service.findOne(id);
+router.get('/:id', async (req, res, next) => {
+	try {
+		const { id } = req.params;
+		const tournament = await service.findOne(id);
 
-	res.status(200).json(tournament);
+		res.status(200).json(tournament);
+	} catch (error) {
+		next(error);
+	}
 });
 
 // Edit tournament route
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
-		const { body } = req.body;
+		const body = req.body;
 		const tournament = await service.update(id, body);
 
 		res.status(200).json({
@@ -42,14 +50,12 @@ router.patch('/:id', async (req, res) => {
 			message: 'torneo actualizado',
 		});
 	} catch (error) {
-		res.status(404).json({
-			message: error.message,
-		});
+		next(error);
 	}
 });
 
 // Delete tournament route
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const tournament = await service.delete(id);
@@ -59,9 +65,7 @@ router.delete('/:id', async (req, res) => {
 			message: 'torneo eliminado',
 		});
 	} catch (error) {
-		res.status(404).json({
-			message: error.message,
-		});
+		next(error);
 	}
 });
 

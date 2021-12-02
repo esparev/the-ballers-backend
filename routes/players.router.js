@@ -5,10 +5,14 @@ const router = express.Router({ mergeParams: true });
 const service = new PlayersService();
 
 // Players main route
-router.get('/', async (req, res) => {
-	const players = await service.find();
+router.get('/', async (req, res, next) => {
+	try {
+		const players = await service.find();
 
-	res.status(200).json(players);
+		res.status(200).json(players);
+	} catch (error) {
+		next(error);
+	}
 });
 
 // Add player route
@@ -23,22 +27,26 @@ router.post('/', async (req, res) => {
 });
 
 // Individual player route
-router.get('/:id', async (req, res) => {
-	const { id, ligaId, equipoId } = req.params;
-	const player = await service.findOne(id);
+router.get('/:id', async (req, res, next) => {
+	try {
+		const { id, ligaId, equipoId } = req.params;
+		const player = await service.findOne(id);
 
-	res.status(200).json({
-		ligaId,
-		equipoId,
-		player,
-	});
+		res.status(200).json({
+			ligaId,
+			equipoId,
+			player,
+		});
+	} catch (error) {
+		next(error);
+	}
 });
 
 // Edit player route
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
-		const { body } = req.body;
+		const body = req.body;
 		const player = await service.update(id, body);
 
 		res.status(200).json({
@@ -46,14 +54,12 @@ router.patch('/:id', async (req, res) => {
 			message: 'jugador actualizado',
 		});
 	} catch (error) {
-		res.status(404).json({
-			message: error.message,
-		});
+		next(error);
 	}
 });
 
 // Delete player route
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const player = await service.delete(id);
@@ -63,9 +69,7 @@ router.delete('/:id', async (req, res) => {
 			message: 'jugador eliminado',
 		});
 	} catch (error) {
-		res.status(404).json({
-			message: error.message,
-		});
+		next(error);
 	}
 });
 

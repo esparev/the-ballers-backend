@@ -5,10 +5,14 @@ const router = express.Router();
 const service = new NewsService();
 
 // News main route
-router.get('/', async (req, res) => {
-	const news = await service.find();
+router.get('/', async (req, res, next) => {
+	try {
+		const news = await service.find();
 
-	res.status(200).json(news);
+		res.status(200).json(news);
+	} catch (error) {
+		next(error);
+	}
 });
 
 // Add news route
@@ -23,18 +27,22 @@ router.post('/', async (req, res) => {
 });
 
 // Individual news route
-router.get('/:id', async (req, res) => {
-	const { id } = req.params;
-	const oneNews = await service.findOne(id);
+router.get('/:id', async (req, res, next) => {
+	try {
+		const { id } = req.params;
+		const oneNews = await service.findOne(id);
 
-	res.status(200).json(oneNews);
+		res.status(200).json(oneNews);
+	} catch (error) {
+		next(error);
+	}
 });
 
 // Edit news route
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
-		const { body } = req.body;
+		const body = req.body;
 		const oneNews = await service.update(id, body);
 
 		res.status(200).json({
@@ -42,14 +50,12 @@ router.patch('/:id', async (req, res) => {
 			message: 'noticia actualizada',
 		});
 	} catch (error) {
-		res.status(404).json({
-			message: error.message,
-		});
+		next(error);
 	}
 });
 
 // Delete news route
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const oneNews = await service.delete(id);
@@ -59,9 +65,7 @@ router.delete('/:id', async (req, res) => {
 			message: 'noticia eliminada',
 		});
 	} catch (error) {
-		res.status(404).json({
-			message: error.message,
-		});
+		next(error);
 	}
 });
 

@@ -1,4 +1,5 @@
 const faker = require('faker/locale/es_MX');
+const boom = require('@hapi/boom');
 
 /**
  * Service layer with CRUD methods
@@ -29,7 +30,13 @@ class TournamentsService {
 	 * @returns all the tournaments in the array
 	 */
 	async find() {
-		return this.tournaments;
+		const tournaments = this.tournaments;
+
+		if (!tournaments) {
+			throw boom.notFound('no hay torneos');
+		}
+
+		return tournaments;
 	}
 
 	/**
@@ -38,7 +45,13 @@ class TournamentsService {
 	 * @returns tournament that matches the id
 	 */
 	async findOne(id) {
-		return this.tournaments.find((item) => item.id === id);
+		const tournament = this.tournaments.find((item) => item.id === id);
+
+		if (!tournament) {
+			throw boom.notFound('torneo no encontrado');
+		}
+
+		return tournament;
 	}
 
 	/**
@@ -63,10 +76,12 @@ class TournamentsService {
 	 */
 	async update(id, changes) {
 		const index = this.tournaments.findIndex((item) => item.id === id);
-		if (index === -1) {
-			throw new Error('torneo no encontrado');
-		}
 		const tournament = this.tournaments[index];
+
+		if (index === -1) {
+			throw boom.notFound('torneo no encontrado');
+		}
+
 		this.tournaments[index] = {
 			...tournament,
 			...changes,
@@ -81,9 +96,11 @@ class TournamentsService {
 	 */
 	async delete(id) {
 		const index = this.tournaments.findIndex((item) => item.id === id);
+
 		if (index === -1) {
-			throw new Error('torneo no encontrado');
+			throw boom.notFound('torneo no encontrado');
 		}
+
 		this.tournaments.splice(index, 1);
 		return { id };
 	}

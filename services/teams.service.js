@@ -1,4 +1,5 @@
 const faker = require('faker/locale/es_MX');
+const boom = require('@hapi/boom');
 
 /**
  * Service layer with CRUD methods
@@ -29,7 +30,13 @@ class TeamsService {
 	 * @returns all the teams in the array
 	 */
 	async find() {
-		return this.teams;
+		const teams = this.teams;
+
+		if (!teams) {
+			throw boom.notFound('no hay equipos');
+		}
+
+		return teams;
 	}
 
 	/**
@@ -38,7 +45,13 @@ class TeamsService {
 	 * @returns team that matches the id
 	 */
 	async findOne(id) {
-		return this.teams.find((item) => item.id === id);
+		const team = this.teams.find((item) => item.id === id);
+
+		if (!team) {
+			throw boom.notFound('equipo no encontrado');
+		}
+
+		return team;
 	}
 
 	/**
@@ -63,10 +76,12 @@ class TeamsService {
 	 */
 	async update(id, changes) {
 		const index = this.teams.findIndex((item) => item.id === id);
-		if (index === -1) {
-			throw new Error('equipo no encontrado');
-		}
 		const team = this.teams[index];
+
+		if (index === -1) {
+			throw boom.notFound('equipo no encontrado');
+		}
+
 		this.teams[index] = {
 			...team,
 			...changes,
@@ -81,9 +96,11 @@ class TeamsService {
 	 */
 	async delete(id) {
 		const index = this.teams.findIndex((item) => item.id === id);
+
 		if (index === -1) {
-			throw new Error('equipo no encontrado');
+			throw boom.notFound('equipo no encontrado');
 		}
+
 		this.teams.splice(index, 1);
 		return { id };
 	}

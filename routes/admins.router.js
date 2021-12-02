@@ -5,10 +5,14 @@ const router = express.Router({ mergeParams: true });
 const service = new AdminsService();
 
 // Admins main route
-router.get('/', async (req, res) => {
-	const admins = await service.find();
+router.get('/', async (req, res, next) => {
+	try {
+		const admins = await service.find();
 
-	res.status(200).json(admins);
+		res.status(200).json(admins);
+	} catch (error) {
+		next(error);
+	}
 });
 
 // Add admin route
@@ -23,18 +27,22 @@ router.post('/', async (req, res) => {
 });
 
 // Individual admin route
-router.get('/:id', async (req, res) => {
-	const { id } = req.params;
-	const admin = await service.findOne(id);
+router.get('/:id', async (req, res, next) => {
+	try {
+		const { id } = req.params;
+		const admin = await service.findOne(id);
 
-	res.status(200).json(admin);
+		res.status(200).json(admin);
+	} catch (error) {
+		next(error);
+	}
 });
 
 // Edit admin route
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
-		const { body } = req.body;
+		const body = req.body;
 		const admin = await service.update(id, body);
 
 		res.status(200).json({
@@ -42,14 +50,12 @@ router.patch('/:id', async (req, res) => {
 			message: 'admin actualizado',
 		});
 	} catch (error) {
-		res.status(404).json({
-			message: error.message,
-		});
+		next(error);
 	}
 });
 
 // Delete admin route
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const admin = await service.delete(id);
@@ -59,9 +65,7 @@ router.delete('/:id', async (req, res) => {
 			message: 'admin eliminado',
 		});
 	} catch (error) {
-		res.status(404).json({
-			message: error.message,
-		});
+		next(error);
 	}
 });
 

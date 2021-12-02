@@ -5,10 +5,14 @@ const router = express.Router({ mergeParams: true });
 const service = new CoachesService();
 
 // Coaches main route
-router.get('/', async (req, res) => {
-	const coaches = await service.find();
+router.get('/', async (req, res, next) => {
+	try {
+		const coaches = await service.find();
 
-	res.status(200).json(coaches);
+		res.status(200).json(coaches);
+	} catch (error) {
+		next(error);
+	}
 });
 
 // Add coach route
@@ -23,22 +27,26 @@ router.post('/', async (req, res) => {
 });
 
 // Individual coach route
-router.get('/:id', async (req, res) => {
-	const { ligaId, equipoId, id } = req.params;
-	const coach = await service.findOne(id);
+router.get('/:id', async (req, res, next) => {
+	try {
+		const { ligaId, equipoId, id } = req.params;
+		const coach = await service.findOne(id);
 
-	res.status(200).json({
-		ligaId,
-		equipoId,
-		coach,
-	});
+		res.status(200).json({
+			ligaId,
+			equipoId,
+			coach,
+		});
+	} catch (error) {
+		next(error);
+	}
 });
 
 // Edit coach route
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
-		const { body } = req.body;
+		const body = req.body;
 		const coach = await service.update(id, body);
 
 		res.status(200).json({
@@ -46,14 +54,12 @@ router.patch('/:id', async (req, res) => {
 			message: 'entrenador actualizado',
 		});
 	} catch (error) {
-		res.status(404).json({
-			message: error.message,
-		});
+		next(error);
 	}
 });
 
 // Delete coach route
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const coach = await service.delete(id);
@@ -63,9 +69,7 @@ router.delete('/:id', async (req, res) => {
 			message: 'entrenador eliminado',
 		});
 	} catch (error) {
-		res.status(404).json({
-			message: error.message,
-		});
+		next(error);
 	}
 });
 

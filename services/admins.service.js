@@ -1,11 +1,20 @@
 const faker = require('faker/locale/es_MX');
+const boom = require('@hapi/boom');
 
 /**
  * Service layer with CRUD methods
  */
 class AdminsService {
 	constructor() {
-		this.admins = [];
+		this.admins = [
+			{
+				id: faker.datatype.uuid(),
+				name: 'Esparev',
+				email: 'esparev@hotmail.com',
+				password: 'invisible',
+				isHero: true,
+			},
+		];
 		this.generate();
 	}
 
@@ -18,6 +27,7 @@ class AdminsService {
 		for (let i = 0; i < limit; i++) {
 			this.admins.push({
 				id: faker.datatype.uuid(),
+				isHero: false,
 				name: `${faker.name.firstName()} ${faker.name.lastName()}`,
 				email: faker.internet.email(),
 				password: faker.internet.password(),
@@ -30,7 +40,13 @@ class AdminsService {
 	 * @returns all the admins in the array
 	 */
 	async find() {
-		return this.admins;
+		const admins = this.admins;
+
+		if (!admins) {
+			throw boom.notFound('no hay admins');
+		}
+
+		return admins;
 	}
 
 	/**
@@ -39,7 +55,16 @@ class AdminsService {
 	 * @returns admin that matches the id
 	 */
 	async findOne(id) {
-		return this.admins.find((item) => item.id === id);
+		const admin = this.admins.find((item) => item.id === id);
+
+		if (!admin) {
+			throw boom.notFound('admin no encontrado');
+		}
+		if (admin.isHero) {
+			throw boom.forbidden('no puedes ver a este admin');
+		}
+
+		return admin;
 	}
 
 	/**
@@ -50,6 +75,7 @@ class AdminsService {
 	async create(data) {
 		const newAdmin = {
 			id: faker.datatype.uuid(),
+			isHero: false,
 			...data,
 		};
 		this.admins.push(newAdmin);
@@ -64,10 +90,15 @@ class AdminsService {
 	 */
 	async update(id, changes) {
 		const index = this.admins.findIndex((item) => item.id === id);
-		if (index === -1) {
-			throw new Error('admin no encontrado');
-		}
 		const admin = this.admins[index];
+
+		if (index === -1) {
+			throw boom.notFound('admin no encontrado');
+		}
+		if (admin.isHero) {
+			throw boom.forbidden('no puedes editar a este admin');
+		}
+
 		this.admins[index] = {
 			...admin,
 			...changes,
@@ -82,9 +113,14 @@ class AdminsService {
 	 */
 	async delete(id) {
 		const index = this.admins.findIndex((item) => item.id === id);
+
 		if (index === -1) {
-			throw new Error('admin no encontrado');
+			throw boom.notFound('admin no encontrado');
 		}
+		if (this.admins[index].isHero) {
+			throw boom.forbidden('no puedes eliminar a este admin');
+		}
+
 		this.admins.splice(index, 1);
 		return { id };
 	}

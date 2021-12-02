@@ -5,10 +5,14 @@ const router = express.Router({ mergeParams: true });
 const service = new TeamsService();
 
 // Teams main route
-router.get('/', async (req, res) => {
-	const teams = await service.find();
+router.get('/', async (req, res, next) => {
+	try {
+		const teams = await service.find();
 
-	res.status(200).json(teams);
+		res.status(200).json(teams);
+	} catch (error) {
+		next(error);
+	}
 });
 
 // Add team route
@@ -23,21 +27,25 @@ router.post('/', async (req, res) => {
 });
 
 // Individual team route
-router.get('/:id', async (req, res) => {
-	const { id, ligaId } = req.params;
-	const team = await service.findOne(id);
+router.get('/:id', async (req, res, next) => {
+	try {
+		const { id, ligaId } = req.params;
+		const team = await service.findOne(id);
 
-	res.status(200).json({
-		ligaId,
-		team,
-	});
+		res.status(200).json({
+			ligaId,
+			team,
+		});
+	} catch (error) {
+		next(error);
+	}
 });
 
 // Edit team route
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
-		const { body } = req.body;
+		const body = req.body;
 		const team = await service.update(id, body);
 
 		res.status(200).json({
@@ -45,14 +53,12 @@ router.patch('/:id', async (req, res) => {
 			message: 'equipo actualizado',
 		});
 	} catch (error) {
-		res.status(404).json({
-			message: error.message,
-		});
+		next(error);
 	}
 });
 
 // Delete team route
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const team = await service.delete(id);
@@ -62,9 +68,7 @@ router.delete('/:id', async (req, res) => {
 			message: 'equipo eliminado',
 		});
 	} catch (error) {
-		res.status(404).json({
-			message: error.message,
-		});
+		next(error);
 	}
 });
 

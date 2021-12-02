@@ -1,4 +1,5 @@
 const faker = require('faker/locale/es_MX');
+const boom = require('@hapi/boom');
 
 /**
  * Service layer with CRUD methods
@@ -29,7 +30,13 @@ class CoachesService {
 	 * @returns all the coaches in the array
 	 */
 	async find() {
-		return this.coaches;
+		const coaches = this.coaches;
+
+		if (!coaches) {
+			throw boom.notFound('no hay entrenadores');
+		}
+
+		return coaches;
 	}
 
 	/**
@@ -38,7 +45,13 @@ class CoachesService {
 	 * @returns coach that matches the id
 	 */
 	async findOne(id) {
-		return this.coaches.find((item) => item.id === id);
+		const coach = this.coaches.find((item) => item.id === id);
+
+		if (!coach) {
+			throw boom.notFound('entrenador no encontrado');
+		}
+
+		return coach;
 	}
 
 	/**
@@ -63,10 +76,12 @@ class CoachesService {
 	 */
 	async update(id, changes) {
 		const index = this.coaches.findIndex((item) => item.id === id);
-		if (index === -1) {
-			throw new Error('entrenador no encontrado');
-		}
 		const coach = this.coaches[index];
+
+		if (index === -1) {
+			throw boom.notFound('entrenador no encontrado');
+		}
+
 		this.coaches[index] = {
 			...coach,
 			...changes,
@@ -81,9 +96,11 @@ class CoachesService {
 	 */
 	async delete(id) {
 		const index = this.coaches.findIndex((item) => item.id === id);
+
 		if (index === -1) {
-			throw new Error('entrenador no encontrado');
+			throw boom.notFound('entrenador no encontrado');
 		}
+
 		this.coaches.splice(index, 1);
 		return { id };
 	}
