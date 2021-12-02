@@ -21,7 +21,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
 	const body = req.body;
 	res.json({
-		body,
+		data: body,
 		message: 'torneo creado',
 	});
 });
@@ -37,9 +37,23 @@ router.get('/:torneoId', (req, res) => {
 });
 
 // Edit tournament route
-router.get('/:torneoId/editar', (req, res) => {
+router.patch('/:torneoId', (req, res) => {
 	const { torneoId } = req.params;
-	res.send(`Editar torneo ${torneoId}`);
+	const { body } = req.body;
+	res.json({
+		torneoId,
+		data: body,
+		message: 'torneo actualizado',
+	});
+});
+
+// Delete tournament route
+router.delete('/:torneoId', (req, res) => {
+	const { torneoId } = req.params;
+	res.json({
+		torneoId,
+		message: 'torneo eliminado',
+	});
 });
 
 module.exports = router;

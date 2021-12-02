@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
 	const body = req.body;
 	res.json({
-		body,
+		data: body,
 		message: 'liga creada',
 	});
 });
@@ -47,9 +47,23 @@ router.get('/:ligaId', (req, res) => {
 });
 
 // Edit league route
-router.get('/:ligaId/editar', (req, res) => {
+router.patch('/:ligaId', (req, res) => {
 	const { ligaId } = req.params;
-	res.send(`Editar liga ${ligaId}`);
+	const { body } = req.body;
+	res.json({
+		ligaId,
+		data: body,
+		message: 'liga actualizada',
+	});
+});
+
+// Delete league route
+router.delete('/:ligaId', (req, res) => {
+	const { ligaId } = req.params;
+	res.json({
+		ligaId,
+		message: 'liga eliminada',
+	});
 });
 
 module.exports = router;

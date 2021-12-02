@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
 	const body = req.body;
 	res.json({
-		body,
+		data: body,
 		message: 'admin creado',
 	});
 });
@@ -47,9 +47,23 @@ router.get('/:adminId', (req, res) => {
 });
 
 // Edit admin route
-router.get('/:adminId/editar', (req, res) => {
+router.patch('/:adminId', (req, res) => {
 	const { adminId } = req.params;
-	res.send(`Editar admin ${adminId}`);
+	const { body } = req.body;
+	res.json({
+		adminId,
+		data: body,
+		message: 'admin actualizado',
+	});
+});
+
+// Delete admin route
+router.delete('/:adminId', (req, res) => {
+	const { adminId } = req.params;
+	res.json({
+		adminId,
+		message: 'admin eliminado',
+	});
 });
 
 module.exports = router;

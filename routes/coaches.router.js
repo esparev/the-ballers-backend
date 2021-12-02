@@ -5,7 +5,7 @@ const router = express.Router({ mergeParams: true });
 router.post('/', (req, res) => {
 	const body = req.body;
 	res.json({
-		body,
+		data: body,
 		message: 'entrenador creado',
 	});
 });
@@ -34,11 +34,23 @@ router.get('/:entrenadorId', (req, res) => {
 });
 
 // Edit coach route
-router.get('/:entrenadorId/editar', (req, res) => {
-	const { ligaId, equipoId, entrenadorId } = req.params;
-	res.send(
-		`Editar entrenador ${entrenadorId} del equipo ${equipoId} de la liga ${ligaId}`
-	);
+router.patch('/:entrenadorId', (req, res) => {
+	const { entrenadorId } = req.params;
+	const { body } = req.body;
+	res.json({
+		entrenadorId,
+		data: body,
+		message: 'entrenador actualizado',
+	});
+});
+
+// Delete coach route
+router.delete('/:entrenadorId', (req, res) => {
+	const { entrenadorId } = req.params;
+	res.json({
+		entrenadorId,
+		message: 'entrenador eliminado',
+	});
 });
 
 module.exports = router;
