@@ -1,18 +1,12 @@
 const express = require('express');
+const AdminsService = require('../services/admins.service');
+
 const router = express.Router({ mergeParams: true });
+const service = new AdminsService();
 
 // Admins main route
 router.get('/', (req, res) => {
-	const admins = [];
-	const { size } = req.query;
-	const limit = size || 5;
-
-	for (let i = 0; i < limit; i++) {
-		admins.push({
-			name: `Admin ${i}`,
-		});
-	}
-
+	const admins = service.find();
 	res.status(200).json(admins);
 });
 
@@ -26,31 +20,28 @@ router.post('/', (req, res) => {
 });
 
 // Individual admin route
-router.get('/:adminId', (req, res) => {
-	const { adminId } = req.params;
-
-	res.status(200).json({
-		adminId,
-		name: 'Admin 1',
-	});
+router.get('/:id', (req, res) => {
+	const { id } = req.params;
+	const admin = service.findOne(id);
+	res.status(200).json(admin);
 });
 
 // Edit admin route
-router.patch('/:adminId', (req, res) => {
-	const { adminId } = req.params;
+router.patch('/:id', (req, res) => {
+	const { id } = req.params;
 	const { body } = req.body;
 	res.status(200).json({
-		adminId,
+		id,
 		data: body,
 		message: 'admin actualizado',
 	});
 });
 
 // Delete admin route
-router.delete('/:adminId', (req, res) => {
-	const { adminId } = req.params;
+router.delete('/:id', (req, res) => {
+	const { id } = req.params;
 	res.status(200).json({
-		adminId,
+		id,
 		message: 'admin eliminado',
 	});
 });

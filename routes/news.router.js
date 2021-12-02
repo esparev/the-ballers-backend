@@ -1,19 +1,12 @@
 const express = require('express');
+const NewsService = require('../services/news.service');
+
 const router = express.Router();
+const service = new NewsService();
 
 // News main route
 router.get('/', (req, res) => {
-	const news = [];
-	const { size } = req.query;
-	const limit = size || 5;
-
-	for (let i = 0; i < limit; i++) {
-		news.push({
-			title: `Noticia ${i}`,
-			date: '26, octubre, 2021',
-		});
-	}
-
+	const news = service.find();
 	res.status(200).json(news);
 });
 
@@ -27,31 +20,28 @@ router.post('/', (req, res) => {
 });
 
 // Individual news route
-router.get('/:noticiaId', (req, res) => {
-	const { noticiaId } = req.params;
-	res.status(200).json({
-		noticiaId,
-		title: 'Noticia 1',
-		fecha: '26, octubre 2021',
-	});
+router.get('/:id', (req, res) => {
+	const { id } = req.params;
+	const oneNews = service.findOne(id);
+	res.status(200).json(oneNews);
 });
 
 // Edit tournament route
-router.patch('/:noticiaId', (req, res) => {
-	const { noticiaId } = req.params;
+router.patch('/:id', (req, res) => {
+	const { id } = req.params;
 	const { body } = req.body;
 	res.status(200).json({
-		noticiaId,
+		id,
 		data: body,
 		message: 'noticia actualizada',
 	});
 });
 
 // Delete tournament route
-router.delete('/:noticiaId', (req, res) => {
-	const { noticiaId } = req.params;
+router.delete('/:id', (req, res) => {
+	const { id } = req.params;
 	res.status(200).json({
-		noticiaId,
+		id,
 		message: 'noticia eliminada',
 	});
 });

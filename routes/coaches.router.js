@@ -1,5 +1,8 @@
 const express = require('express');
+const CoachesService = require('../services/coaches.service');
+
 const router = express.Router({ mergeParams: true });
+const service = new CoachesService();
 
 // Add coach route
 router.post('/', (req, res) => {
@@ -11,33 +14,33 @@ router.post('/', (req, res) => {
 });
 
 // Individual coach route
-router.get('/:entrenadorId', (req, res) => {
-	const { ligaId, equipoId, entrenadorId } = req.params;
+router.get('/:id', (req, res) => {
+	const { ligaId, equipoId, id } = req.params;
+	const coach = service.findOne(id);
 
 	res.status(200).json({
 		ligaId,
 		equipoId,
-		entrenadorId,
-		name: 'Entrenador 1',
+		coach,
 	});
 });
 
 // Edit coach route
-router.patch('/:entrenadorId', (req, res) => {
-	const { entrenadorId } = req.params;
+router.patch('/:id', (req, res) => {
+	const { id } = req.params;
 	const { body } = req.body;
 	res.status(200).json({
-		entrenadorId,
+		id,
 		data: body,
 		message: 'entrenador actualizado',
 	});
 });
 
 // Delete coach route
-router.delete('/:entrenadorId', (req, res) => {
-	const { entrenadorId } = req.params;
+router.delete('/:id', (req, res) => {
+	const { id } = req.params;
 	res.status(200).json({
-		entrenadorId,
+		id,
 		message: 'entrenador eliminado',
 	});
 });

@@ -1,5 +1,12 @@
 const express = require('express');
+const PlayersService = require('../services/players.service');
+const CoachesService = require('../services/coaches.service');
+const TeamsService = require('../services/teams.service');
+
 const router = express.Router({ mergeParams: true });
+const playersService = new PlayersService();
+const coachesService = new CoachesService();
+const teamsService = new TeamsService();
 
 // Add team route
 router.post('/', (req, res) => {
@@ -11,47 +18,36 @@ router.post('/', (req, res) => {
 });
 
 // Individual team route
-router.get('/:equipoId', (req, res) => {
-	const players = [];
-	const { size } = req.query;
-	const { ligaId, equipoId } = req.params;
-	const limit = size || 5;
-
-	for (let i = 0; i < limit; i++) {
-		players.push({
-			equipoId,
-			name: `Jugador ${i}`,
-		});
-	}
+router.get('/:id', (req, res) => {
+	const { id, ligaId } = req.params;
+	const players = playersService.find();
+	const coach = coachesService.findOne(id);
+	const team = teamsService.findOne(id);
 
 	res.status(200).json({
 		ligaId,
-		equipoId,
-		name: 'Equipo 1',
-		coach: {
-			equipoId,
-			name: 'Entrenador',
-		},
+		team,
+		coach,
 		players,
 	});
 });
 
 // Edit team route
-router.patch('/:equipoId', (req, res) => {
-	const { equipoId } = req.params;
+router.patch('/:id', (req, res) => {
+	const { id } = req.params;
 	const { body } = req.body;
 	res.status(200).json({
-		equipoId,
+		id,
 		data: body,
 		message: 'equipo actualizado',
 	});
 });
 
 // Delete team route
-router.delete('/:equipoId', (req, res) => {
-	const { equipoId } = req.params;
+router.delete('/:id', (req, res) => {
+	const { id } = req.params;
 	res.status(200).json({
-		equipoId,
+		id,
 		message: 'equipo eliminado',
 	});
 });

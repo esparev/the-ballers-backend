@@ -1,19 +1,12 @@
 const express = require('express');
+const TournamentsService = require('../services/tournaments.service');
+
 const router = express.Router();
+const service = new TournamentsService();
 
 // Tournaments main route
 router.get('/', (req, res) => {
-	const tournaments = [];
-	const { size } = req.query;
-	const limit = size || 5;
-
-	for (let i = 0; i < limit; i++) {
-		tournaments.push({
-			title: `Torneo ${i}`,
-			date: '26, octubre, 2021',
-		});
-	}
-
+	const tournaments = service.find();
 	res.status(200).json(tournaments);
 });
 
@@ -27,31 +20,28 @@ router.post('/', (req, res) => {
 });
 
 // Individual tournament route
-router.get('/:torneoId', (req, res) => {
-	const { torneoId } = req.params;
-	res.status(200).json({
-		torneoId,
-		title: 'Torneo 3',
-		fecha: '26, octubre 2021',
-	});
+router.get('/:id', (req, res) => {
+	const { id } = req.params;
+	const tournament = service.findOne(id);
+	res.status(200).json(tournament);
 });
 
 // Edit tournament route
-router.patch('/:torneoId', (req, res) => {
-	const { torneoId } = req.params;
+router.patch('/:id', (req, res) => {
+	const { id } = req.params;
 	const { body } = req.body;
 	res.status(200).json({
-		torneoId,
+		id,
 		data: body,
 		message: 'torneo actualizado',
 	});
 });
 
 // Delete tournament route
-router.delete('/:torneoId', (req, res) => {
-	const { torneoId } = req.params;
+router.delete('/:id', (req, res) => {
+	const { id } = req.params;
 	res.status(200).json({
-		torneoId,
+		id,
 		message: 'torneo eliminado',
 	});
 });
