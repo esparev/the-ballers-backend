@@ -3,6 +3,12 @@ const TeamsService = require('../services/teams.service');
 
 const router = express.Router();
 const service = new TeamsService();
+const validationHandler = require('../middlewares/validator.handler');
+const {
+	getTeamSchema,
+	createTeamSchema,
+	updateTeamSchema,
+} = require('../schemas/team.schema');
 
 /**
  * Teams main route
@@ -22,49 +28,62 @@ router.get('/', async (req, res, next) => {
  * Individual Team route
  * Shows the Team with the provided id
  */
-router.get('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const team = await service.findOne(id);
+router.get(
+	'/:id',
+	validationHandler(getTeamSchema, 'params'),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const team = await service.findOne(id);
 
-		res.status(200).json(team);
-	} catch (error) {
-		next(error);
+			res.status(200).json(team);
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Add Team route
  * Creates a Team with the provided data in body
  */
-router.post('/', async (req, res) => {
-	const body = req.body;
-	const newTeam = await service.create(body);
+router.post(
+	'/',
+	validationHandler(createTeamSchema, 'body'),
+	async (req, res) => {
+		const body = req.body;
+		const newTeam = await service.create(body);
 
-	res.status(201).json({
-		newTeam,
-		message: 'equipo creado',
-	});
-});
+		res.status(201).json({
+			newTeam,
+			message: 'equipo creado',
+		});
+	}
+);
 
 /**
  * Edit Team route
  * Updates partial or entire data of the Team with the provided id
  */
-router.patch('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const body = req.body;
-		const team = await service.update(id, body);
+router.patch(
+	'/:id',
+	validationHandler(getTeamSchema, 'params'),
+	validationHandler(updateTeamSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const body = req.body;
+			const team = await service.update(id, body);
 
-		res.status(200).json({
-			team,
-			message: 'equipo actualizado',
-		});
-	} catch (error) {
-		next(error);
+			res.status(200).json({
+				team,
+				message: 'equipo actualizado',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Delete Team route

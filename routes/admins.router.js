@@ -3,6 +3,12 @@ const AdminsService = require('../services/admins.service');
 
 const router = express.Router();
 const service = new AdminsService();
+const validationHandler = require('../middlewares/validator.handler');
+const {
+	getAdminSchema,
+	createAdminSchema,
+	updateAdminSchema,
+} = require('../schemas/admin.schema');
 
 /**
  * Admins main route
@@ -22,49 +28,62 @@ router.get('/', async (req, res, next) => {
  * Individual Admin route
  * Shows the Admin with the provided id
  */
-router.get('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const admin = await service.findOne(id);
+router.get(
+	'/:id',
+	validationHandler(getAdminSchema, 'params'),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const admin = await service.findOne(id);
 
-		res.status(200).json(admin);
-	} catch (error) {
-		next(error);
+			res.status(200).json(admin);
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Add Admin route
  * Creates an Admin with the provided data in body
  */
-router.post('/', async (req, res) => {
-	const body = req.body;
-	const newAdmin = await service.create(body);
+router.post(
+	'/',
+	validationHandler(createAdminSchema, 'body'),
+	async (req, res) => {
+		const body = req.body;
+		const newAdmin = await service.create(body);
 
-	res.status(201).json({
-		newAdmin,
-		message: 'admin creado',
-	});
-});
+		res.status(201).json({
+			newAdmin,
+			message: 'admin creado',
+		});
+	}
+);
 
 /**
  * Edit Admin route
  * Updates partial or entire data of the Admin with the provided id
  */
-router.patch('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const body = req.body;
-		const admin = await service.update(id, body);
+router.patch(
+	'/:id',
+	validationHandler(getAdminSchema, 'params'),
+	validationHandler(updateAdminSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const body = req.body;
+			const admin = await service.update(id, body);
 
-		res.status(200).json({
-			admin,
-			message: 'admin actualizado',
-		});
-	} catch (error) {
-		next(error);
+			res.status(200).json({
+				admin,
+				message: 'admin actualizado',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Delete Admin route

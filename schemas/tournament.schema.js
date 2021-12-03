@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 // Data rules
 const id = Joi.number().integer();
-const title = Joi.string().alphanum().max(255);
+const title = Joi.string().max(255);
 const link = Joi.string().uri();
 const cover = Joi.string().uri();
 

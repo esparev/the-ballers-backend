@@ -3,7 +3,12 @@ const CoachesService = require('../services/coaches.service');
 
 const router = express.Router();
 const service = new CoachesService();
-
+const validationHandler = require('../middlewares/validator.handler');
+const {
+	getCoachSchema,
+	createCoachSchema,
+	updateCoachSchema,
+} = require('../schemas/coach.schema');
 /**
  * Coaches main route
  * Shows all Coaches
@@ -22,49 +27,62 @@ router.get('/', async (req, res, next) => {
  * Individual Coach route
  * Shows the Coach with the provided id
  */
-router.get('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const coach = await service.findOne(id);
+router.get(
+	'/:id',
+	validationHandler(getCoachSchema, 'params'),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const coach = await service.findOne(id);
 
-		res.status(200).json(coach);
-	} catch (error) {
-		next(error);
+			res.status(200).json(coach);
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Add Coach route
  * Creates a Coach with the provided data in body
  */
-router.post('/', async (req, res) => {
-	const body = req.body;
-	const newCoach = await service.create(body);
+router.post(
+	'/',
+	validationHandler(createCoachSchema, 'body'),
+	async (req, res) => {
+		const body = req.body;
+		const newCoach = await service.create(body);
 
-	res.status(201).json({
-		newCoach,
-		message: 'entrenador creado',
-	});
-});
+		res.status(201).json({
+			newCoach,
+			message: 'entrenador creado',
+		});
+	}
+);
 
 /**
  * Edit Coach route
  * Updates partial or entire data of the Coach with the provided id
  */
-router.patch('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const body = req.body;
-		const coach = await service.update(id, body);
+router.patch(
+	'/:id',
+	validationHandler(getCoachSchema, 'params'),
+	validationHandler(updateCoachSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const body = req.body;
+			const coach = await service.update(id, body);
 
-		res.status(200).json({
-			coach,
-			message: 'entrenador actualizado',
-		});
-	} catch (error) {
-		next(error);
+			res.status(200).json({
+				coach,
+				message: 'entrenador actualizado',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Delete Coach route

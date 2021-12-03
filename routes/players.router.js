@@ -3,6 +3,12 @@ const PlayersService = require('../services/players.service');
 
 const router = express.Router();
 const service = new PlayersService();
+const validationHandler = require('../middlewares/validator.handler');
+const {
+	getPlayerSchema,
+	createPlayerSchema,
+	updatePlayerSchema,
+} = require('../schemas/player.schema');
 
 /**
  * Players main route
@@ -22,49 +28,62 @@ router.get('/', async (req, res, next) => {
  * Individual Player route
  * Shows the Player with the provided id
  */
-router.get('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const player = await service.findOne(id);
+router.get(
+	'/:id',
+	validationHandler(getPlayerSchema, 'params'),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const player = await service.findOne(id);
 
-		res.status(200).json(player);
-	} catch (error) {
-		next(error);
+			res.status(200).json(player);
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Add Player route
  * Creates a Player with the provided data in body
  */
-router.post('/', async (req, res) => {
-	const body = req.body;
-	const newPlayer = await service.create(body);
+router.post(
+	'/',
+	validationHandler(createPlayerSchema, 'body'),
+	async (req, res) => {
+		const body = req.body;
+		const newPlayer = await service.create(body);
 
-	res.status(201).json({
-		newPlayer,
-		message: 'player created',
-	});
-});
+		res.status(201).json({
+			newPlayer,
+			message: 'player created',
+		});
+	}
+);
 
 /**
  * Edit Player route
  * Updates partial or entire data of the Player with the provided id
  */
-router.patch('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const body = req.body;
-		const player = await service.update(id, body);
+router.patch(
+	'/:id',
+	validationHandler(getPlayerSchema, 'params'),
+	validationHandler(updatePlayerSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const body = req.body;
+			const player = await service.update(id, body);
 
-		res.status(200).json({
-			player,
-			message: 'jugador actualizado',
-		});
-	} catch (error) {
-		next(error);
+			res.status(200).json({
+				player,
+				message: 'jugador actualizado',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Delete Player route

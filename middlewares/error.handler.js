@@ -1,22 +1,9 @@
 /**
- * Handles errors and passes it to the next middleware,
- * useful for monitoring errors
- * @param {*} err
- * @param {*} req
- * @param {*} res
- * @param {*} next
- */
-function logErrors(err, req, res, next) {
-	console.log(err);
-	next(err);
-}
-
-/**
  * Handles errors and shows it to the client
- * @param {*} err
- * @param {*} req
- * @param {*} res
- * @param {*} next
+ * @param {*} err error
+ * @param {*} req request object
+ * @param {*} res response object
+ * @param {*} next next middleware
  */
 function errorHandler(err, req, res, next) {
 	res.status(500).json({
@@ -27,10 +14,10 @@ function errorHandler(err, req, res, next) {
 
 /**
  * Handles errors of boom type and shows it to the client
- * @param {*} err
- * @param {*} req
- * @param {*} res
- * @param {*} next
+ * @param {*} err error
+ * @param {*} req request object
+ * @param {*} res response object
+ * @param {*} next next middleware
  */
 function boomErrorHandler(err, req, res, next) {
 	if (err.isBoom) {
@@ -40,4 +27,4 @@ function boomErrorHandler(err, req, res, next) {
 	next(err);
 }
 
-module.exports = { logErrors, errorHandler, boomErrorHandler };
+module.exports = { errorHandler, boomErrorHandler };

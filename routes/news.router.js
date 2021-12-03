@@ -3,6 +3,12 @@ const NewsService = require('../services/news.service');
 
 const router = express.Router();
 const service = new NewsService();
+const validationHandler = require('../middlewares/validator.handler');
+const {
+	getNewsSchema,
+	createNewsSchema,
+	updateNewsSchema,
+} = require('../schemas/news.schema');
 
 /**
  * News main route
@@ -22,22 +28,28 @@ router.get('/', async (req, res, next) => {
  * Individual News route
  * Shows the News with the provided id
  */
-router.get('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const oneNews = await service.findOne(id);
+router.get(
+	'/:id',
+	validationHandler(getNewsSchema, 'params'),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const oneNews = await service.findOne(id);
 
-		res.status(200).json(oneNews);
-	} catch (error) {
-		next(error);
+			res.status(200).json(oneNews);
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Add News route
  * Creates a News with the provided data in body
  */
-router.post('/', async (req, res) => {
+router.post('/',
+	validationHandler(createNewsSchema, 'body'),
+	async (req, res) => {
 	const body = req.body;
 	const newNews = await service.create(body);
 
@@ -51,20 +63,25 @@ router.post('/', async (req, res) => {
  * Edit News route
  * Updates partial or entire data of the News with the provided id
  */
-router.patch('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const body = req.body;
-		const oneNews = await service.update(id, body);
+router.patch(
+	'/:id',
+	validationHandler(getNewsSchema, 'params'),
+	validationHandler(updateNewsSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const body = req.body;
+			const oneNews = await service.update(id, body);
 
-		res.status(200).json({
-			oneNews,
-			message: 'noticia actualizada',
-		});
-	} catch (error) {
-		next(error);
+			res.status(200).json({
+				oneNews,
+				message: 'noticia actualizada',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Delete News route

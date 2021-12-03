@@ -2,8 +2,8 @@ const Joi = require('joi');
 
 // Data rules
 const id = Joi.number().integer();
-const title = Joi.string().alphanum().max(255);
-const description = Joi.string().alphanum.max(1000);
+const title = Joi.string().max(255);
+const description = Joi.string().max(1000);
 const cover = Joi.string().uri();
 
 const getNewsSchema = Joi.object({
