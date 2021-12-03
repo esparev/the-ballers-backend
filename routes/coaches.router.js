@@ -1,10 +1,13 @@
 const express = require('express');
 const CoachesService = require('../services/coaches.service');
 
-const router = express.Router({ mergeParams: true });
+const router = express.Router();
 const service = new CoachesService();
 
-// Coaches main route
+/**
+ * Coaches main route
+ * Shows all Coaches
+ */
 router.get('/', async (req, res, next) => {
 	try {
 		const coaches = await service.find();
@@ -15,7 +18,25 @@ router.get('/', async (req, res, next) => {
 	}
 });
 
-// Add coach route
+/**
+ * Individual Coach route
+ * Shows the Coach with the provided id
+ */
+router.get('/:id', async (req, res, next) => {
+	try {
+		const { id } = req.params;
+		const coach = await service.findOne(id);
+
+		res.status(200).json(coach);
+	} catch (error) {
+		next(error);
+	}
+});
+
+/**
+ * Add Coach route
+ * Creates a Coach with the provided data in body
+ */
 router.post('/', async (req, res) => {
 	const body = req.body;
 	const newCoach = await service.create(body);
@@ -26,23 +47,10 @@ router.post('/', async (req, res) => {
 	});
 });
 
-// Individual coach route
-router.get('/:id', async (req, res, next) => {
-	try {
-		const { ligaId, equipoId, id } = req.params;
-		const coach = await service.findOne(id);
-
-		res.status(200).json({
-			ligaId,
-			equipoId,
-			coach,
-		});
-	} catch (error) {
-		next(error);
-	}
-});
-
-// Edit coach route
+/**
+ * Edit Coach route
+ * Updates partial or entire data of the Coach with the provided id
+ */
 router.patch('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
@@ -58,7 +66,10 @@ router.patch('/:id', async (req, res, next) => {
 	}
 });
 
-// Delete coach route
+/**
+ * Delete Coach route
+ * Deletes the Coach with the provided id
+ */
 router.delete('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;

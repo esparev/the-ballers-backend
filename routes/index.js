@@ -6,6 +6,7 @@ const leaguesRouter = require('./leagues.router');
 const teamsRouter = require('./teams.router');
 const playersRouter = require('./players.router');
 const coachesRouter = require('./coaches.router');
+const addressesRouter = require('./addresses.router');
 const adminsRouter = require('./admins.router');
 
 /**
@@ -21,9 +22,10 @@ function routerApi(app) {
 	router.use('/noticias', newsRouter);
 	router.use('/torneos', tournamentsRouter);
 	router.use('/ligas', leaguesRouter);
-	router.use('/ligas/:ligaId/equipos', teamsRouter);
-	router.use('/ligas/:ligaId/equipos/:equipoId/jugadores', playersRouter);
-	router.use('/ligas/:ligaId/equipos/:equipoId/entrenadores', coachesRouter);
+	router.use('/equipos', teamsRouter);
+	router.use('/jugadores', playersRouter);
+	router.use('/entrenadores', coachesRouter);
+	router.use('/direcciones', addressesRouter);
 	router.use('/admins', adminsRouter);
 }
 

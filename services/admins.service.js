@@ -8,7 +8,7 @@ class AdminsService {
 	constructor() {
 		this.admins = [
 			{
-				id: faker.datatype.uuid(),
+				id: '0',
 				name: 'Esparev',
 				email: 'esparev@hotmail.com',
 				password: 'invisible',
@@ -24,13 +24,14 @@ class AdminsService {
 	generate() {
 		const limit = 5;
 
-		for (let i = 0; i < limit; i++) {
+		for (let i = 1; i < limit; i++) {
 			this.admins.push({
-				id: faker.datatype.uuid(),
+				id: `${i}`,
 				isHero: false,
 				name: `${faker.name.firstName()} ${faker.name.lastName()}`,
 				email: faker.internet.email(),
 				password: faker.internet.password(),
+				image: faker.image.imageUrl(),
 			});
 		}
 	}
@@ -74,7 +75,7 @@ class AdminsService {
 	 */
 	async create(data) {
 		const newAdmin = {
-			id: faker.datatype.uuid(),
+			id: `${this.admins.length}`,
 			isHero: false,
 			...data,
 		};

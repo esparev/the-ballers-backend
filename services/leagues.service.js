@@ -18,14 +18,13 @@ class LeaguesService {
 
 		for (let i = 0; i < limit; i++) {
 			this.leagues.push({
-				id: faker.datatype.uuid(),
+				id: `${i}`,
 				name: faker.name.firstName(),
 				responsable: `${faker.name.firstName()} ${faker.name.lastName()}`,
 				phone: faker.phone.phoneNumber(),
-				location: faker.address.county(),
-				address: faker.address.streetAddress(),
 				ageStart: faker.datatype.number(60),
 				ageEnd: faker.datatype.number(60),
+				logo: faker.image.imageUrl(),
 			});
 		}
 	}
@@ -66,7 +65,7 @@ class LeaguesService {
 	 */
 	async create(data) {
 		const newLeague = {
-			id: faker.datatype.uuid(),
+			id: `${this.leagues.length}`,
 			...data,
 		};
 		this.leagues.push(newLeague);

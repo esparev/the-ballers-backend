@@ -1,10 +1,13 @@
 const express = require('express');
 const TeamsService = require('../services/teams.service');
 
-const router = express.Router({ mergeParams: true });
+const router = express.Router();
 const service = new TeamsService();
 
-// Teams main route
+/**
+ * Teams main route
+ * Shows all Teams
+ */
 router.get('/', async (req, res, next) => {
 	try {
 		const teams = await service.find();
@@ -15,7 +18,25 @@ router.get('/', async (req, res, next) => {
 	}
 });
 
-// Add team route
+/**
+ * Individual Team route
+ * Shows the Team with the provided id
+ */
+router.get('/:id', async (req, res, next) => {
+	try {
+		const { id } = req.params;
+		const team = await service.findOne(id);
+
+		res.status(200).json(team);
+	} catch (error) {
+		next(error);
+	}
+});
+
+/**
+ * Add Team route
+ * Creates a Team with the provided data in body
+ */
 router.post('/', async (req, res) => {
 	const body = req.body;
 	const newTeam = await service.create(body);
@@ -26,22 +47,10 @@ router.post('/', async (req, res) => {
 	});
 });
 
-// Individual team route
-router.get('/:id', async (req, res, next) => {
-	try {
-		const { id, ligaId } = req.params;
-		const team = await service.findOne(id);
-
-		res.status(200).json({
-			ligaId,
-			team,
-		});
-	} catch (error) {
-		next(error);
-	}
-});
-
-// Edit team route
+/**
+ * Edit Team route
+ * Updates partial or entire data of the Team with the provided id
+ */
 router.patch('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
@@ -57,7 +66,10 @@ router.patch('/:id', async (req, res, next) => {
 	}
 });
 
-// Delete team route
+/**
+ * Delete Team route
+ * Deletes the Team with the provided id
+ */
 router.delete('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;

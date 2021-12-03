@@ -4,7 +4,10 @@ const TournamentsService = require('../services/tournaments.service');
 const router = express.Router();
 const service = new TournamentsService();
 
-// Tournaments main route
+/**
+ * Tournaments main route
+ * Shows all Tournaments
+ */
 router.get('/', async (req, res, next) => {
 	try {
 		const tournaments = await service.find();
@@ -15,18 +18,10 @@ router.get('/', async (req, res, next) => {
 	}
 });
 
-// Add tournament route
-router.post('/', async (req, res) => {
-	const body = req.body;
-	const newTournament = await service.create(body);
-
-	res.status(201).json({
-		newTournament,
-		message: 'torneo creado',
-	});
-});
-
-// Individual tournament route
+/**
+ * Individual Tournament route
+ * Shows the Tournament with the provided id
+ */
 router.get('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
@@ -38,7 +33,24 @@ router.get('/:id', async (req, res, next) => {
 	}
 });
 
-// Edit tournament route
+/**
+ * Add Tournament route
+ * Creates a Tournament with the provided data in body
+ */
+router.post('/', async (req, res) => {
+	const body = req.body;
+	const newTournament = await service.create(body);
+
+	res.status(201).json({
+		newTournament,
+		message: 'torneo creado',
+	});
+});
+
+/**
+ * Edit Tournament route
+ * Updates partial or entire data of the Tournament with the provided id
+ */
 router.patch('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
@@ -54,7 +66,10 @@ router.patch('/:id', async (req, res, next) => {
 	}
 });
 
-// Delete tournament route
+/**
+ * Delete Tournament route
+ * Deletes the Tournament with the provided id
+ */
 router.delete('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;

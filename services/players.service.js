@@ -18,9 +18,10 @@ class PlayersService {
 
 		for (let i = 0; i < limit; i++) {
 			this.players.push({
-				id: faker.datatype.uuid(),
+				id: `${i}`,
 				name: `${faker.name.firstName()} ${faker.name.lastName()}`,
 				birthday: faker.time.recent(),
+				image: faker.image.imageUrl(),
 			});
 		}
 	}
@@ -61,7 +62,7 @@ class PlayersService {
 	 */
 	async create(data) {
 		const newPlayer = {
-			id: faker.datatype.uuid(),
+			id: `${this.players.length}`,
 			...data,
 		};
 		this.players.push(newPlayer);

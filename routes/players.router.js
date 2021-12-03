@@ -1,10 +1,13 @@
 const express = require('express');
 const PlayersService = require('../services/players.service');
 
-const router = express.Router({ mergeParams: true });
+const router = express.Router();
 const service = new PlayersService();
 
-// Players main route
+/**
+ * Players main route
+ * Shows all Players
+ */
 router.get('/', async (req, res, next) => {
 	try {
 		const players = await service.find();
@@ -15,7 +18,25 @@ router.get('/', async (req, res, next) => {
 	}
 });
 
-// Add player route
+/**
+ * Individual Player route
+ * Shows the Player with the provided id
+ */
+router.get('/:id', async (req, res, next) => {
+	try {
+		const { id } = req.params;
+		const player = await service.findOne(id);
+
+		res.status(200).json(player);
+	} catch (error) {
+		next(error);
+	}
+});
+
+/**
+ * Add Player route
+ * Creates a Player with the provided data in body
+ */
 router.post('/', async (req, res) => {
 	const body = req.body;
 	const newPlayer = await service.create(body);
@@ -26,23 +47,10 @@ router.post('/', async (req, res) => {
 	});
 });
 
-// Individual player route
-router.get('/:id', async (req, res, next) => {
-	try {
-		const { id, ligaId, equipoId } = req.params;
-		const player = await service.findOne(id);
-
-		res.status(200).json({
-			ligaId,
-			equipoId,
-			player,
-		});
-	} catch (error) {
-		next(error);
-	}
-});
-
-// Edit player route
+/**
+ * Edit Player route
+ * Updates partial or entire data of the Player with the provided id
+ */
 router.patch('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
@@ -58,7 +66,10 @@ router.patch('/:id', async (req, res, next) => {
 	}
 });
 
-// Delete player route
+/**
+ * Delete Player route
+ * Deletes the Player with the provided id
+ */
 router.delete('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;

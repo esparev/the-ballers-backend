@@ -18,9 +18,10 @@ class TeamsService {
 
 		for (let i = 0; i < limit; i++) {
 			this.teams.push({
-				id: faker.datatype.uuid(),
+				id: `${i}`,
 				name: faker.name.firstName(),
 				manager: `${faker.name.firstName()} ${faker.name.lastName()}`,
+				logo: faker.image.imageUrl(),
 			});
 		}
 	}
@@ -61,7 +62,7 @@ class TeamsService {
 	 */
 	async create(data) {
 		const newTeam = {
-			id: faker.datatype.uuid(),
+			id: `${this.teams.length}`,
 			...data,
 		};
 		this.teams.push(newTeam);

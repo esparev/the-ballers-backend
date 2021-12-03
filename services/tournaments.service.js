@@ -18,9 +18,10 @@ class TournamentsService {
 
 		for (let i = 0; i < limit; i++) {
 			this.tournaments.push({
-				id: faker.datatype.uuid(),
+				id: `${i}`,
 				title: faker.name.title(),
-				url: faker.internet.url(),
+				link: faker.internet.url(),
+				cover: faker.image.imageUrl(),
 			});
 		}
 	}
@@ -61,7 +62,7 @@ class TournamentsService {
 	 */
 	async create(data) {
 		const newTournament = {
-			id: faker.datatype.uuid(),
+			id: `${this.tournaments.length}`,
 			...data,
 		};
 		this.tournaments.push(newTournament);

@@ -4,7 +4,10 @@ const NewsService = require('../services/news.service');
 const router = express.Router();
 const service = new NewsService();
 
-// News main route
+/**
+ * News main route
+ * Shows all News
+ */
 router.get('/', async (req, res, next) => {
 	try {
 		const news = await service.find();
@@ -15,18 +18,10 @@ router.get('/', async (req, res, next) => {
 	}
 });
 
-// Add news route
-router.post('/', async (req, res) => {
-	const body = req.body;
-	const newNews = await service.create(body);
-
-	res.status(201).json({
-		newNews,
-		message: 'noticia creada',
-	});
-});
-
-// Individual news route
+/**
+ * Individual News route
+ * Shows the News with the provided id
+ */
 router.get('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
@@ -38,7 +33,24 @@ router.get('/:id', async (req, res, next) => {
 	}
 });
 
-// Edit news route
+/**
+ * Add News route
+ * Creates a News with the provided data in body
+ */
+router.post('/', async (req, res) => {
+	const body = req.body;
+	const newNews = await service.create(body);
+
+	res.status(201).json({
+		newNews,
+		message: 'noticia creada',
+	});
+});
+
+/**
+ * Edit News route
+ * Updates partial or entire data of the News with the provided id
+ */
 router.patch('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
@@ -54,7 +66,10 @@ router.patch('/:id', async (req, res, next) => {
 	}
 });
 
-// Delete news route
+/**
+ * Delete News route
+ * Deletes the News with the provided id
+ */
 router.delete('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;

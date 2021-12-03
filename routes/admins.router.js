@@ -1,10 +1,13 @@
 const express = require('express');
 const AdminsService = require('../services/admins.service');
 
-const router = express.Router({ mergeParams: true });
+const router = express.Router();
 const service = new AdminsService();
 
-// Admins main route
+/**
+ * Admins main route
+ * Shows all Admins
+ */
 router.get('/', async (req, res, next) => {
 	try {
 		const admins = await service.find();
@@ -15,18 +18,10 @@ router.get('/', async (req, res, next) => {
 	}
 });
 
-// Add admin route
-router.post('/', async (req, res) => {
-	const body = req.body;
-	const newAdmin = await service.create(body);
-
-	res.status(201).json({
-		newAdmin,
-		message: 'admin creado',
-	});
-});
-
-// Individual admin route
+/**
+ * Individual Admin route
+ * Shows the Admin with the provided id
+ */
 router.get('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
@@ -38,7 +33,24 @@ router.get('/:id', async (req, res, next) => {
 	}
 });
 
-// Edit admin route
+/**
+ * Add Admin route
+ * Creates an Admin with the provided data in body
+ */
+router.post('/', async (req, res) => {
+	const body = req.body;
+	const newAdmin = await service.create(body);
+
+	res.status(201).json({
+		newAdmin,
+		message: 'admin creado',
+	});
+});
+
+/**
+ * Edit Admin route
+ * Updates partial or entire data of the Admin with the provided id
+ */
 router.patch('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
@@ -54,7 +66,10 @@ router.patch('/:id', async (req, res, next) => {
 	}
 });
 
-// Delete admin route
+/**
+ * Delete Admin route
+ * Deletes the Admin with the provided id
+ */
 router.delete('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;

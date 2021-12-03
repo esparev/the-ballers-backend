@@ -4,7 +4,10 @@ const LeaguesService = require('../services/leagues.service');
 const router = express.Router();
 const service = new LeaguesService();
 
-// Leagues main route
+/**
+ * Leagues main route
+ * Shows all Leagues
+ */
 router.get('/', async (req, res, next) => {
 	try {
 		const leagues = await service.find();
@@ -15,7 +18,25 @@ router.get('/', async (req, res, next) => {
 	}
 });
 
-// Add league route
+/**
+ * Individual League route
+ * Shows the League with the provided id
+ */
+router.get('/:id', async (req, res, next) => {
+	try {
+		const { id } = req.params;
+		const league = await service.findOne(id);
+
+		res.status(200).json(league);
+	} catch (error) {
+		next(error);
+	}
+});
+
+/**
+ * Add League route
+ * Creates a League with the provided data in body
+ */
 router.post('/', async (req, res) => {
 	const body = req.body;
 	const newLeague = await service.create(body);
@@ -26,21 +47,10 @@ router.post('/', async (req, res) => {
 	});
 });
 
-// Individual league route
-router.get('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const league = await service.findOne(id);
-
-		res.status(200).json({
-			league,
-		});
-	} catch (error) {
-		next(error);
-	}
-});
-
-// Edit league route
+/**
+ * Edit League route
+ * Updates partial or entire data of the League with the provided id
+ */
 router.patch('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;
@@ -56,7 +66,10 @@ router.patch('/:id', async (req, res, next) => {
 	}
 });
 
-// Delete league route
+/**
+ * Delete League route
+ * Deletes the League with the provided id
+ */
 router.delete('/:id', async (req, res, next) => {
 	try {
 		const { id } = req.params;

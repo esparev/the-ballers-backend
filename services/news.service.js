@@ -18,9 +18,10 @@ class NewsService {
 
 		for (let i = 0; i < limit; i++) {
 			this.news.push({
-				id: faker.datatype.uuid(),
+				id: `${i}`,
 				title: faker.name.title(),
 				description: faker.lorem.paragraph(),
+				cover: faker.image.imageUrl(),
 			});
 		}
 	}
@@ -57,7 +58,7 @@ class NewsService {
 	 */
 	async create(data) {
 		const newNews = {
-			id: faker.datatype.uuid(),
+			id: `${this.news.length}`,
 			...data,
 		};
 		this.news.push(newNews);

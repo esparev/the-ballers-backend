@@ -18,9 +18,10 @@ class CoachesService {
 
 		for (let i = 0; i < limit; i++) {
 			this.coaches.push({
-				id: faker.datatype.uuid(),
+				id: `${i}`,
 				name: `${faker.name.firstName()} ${faker.name.lastName()}`,
 				birthday: faker.time.recent(),
+				image: faker.image.imageUrl(),
 			});
 		}
 	}
@@ -61,7 +62,7 @@ class CoachesService {
 	 */
 	async create(data) {
 		const newCoach = {
-			id: faker.datatype.uuid(),
+			id: `${this.coaches.length}`,
 			...data,
 		};
 		this.coaches.push(newCoach);
