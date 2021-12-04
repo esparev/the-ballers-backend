@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     # port config
     ports:
-     - 5432:5432
+     - ${DB_PORT}:${DB_PORT}
     # add persistency to the container
     volumes:
       - /postgres_data:/var/lib/postgresql/data
