@@ -5,6 +5,7 @@ const id = Joi.number().integer();
 const name = Joi.string().max(100);
 const manager = Joi.string().max(100);
 const logo = Joi.string().uri();
+const leagueId = Joi.number().integer();
 
 const getTeamSchema = Joi.object({
 	id: id.required(),
@@ -14,12 +15,14 @@ const createTeamSchema = Joi.object({
 	name: name.required(),
 	manager: manager.required(),
 	logo: logo,
+	leagueId: leagueId.required(),
 });
 
 const updateTeamSchema = Joi.object({
 	name: name,
 	manager: manager,
 	logo: logo,
+	leagueId: leagueId,
 });
 
 module.exports = { getTeamSchema, createTeamSchema, updateTeamSchema };
