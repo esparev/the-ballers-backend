@@ -2,9 +2,9 @@ const Joi = require('joi');
 
 // Data rules
 const id = Joi.number().integer();
-const street = Joi.string().max(100);
-const number = Joi.number().integer();
-const zipCode = Joi.number().integer();
+const streetName = Joi.string().max(100);
+const streetNumber = Joi.string().max(10);
+const zipCode = Joi.string().max(10);
 const suburb = Joi.string().max(100);
 const location = Joi.string().max(100);
 const leagueId = Joi.number().integer();
@@ -14,8 +14,8 @@ const getAddressSchema = Joi.object({
 });
 
 const createAddressSchema = Joi.object({
-	street: street.required(),
-	number: number.required(),
+	streetName: streetName.required(),
+	streetNumber: streetNumber.required(),
 	zipCode: zipCode.required(),
 	suburb: suburb.required(),
 	location: location.required(),
@@ -23,8 +23,8 @@ const createAddressSchema = Joi.object({
 });
 
 const updateAddressSchema = Joi.object({
-	street: street,
-	number: number,
+	streetName: streetName,
+	streetNumber: streetNumber,
 	zipCode: zipCode,
 	suburb: suburb,
 	location: location,
