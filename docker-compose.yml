@@ -15,3 +15,11 @@ services:
     # add persistency to the container
     volumes:
       - /postgres_data:/var/lib/postgresql/data
+  # pgadmin service
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
+    ports:
+      - 5050:80
