@@ -1,53 +1,21 @@
-const faker = require('faker/locale/es_MX');
 const boom = require('@hapi/boom');
+
+const getConnection = require('../libs/postgres');
 
 /**
  * Service layer with CRUD methods
  */
 class AdminsService {
-	constructor() {
-		this.admins = [
-			{
-				id: '0',
-				name: 'Esparev',
-				email: 'esparev@hotmail.com',
-				password: 'invisible',
-				isHero: true,
-			},
-		];
-		this.generate();
-	}
-
-	/**
-	 * Generates random admins
-	 */
-	generate() {
-		const limit = 5;
-
-		for (let i = 1; i < limit; i++) {
-			this.admins.push({
-				id: `${i}`,
-				isHero: false,
-				name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-				email: faker.internet.email(),
-				password: faker.internet.password(),
-				image: faker.image.imageUrl(),
-			});
-		}
-	}
+	constructor() {}
 
 	/**
 	 * Finds all admins in the object array
 	 * @returns all the admins in the array
 	 */
 	async find() {
-		const admins = this.admins;
-
-		if (!admins) {
-			throw boom.notFound('no hay admins');
-		}
-
-		return admins;
+		const client = await getConnection();
+		const response = await client.query('SELECT * FROM admin');
+		return response.rows;
 	}
 
 	/**
@@ -56,16 +24,7 @@ class AdminsService {
 	 * @returns admin that matches the id
 	 */
 	async findOne(id) {
-		const admin = this.admins.find((item) => item.id === id);
-
-		if (!admin) {
-			throw boom.notFound('admin no encontrado');
-		}
-		if (admin.isHero) {
-			throw boom.forbidden('no puedes ver a este admin');
-		}
-
-		return admin;
+		return { id };
 	}
 
 	/**
@@ -74,13 +33,7 @@ class AdminsService {
 	 * @returns admin created
 	 */
 	async create(data) {
-		const newAdmin = {
-			id: `${this.admins.length}`,
-			isHero: false,
-			...data,
-		};
-		this.admins.push(newAdmin);
-		return newAdmin;
+		return data;
 	}
 
 	/**
@@ -90,21 +43,7 @@ class AdminsService {
 	 * @returns admin updated
 	 */
 	async update(id, changes) {
-		const index = this.admins.findIndex((item) => item.id === id);
-		const admin = this.admins[index];
-
-		if (index === -1) {
-			throw boom.notFound('admin no encontrado');
-		}
-		if (admin.isHero) {
-			throw boom.forbidden('no puedes editar a este admin');
-		}
-
-		this.admins[index] = {
-			...admin,
-			...changes,
-		};
-		return this.admins[index];
+		return { id, changes };
 	}
 
 	/**
@@ -113,16 +52,6 @@ class AdminsService {
 	 * @returns admin deleted
 	 */
 	async delete(id) {
-		const index = this.admins.findIndex((item) => item.id === id);
-
-		if (index === -1) {
-			throw boom.notFound('admin no encontrado');
-		}
-		if (this.admins[index].isHero) {
-			throw boom.forbidden('no puedes eliminar a este admin');
-		}
-
-		this.admins.splice(index, 1);
 		return { id };
 	}
 }
