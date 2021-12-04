@@ -1,20 +1,24 @@
 const boom = require('@hapi/boom');
 
-const getConnection = require('../libs/postgres');
+const pool = require('../libs/postgres.pool');
 
 /**
  * Service layer with CRUD methods
  */
 class AdminsService {
-	constructor() {}
+	constructor() {
+		this.pool = pool;
+		// Listen pool connection in case of an error
+		this.pool.on('error', (err) => console.log(err));
+	}
 
 	/**
 	 * Finds all admins in the object array
 	 * @returns all the admins in the array
 	 */
 	async find() {
-		const client = await getConnection();
-		const response = await client.query('SELECT * FROM admin');
+		const query = 'SELECT * FROM admin';
+		const response = await this.pool.query(query);
 		return response.rows;
 	}
 
