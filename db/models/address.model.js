@@ -56,6 +56,7 @@ class Address extends Model {
 	 * @param {*} models
 	 */
 	static associate(models) {
+		// One to one (1-1) relation between Address and League
 		this.hasOne(models.League, {
 			as: 'league',
 			foreignKey: 'addressId',

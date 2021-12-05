@@ -1,4 +1,5 @@
 const boom = require('@hapi/boom');
+const { models } = require('../libs/sequelize');
 
 /**
  * Service layer with CRUD methods
@@ -11,7 +12,10 @@ class TeamsService {
 	 * @returns all the teams in the database
 	 */
 	async find() {
-		return [];
+		const response = await models.Team.findAll({
+			include: ['league'],
+		});
+		return response;
 	}
 
 	/**
@@ -20,7 +24,13 @@ class TeamsService {
 	 * @returns team that matches the id
 	 */
 	async findOne(id) {
-		return { id };
+		const team = await models.Team.findByPk(id, {
+			include: ['player', 'coach'],
+		});
+		if (!team) {
+			throw boom.notFound('Equipo no encontrado');
+		}
+		return team;
 	}
 
 	/**
@@ -29,7 +39,8 @@ class TeamsService {
 	 * @returns team created
 	 */
 	async create(data) {
-		return data;
+		const newTeam = await models.Team.create(data);
+		return newTeam;
 	}
 
 	/**
@@ -39,7 +50,9 @@ class TeamsService {
 	 * @returns team updated
 	 */
 	async update(id, changes) {
-		return { id, changes };
+		const team = await this.findOne(id);
+		const response = await team.update(changes);
+		return response;
 	}
 
 	/**
@@ -48,6 +61,8 @@ class TeamsService {
 	 * @returns team deleted
 	 */
 	async delete(id) {
+		const team = await this.findOne(id);
+		await team.destroy();
 		return { id };
 	}
 }

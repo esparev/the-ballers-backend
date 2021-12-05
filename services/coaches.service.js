@@ -1,4 +1,5 @@
 const boom = require('@hapi/boom');
+const { models } = require('../libs/sequelize');
 
 /**
  * Service layer with CRUD methods
@@ -11,7 +12,10 @@ class CoachesService {
 	 * @returns all the coaches in the database
 	 */
 	async find() {
-		return [];
+		const response = await models.Coach.findAll({
+			include: ['team'],
+		});
+		return response;
 	}
 
 	/**
@@ -20,7 +24,11 @@ class CoachesService {
 	 * @returns coach that matches the id
 	 */
 	async findOne(id) {
-		return { id };
+		const coach = await models.Coach.findByPk(id);
+		if (!coach) {
+			throw boom.notFound('Entrenador no encontrado');
+		}
+		return coach;
 	}
 
 	/**
@@ -29,7 +37,8 @@ class CoachesService {
 	 * @returns coach created
 	 */
 	async create(data) {
-		return data;
+		const newCoach = await models.Coach.create(data);
+		return newCoach;
 	}
 
 	/**
@@ -39,7 +48,9 @@ class CoachesService {
 	 * @returns coach updated
 	 */
 	async update(id, changes) {
-		return { id, changes };
+		const coach = await this.findOne(id);
+		const response = await coach.update(changes);
+		return response;
 	}
 
 	/**
@@ -48,6 +59,8 @@ class CoachesService {
 	 * @returns coach deleted
 	 */
 	async delete(id) {
+		const coach = await this.findOne(id);
+		await coach.destroy();
 		return { id };
 	}
 }

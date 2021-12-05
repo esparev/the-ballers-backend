@@ -1,8 +1,8 @@
 const { Model, DataTypes } = require('sequelize');
 
 // Database table name
-const LEAGUE_TABLE = 'league';
-const { ADDRESS_TABLE } = require('./address.model');
+const TEAM_TABLE = 'team';
+const { LEAGUE_TABLE } = require('./league.model');
 
 /**
  * Schema model to create in the database
@@ -15,7 +15,7 @@ const { ADDRESS_TABLE } = require('./address.model');
  * @property {boolean} type - expresion to match SQL type
  * @property {boolean} field - rename the field
  */
-const LeagueSchema = {
+const TeamSchema = {
 	id: {
 		allowNull: false,
 		autoIncrement: true,
@@ -26,36 +26,21 @@ const LeagueSchema = {
 		allowNull: false,
 		type: DataTypes.STRING(100),
 	},
-	responsable: {
+	manager: {
 		allowNull: false,
 		type: DataTypes.STRING(100),
-	},
-	phone: {
-		allowNull: true,
-		type: DataTypes.STRING(10),
-	},
-	ageStart: {
-		allowNull: true,
-		field: 'age_start',
-		type: DataTypes.INTEGER,
-	},
-	ageEnd: {
-		allowNull: true,
-		field: 'age_end',
-		type: DataTypes.INTEGER,
 	},
 	logo: {
 		allowNull: true,
 		defaultValue: 'https://image.com',
 		type: DataTypes.STRING,
 	},
-	addressId: {
-		field: 'address_id',
+	leagueId: {
 		allowNull: false,
+		field: 'league_id',
 		type: DataTypes.INTEGER,
-		unique: true,
 		references: {
-			model: ADDRESS_TABLE,
+			model: LEAGUE_TABLE,
 			key: 'id',
 		},
 		onUpdate: 'CASCADE',
@@ -66,18 +51,23 @@ const LeagueSchema = {
 /**
  * Model class
  */
-class League extends Model {
+class Team extends Model {
 	/**
 	 * Associates relations between models
 	 * @param {*} models
 	 */
 	static associate(models) {
-		// One to one (1-1) relation between League and Address
-		this.belongsTo(models.Address, { as: 'address' });
-		// One to many (1-N) relation between League and Teams
-		this.hasMany(models.Team, {
-			as: 'team',
-			foreignKey: 'leagueId',
+		// One to one (1-1) relation between Team and League
+		this.belongsTo(models.League, { as: 'league' });
+		// One to many (1-N) relation between Team and Players
+		this.hasMany(models.Player, {
+			as: 'player',
+			foreignKey: 'teamId',
+		});
+		// One to many (1-N) relation between Team and Coaches
+		this.hasMany(models.Coach, {
+			as: 'coach',
+			foreignKey: 'teamId',
 		});
 	}
 
@@ -91,11 +81,11 @@ class League extends Model {
 	static config(sequelize) {
 		return {
 			sequelize,
-			tableName: LEAGUE_TABLE,
-			modelName: 'League',
+			tableName: TEAM_TABLE,
+			modelName: 'Team',
 			timestamps: false,
 		};
 	}
 }
 
-module.exports = { LEAGUE_TABLE, LeagueSchema, League };
+module.exports = { TEAM_TABLE, TeamSchema, Team };

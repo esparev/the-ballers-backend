@@ -24,9 +24,11 @@ class LeaguesService {
 	 * @returns league that matches the id
 	 */
 	async findOne(id) {
-		const league = await models.League.findByPk(id);
+		const league = await models.League.findByPk(id, {
+			include: ['team'],
+		});
 		if (!league) {
-			throw boom.notFound('liga no encontrada');
+			throw boom.notFound('Liga no encontrada');
 		}
 		return league;
 	}
