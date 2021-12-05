@@ -22,7 +22,11 @@ class NewsService {
 	 * @returns news that matches the id
 	 */
 	async findOne(id) {
-		return { id };
+		const news = await models.News.findByPk(id);
+		if (!news) {
+			throw boom.notFound('noticia no encontrada');
+		}
+		return news;
 	}
 
 	/**
@@ -31,7 +35,8 @@ class NewsService {
 	 * @returns news created
 	 */
 	async create(data) {
-		return data;
+		const newNews = await models.News.create(data);
+		return newNews;
 	}
 
 	/**
@@ -41,7 +46,9 @@ class NewsService {
 	 * @returns news updated
 	 */
 	async update(id, changes) {
-		return { id, changes };
+		const news = await this.findOne(id);
+		const response = await news.update(changes);
+		return response;
 	}
 
 	/**
@@ -50,6 +57,8 @@ class NewsService {
 	 * @returns news deleted
 	 */
 	async delete(id) {
+		const news = await this.findOne(id);
+		await news.destroy();
 		return { id };
 	}
 }

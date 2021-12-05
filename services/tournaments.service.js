@@ -22,7 +22,11 @@ class TournamentsService {
 	 * @returns tournament that matches the id
 	 */
 	async findOne(id) {
-		return { id };
+		const tournament = await models.Tournament.findByPk(id);
+		if (!tournament) {
+			throw boom.notFound('torneo no encontrado');
+		}
+		return tournament;
 	}
 
 	/**
@@ -31,7 +35,8 @@ class TournamentsService {
 	 * @returns tournament created
 	 */
 	async create(data) {
-		return data;
+		const newTournament = await models.Tournament.create(data);
+		return newTournament;
 	}
 
 	/**
@@ -41,7 +46,9 @@ class TournamentsService {
 	 * @returns tournament updated
 	 */
 	async update(id, changes) {
-		return { id, changes };
+		const tournament = await this.findOne(id);
+		const response = await tournament.update(changes);
+		return response;
 	}
 
 	/**
@@ -50,6 +57,8 @@ class TournamentsService {
 	 * @returns tournament deleted
 	 */
 	async delete(id) {
+		const tournament = await this.findOne(id);
+		await tournament.destroy();
 		return { id };
 	}
 }

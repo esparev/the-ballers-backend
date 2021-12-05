@@ -22,7 +22,11 @@ class LeaguesService {
 	 * @returns league that matches the id
 	 */
 	async findOne(id) {
-		return { id };
+		const league = await models.League.findByPk(id);
+		if (!league) {
+			throw boom.notFound('liga no encontrada');
+		}
+		return league;
 	}
 
 	/**
@@ -31,7 +35,8 @@ class LeaguesService {
 	 * @returns league created
 	 */
 	async create(data) {
-		return data;
+		const newLeague = await models.League.create(data);
+		return newLeague;
 	}
 
 	/**
@@ -41,7 +46,9 @@ class LeaguesService {
 	 * @returns league updated
 	 */
 	async update(id, changes) {
-		return { id, changes };
+		const league = await this.findOne(id);
+		const response = await league.update(changes);
+		return response;
 	}
 
 	/**
@@ -50,6 +57,8 @@ class LeaguesService {
 	 * @returns league deleted
 	 */
 	async delete(id) {
+		const league = await this.findOne(id);
+		await league.destroy();
 		return { id };
 	}
 }

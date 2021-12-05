@@ -22,7 +22,11 @@ class AdminsService {
 	 * @returns admin that matches the id
 	 */
 	async findOne(id) {
-		return { id };
+		const admin = await models.Admin.findByPk(id);
+		if (!admin) {
+			throw boom.notFound('admin no encontrado');
+		}
+		return admin;
 	}
 
 	/**
@@ -31,7 +35,8 @@ class AdminsService {
 	 * @returns admin created
 	 */
 	async create(data) {
-		return data;
+		const newAdmin = await models.Admin.create(data);
+		return newAdmin;
 	}
 
 	/**
@@ -41,7 +46,9 @@ class AdminsService {
 	 * @returns admin updated
 	 */
 	async update(id, changes) {
-		return { id, changes };
+		const admin = await this.findOne(id);
+		const response = await admin.update(changes);
+		return response;
 	}
 
 	/**
@@ -50,6 +57,8 @@ class AdminsService {
 	 * @returns admin deleted
 	 */
 	async delete(id) {
+		const admin = await this.findOne(id);
+		await admin.destroy();
 		return { id };
 	}
 }

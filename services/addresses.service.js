@@ -12,8 +12,7 @@ class AddressesService {
 	 * @returns all the addresses in the database
 	 */
 	async find() {
-		const response = await models.Address.findAll();
-		return response;
+		return [];
 	}
 
 	/**
