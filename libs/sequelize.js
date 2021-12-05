@@ -18,6 +18,6 @@ setupModels(sequelize);
  * create a structure to follow depending on the
  * schema's configuration
  */
-sequelize.sync()
+sequelize.sync();
 
 module.exports = sequelize;

@@ -1,8 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 
 // Database table name
-const LEAGUE_TABLE = 'league';
-const { ADDRESS_TABLE } = require('./address.model');
+const ADDRESS_TABLE = 'address';
 
 /**
  * Schema model to create in the database
@@ -13,66 +12,54 @@ const { ADDRESS_TABLE } = require('./address.model');
  * @property {boolean} primaryKey - define is primary key
  * @property {*} defaultValue - default value of the field
  * @property {boolean} type - expresion to match SQL type
+ * @property {boolean} unique - define as unique the field
  * @property {boolean} field - rename the field
  */
-const LeagueSchema = {
+const AddressSchema = {
 	id: {
 		allowNull: false,
 		autoIncrement: true,
 		primaryKey: true,
 		type: DataTypes.INTEGER,
 	},
-	name: {
+	streetName: {
 		allowNull: false,
+		field: 'street_name',
 		type: DataTypes.STRING(100),
 	},
-	responsable: {
+	streetNumber: {
 		allowNull: false,
-		type: DataTypes.STRING(100),
-	},
-	phone: {
-		allowNull: true,
+		field: 'street_number',
 		type: DataTypes.STRING(10),
 	},
-	ageStart: {
-		allowNull: true,
-		field: 'age_start',
-		type: DataTypes.INTEGER,
-	},
-	ageEnd: {
-		allowNull: true,
-		field: 'age_end',
-		type: DataTypes.INTEGER,
-	},
-	logo: {
-		allowNull: true,
-		defaultValue: 'https://image.com',
-		type: DataTypes.STRING,
-	},
-	addressId: {
-		field: 'address_id',
+	zipCode: {
 		allowNull: false,
-		type: DataTypes.INTEGER,
-		unique: true,
-		references: {
-			model: ADDRESS_TABLE,
-			key: 'id',
-		},
-		onUpdate: 'CASCADE',
-		onDelete: 'SET NULL',
+		field: 'zip_code',
+		type: DataTypes.STRING(10),
+	},
+	suburb: {
+		allowNull: false,
+		type: DataTypes.STRING(100),
+	},
+	location: {
+		allowNull: false,
+		type: DataTypes.STRING(100),
 	},
 };
 
 /**
  * Model class
  */
-class League extends Model {
+class Address extends Model {
 	/**
 	 * Associates relations between models
 	 * @param {*} models
 	 */
 	static associate(models) {
-		this.belongsTo(models.Address, { as: 'address' });
+		this.hasOne(models.League, {
+			as: 'league',
+			foreignKey: 'addressId',
+		});
 	}
 	/**
 	 * @param {*} sequelize - ORM connection type
@@ -84,11 +71,11 @@ class League extends Model {
 	static config(sequelize) {
 		return {
 			sequelize,
-			tableName: LEAGUE_TABLE,
-			modelName: 'League',
+			tableName: ADDRESS_TABLE,
+			modelName: 'Address',
 			timestamps: false,
 		};
 	}
 }
 
-module.exports = { LEAGUE_TABLE, LeagueSchema, League };
+module.exports = { ADDRESS_TABLE, AddressSchema, Address };

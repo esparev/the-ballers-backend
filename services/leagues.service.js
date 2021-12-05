@@ -12,7 +12,9 @@ class LeaguesService {
 	 * @returns all the leagues in the database
 	 */
 	async find() {
-		const response = await models.League.findAll();
+		const response = await models.League.findAll({
+			include: ['address'],
+		});
 		return response;
 	}
 
@@ -35,7 +37,9 @@ class LeaguesService {
 	 * @returns league created
 	 */
 	async create(data) {
-		const newLeague = await models.League.create(data);
+		const newLeague = await models.League.create(data, {
+			include: ['address'],
+		});
 		return newLeague;
 	}
 

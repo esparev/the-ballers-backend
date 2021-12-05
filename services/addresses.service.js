@@ -12,7 +12,8 @@ class AddressesService {
 	 * @returns all the addresses in the database
 	 */
 	async find() {
-		return [];
+		const response = await models.Address.findAll();
+		return response;
 	}
 
 	/**
@@ -21,16 +22,21 @@ class AddressesService {
 	 * @returns address that matches the id
 	 */
 	async findOne(id) {
-		return { id };
+		const address = await models.Address.findByPk(id);
+		if (!address) {
+			throw boom.notFound('direccion no encontrada');
+		}
+		return address;
 	}
 
 	/**
-	 * Creates a address with the provided data
+	 * Creates an address with the provided data
 	 * @param {*} data - address data
 	 * @returns address created
 	 */
 	async create(data) {
-		return data;
+		const newAddress = await models.Address.create(data);
+		return newAddress;
 	}
 
 	/**
@@ -40,7 +46,9 @@ class AddressesService {
 	 * @returns address updated
 	 */
 	async update(id, changes) {
-		return { id, changes };
+		const address = await this.findOne(id);
+		const response = await address.update(changes);
+		return response;
 	}
 
 	/**
@@ -49,6 +57,8 @@ class AddressesService {
 	 * @returns address deleted
 	 */
 	async delete(id) {
+		const address = await this.findOne(id);
+		await address.destroy();
 		return { id };
 	}
 }
