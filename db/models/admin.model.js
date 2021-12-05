@@ -1,4 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
+const boom = require('@hapi/boom');
 
 // Database table name
 const ADMIN_TABLE = 'admin';
@@ -27,6 +28,13 @@ const AdminSchema = {
 		field: 'is_hero',
 		defaultValue: false,
 		type: DataTypes.BOOLEAN,
+		validate: {
+			isHero(value) {
+				if (value) {
+					throw boom.forbidden('No esta permitido esta accion');
+				}
+			},
+		},
 	},
 	name: {
 		allowNull: false,
@@ -36,6 +44,9 @@ const AdminSchema = {
 		allowNull: false,
 		unique: true,
 		type: DataTypes.STRING(100),
+		validate: {
+			isEmail: true,
+		},
 	},
 	password: {
 		allowNull: false,
