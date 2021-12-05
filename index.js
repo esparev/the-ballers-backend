@@ -3,6 +3,7 @@ const routerApi = require('./routes');
 const cors = require('cors');
 
 const {
+	logErrors,
 	errorHandler,
 	boomErrorHandler,
 	ormErrorHandler,
@@ -12,18 +13,19 @@ const {
 const app = express();
 const port = 3000;
 
-// Middlewares
-app.use(cors());
-app.use(express.json());
-routerApi(app);
-// Error middlewares
-app.use(ormErrorHandler);
-app.use(boomErrorHandler);
-app.use(errorHandler);
-
 app.get('/', (req, res) => {
 	res.send('BEISMICH API');
 });
+
+// Middlewares
+app.use(express.json());
+app.use(cors());
+routerApi(app);
+// Error middlewares
+app.use(logErrors);
+app.use(ormErrorHandler);
+app.use(boomErrorHandler);
+app.use(errorHandler);
 
 // Listen express app in port
 app.listen(port, () => {

@@ -3,7 +3,7 @@ const AddressesService = require('../services/addresses.service');
 
 const router = express.Router();
 const service = new AddressesService();
-const validationHandler = require('../middlewares/validator.handler');
+const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getAddressSchema,
 	createAddressSchema,
@@ -30,7 +30,7 @@ router.get('/', async (req, res, next) => {
  */
 router.get(
 	'/:id',
-	validationHandler(getAddressSchema, 'params'),
+	validatorHandler(getAddressSchema, 'params'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;
@@ -49,15 +49,19 @@ router.get(
  */
 router.post(
 	'/',
-	validationHandler(createAddressSchema, 'body'),
-	async (req, res) => {
-		const body = req.body;
-		const newAddress = await service.create(body);
+	validatorHandler(createAddressSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const body = req.body;
+			const newAddress = await service.create(body);
 
-		res.status(201).json({
-			newAddress,
-			message: 'direccion creada',
-		});
+			res.status(201).json({
+				newAddress,
+				message: 'direccion creada',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
 );
 
@@ -67,8 +71,8 @@ router.post(
  */
 router.patch(
 	'/:id',
-	validationHandler(getAddressSchema, 'params'),
-	validationHandler(updateAddressSchema, 'body'),
+	validatorHandler(getAddressSchema, 'params'),
+	validatorHandler(updateAddressSchema, 'body'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;

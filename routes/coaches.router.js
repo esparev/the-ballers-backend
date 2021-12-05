@@ -3,7 +3,7 @@ const CoachesService = require('../services/coaches.service');
 
 const router = express.Router();
 const service = new CoachesService();
-const validationHandler = require('../middlewares/validator.handler');
+const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getCoachSchema,
 	createCoachSchema,
@@ -29,7 +29,7 @@ router.get('/', async (req, res, next) => {
  */
 router.get(
 	'/:id',
-	validationHandler(getCoachSchema, 'params'),
+	validatorHandler(getCoachSchema, 'params'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;
@@ -48,15 +48,19 @@ router.get(
  */
 router.post(
 	'/',
-	validationHandler(createCoachSchema, 'body'),
-	async (req, res) => {
-		const body = req.body;
-		const newCoach = await service.create(body);
+	validatorHandler(createCoachSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const body = req.body;
+			const newCoach = await service.create(body);
 
-		res.status(201).json({
-			newCoach,
-			message: 'entrenador creado',
-		});
+			res.status(201).json({
+				newCoach,
+				message: 'entrenador creado',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
 );
 
@@ -66,8 +70,8 @@ router.post(
  */
 router.patch(
 	'/:id',
-	validationHandler(getCoachSchema, 'params'),
-	validationHandler(updateCoachSchema, 'body'),
+	validatorHandler(getCoachSchema, 'params'),
+	validatorHandler(updateCoachSchema, 'body'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;

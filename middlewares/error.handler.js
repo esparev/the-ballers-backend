@@ -1,5 +1,10 @@
 const { ValidationError } = require('sequelize');
 
+function logErrors(err, req, res, next) {
+	console.error(err);
+	next(err);
+}
+
 /**
  * Handles general errors and shows it to the client
  * @param {*} err - error
@@ -44,7 +49,7 @@ function ormErrorHandler(err, req, res, next) {
 			errors: err.errors,
 		});
 	}
-	next();
+	next(err);
 }
 
-module.exports = { errorHandler, boomErrorHandler, ormErrorHandler };
+module.exports = { logErrors, errorHandler, boomErrorHandler, ormErrorHandler };

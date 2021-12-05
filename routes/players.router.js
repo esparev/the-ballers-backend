@@ -3,7 +3,7 @@ const PlayersService = require('../services/players.service');
 
 const router = express.Router();
 const service = new PlayersService();
-const validationHandler = require('../middlewares/validator.handler');
+const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getPlayerSchema,
 	createPlayerSchema,
@@ -30,7 +30,7 @@ router.get('/', async (req, res, next) => {
  */
 router.get(
 	'/:id',
-	validationHandler(getPlayerSchema, 'params'),
+	validatorHandler(getPlayerSchema, 'params'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;
@@ -49,15 +49,19 @@ router.get(
  */
 router.post(
 	'/',
-	validationHandler(createPlayerSchema, 'body'),
-	async (req, res) => {
-		const body = req.body;
-		const newPlayer = await service.create(body);
+	validatorHandler(createPlayerSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const body = req.body;
+			const newPlayer = await service.create(body);
 
-		res.status(201).json({
-			newPlayer,
-			message: 'player created',
-		});
+			res.status(201).json({
+				newPlayer,
+				message: 'player created',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
 );
 
@@ -67,8 +71,8 @@ router.post(
  */
 router.patch(
 	'/:id',
-	validationHandler(getPlayerSchema, 'params'),
-	validationHandler(updatePlayerSchema, 'body'),
+	validatorHandler(getPlayerSchema, 'params'),
+	validatorHandler(updatePlayerSchema, 'body'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;

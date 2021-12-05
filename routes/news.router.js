@@ -3,7 +3,7 @@ const NewsService = require('../services/news.service');
 
 const router = express.Router();
 const service = new NewsService();
-const validationHandler = require('../middlewares/validator.handler');
+const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getNewsSchema,
 	createNewsSchema,
@@ -30,7 +30,7 @@ router.get('/', async (req, res, next) => {
  */
 router.get(
 	'/:id',
-	validationHandler(getNewsSchema, 'params'),
+	validatorHandler(getNewsSchema, 'params'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;
@@ -47,17 +47,23 @@ router.get(
  * Add News route
  * Creates a News with the provided data in body
  */
-router.post('/',
-	validationHandler(createNewsSchema, 'body'),
-	async (req, res) => {
-	const body = req.body;
-	const newNews = await service.create(body);
+router.post(
+	'/',
+	validatorHandler(createNewsSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const body = req.body;
+			const newNews = await service.create(body);
 
-	res.status(201).json({
-		newNews,
-		message: 'noticia creada',
-	});
-});
+			res.status(201).json({
+				newNews,
+				message: 'noticia creada',
+			});
+		} catch (error) {
+			next(error);
+		}
+	}
+);
 
 /**
  * Edit News route
@@ -65,8 +71,8 @@ router.post('/',
  */
 router.patch(
 	'/:id',
-	validationHandler(getNewsSchema, 'params'),
-	validationHandler(updateNewsSchema, 'body'),
+	validatorHandler(getNewsSchema, 'params'),
+	validatorHandler(updateNewsSchema, 'body'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;

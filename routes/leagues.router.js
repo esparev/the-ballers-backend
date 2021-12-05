@@ -3,7 +3,7 @@ const LeaguesService = require('../services/leagues.service');
 
 const router = express.Router();
 const service = new LeaguesService();
-const validationHandler = require('../middlewares/validator.handler');
+const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getLeagueSchema,
 	createLeagueSchema,
@@ -28,18 +28,20 @@ router.get('/', async (req, res, next) => {
  * Individual League route
  * Shows the League with the provided id
  */
-router.get('/:id',
-	validationHandler(getLeagueSchema, 'params'),
+router.get(
+	'/:id',
+	validatorHandler(getLeagueSchema, 'params'),
 	async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const league = await service.findOne(id);
+		try {
+			const { id } = req.params;
+			const league = await service.findOne(id);
 
-		res.status(200).json(league);
-	} catch (error) {
-		next(error);
+			res.status(200).json(league);
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Add League route
@@ -47,15 +49,19 @@ router.get('/:id',
  */
 router.post(
 	'/',
-	validationHandler(createLeagueSchema, 'body'),
-	async (req, res) => {
-		const body = req.body;
-		const newLeague = await service.create(body);
+	validatorHandler(createLeagueSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const body = req.body;
+			const newLeague = await service.create(body);
 
-		res.status(201).json({
-			newLeague,
-			message: 'liga creada',
-		});
+			res.status(201).json({
+				newLeague,
+				message: 'liga creada',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
 );
 
@@ -65,8 +71,8 @@ router.post(
  */
 router.patch(
 	'/:id',
-	validationHandler(getLeagueSchema, 'params'),
-	validationHandler(updateLeagueSchema, 'body'),
+	validatorHandler(getLeagueSchema, 'params'),
+	validatorHandler(updateLeagueSchema, 'body'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;

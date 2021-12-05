@@ -3,7 +3,7 @@ const TournamentsService = require('../services/tournaments.service');
 
 const router = express.Router();
 const service = new TournamentsService();
-const validationHandler = require('../middlewares/validator.handler');
+const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getTournamentSchema,
 	createTournamentSchema,
@@ -30,7 +30,7 @@ router.get('/', async (req, res, next) => {
  */
 router.get(
 	'/:id',
-	validationHandler(getTournamentSchema, 'params'),
+	validatorHandler(getTournamentSchema, 'params'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;
@@ -49,15 +49,19 @@ router.get(
  */
 router.post(
 	'/',
-	validationHandler(createTournamentSchema, 'body'),
-	async (req, res) => {
-		const body = req.body;
-		const newTournament = await service.create(body);
+	validatorHandler(createTournamentSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const body = req.body;
+			const newTournament = await service.create(body);
 
-		res.status(201).json({
-			newTournament,
-			message: 'torneo creado',
-		});
+			res.status(201).json({
+				newTournament,
+				message: 'torneo creado',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
 );
 
@@ -67,8 +71,8 @@ router.post(
  */
 router.patch(
 	'/:id',
-	validationHandler(getTournamentSchema, 'params'),
-	validationHandler(updateTournamentSchema, 'body'),
+	validatorHandler(getTournamentSchema, 'params'),
+	validatorHandler(updateTournamentSchema, 'body'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;

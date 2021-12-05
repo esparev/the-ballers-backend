@@ -3,7 +3,7 @@ const AdminsService = require('../services/admins.service');
 
 const router = express.Router();
 const service = new AdminsService();
-const validationHandler = require('../middlewares/validator.handler');
+const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getAdminSchema,
 	createAdminSchema,
@@ -30,7 +30,7 @@ router.get('/', async (req, res, next) => {
  */
 router.get(
 	'/:id',
-	validationHandler(getAdminSchema, 'params'),
+	validatorHandler(getAdminSchema, 'params'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;
@@ -49,15 +49,19 @@ router.get(
  */
 router.post(
 	'/',
-	validationHandler(createAdminSchema, 'body'),
-	async (req, res) => {
-		const body = req.body;
-		const newAdmin = await service.create(body);
+	validatorHandler(createAdminSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const body = req.body;
+			const newAdmin = await service.create(body);
 
-		res.status(201).json({
-			newAdmin,
-			message: 'admin creado',
-		});
+			res.status(201).json({
+				newAdmin,
+				message: 'admin creado',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
 );
 
@@ -67,8 +71,8 @@ router.post(
  */
 router.patch(
 	'/:id',
-	validationHandler(getAdminSchema, 'params'),
-	validationHandler(updateAdminSchema, 'body'),
+	validatorHandler(getAdminSchema, 'params'),
+	validatorHandler(updateAdminSchema, 'body'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;

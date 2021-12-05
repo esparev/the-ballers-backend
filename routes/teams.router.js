@@ -3,7 +3,7 @@ const TeamsService = require('../services/teams.service');
 
 const router = express.Router();
 const service = new TeamsService();
-const validationHandler = require('../middlewares/validator.handler');
+const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getTeamSchema,
 	createTeamSchema,
@@ -30,7 +30,7 @@ router.get('/', async (req, res, next) => {
  */
 router.get(
 	'/:id',
-	validationHandler(getTeamSchema, 'params'),
+	validatorHandler(getTeamSchema, 'params'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;
@@ -49,15 +49,19 @@ router.get(
  */
 router.post(
 	'/',
-	validationHandler(createTeamSchema, 'body'),
-	async (req, res) => {
-		const body = req.body;
-		const newTeam = await service.create(body);
+	validatorHandler(createTeamSchema, 'body'),
+	async (req, res, next) => {
+		try {
+			const body = req.body;
+			const newTeam = await service.create(body);
 
-		res.status(201).json({
-			newTeam,
-			message: 'equipo creado',
-		});
+			res.status(201).json({
+				newTeam,
+				message: 'equipo creado',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
 );
 
@@ -67,8 +71,8 @@ router.post(
  */
 router.patch(
 	'/:id',
-	validationHandler(getTeamSchema, 'params'),
-	validationHandler(updateTeamSchema, 'body'),
+	validatorHandler(getTeamSchema, 'params'),
+	validatorHandler(updateTeamSchema, 'body'),
 	async (req, res, next) => {
 		try {
 			const { id } = req.params;
