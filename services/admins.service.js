@@ -1,6 +1,5 @@
 const boom = require('@hapi/boom');
-
-const sequelize = require('../libs/sequelize');
+const { models } = require('../libs/sequelize');
 
 /**
  * Service layer with CRUD methods
@@ -13,14 +12,13 @@ class AdminsService {
 	 * @returns all the admins in the array
 	 */
 	async find() {
-		const query = 'SELECT * FROM admin';
-		const [data] = await sequelize.query(query);
-		return data;
+		const response = await models.Admin.findAll();
+		return response;
 	}
 
 	/**
 	 * Finds the admin with the provided id
-	 * @param {*} id admin id
+	 * @param {number} id - admin id
 	 * @returns admin that matches the id
 	 */
 	async findOne(id) {
@@ -29,7 +27,7 @@ class AdminsService {
 
 	/**
 	 * Creates an admin with the provided data
-	 * @param {*} data admin data
+	 * @param {*} data - admin data
 	 * @returns admin created
 	 */
 	async create(data) {
@@ -38,8 +36,8 @@ class AdminsService {
 
 	/**
 	 * Updates partially the admin with the provided id
-	 * @param {*} id admin id
-	 * @param {*} changes admin data to update
+	 * @param {number} id - admin id
+	 * @param {*} changes - admin data to update
 	 * @returns admin updated
 	 */
 	async update(id, changes) {
@@ -48,7 +46,7 @@ class AdminsService {
 
 	/**
 	 * Deletes the admin with the provided id
-	 * @param {*} id admin id
+	 * @param {number} id - admin id
 	 * @returns admin deleted
 	 */
 	async delete(id) {

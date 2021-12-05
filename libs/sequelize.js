@@ -1,5 +1,6 @@
-const { config } = require('../config/config');
 const { Sequelize } = require('sequelize');
+const { config } = require('../config/config');
+const setupModels = require('../db/models');
 
 // Encoding delicate data
 const USER = encodeURIComponent(config.dbUser);
@@ -9,7 +10,14 @@ const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${
 
 const sequelize = new Sequelize(URI, {
 	dialect: 'postgres',
-	logging: console.log,
 });
+
+setupModels(sequelize);
+/**
+ * With the models previously created sync will
+ * create a structure to follow depending on the
+ * schema's configuration
+ */
+sequelize.sync()
 
 module.exports = sequelize;
