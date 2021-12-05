@@ -1,108 +1,53 @@
-const faker = require('faker/locale/es_MX');
 const boom = require('@hapi/boom');
 
 /**
  * Service layer with CRUD methods
  */
 class CoachesService {
-	constructor() {
-		this.coaches = [];
-		this.generate();
-	}
+	constructor() {}
 
 	/**
-	 * Generates random coaches
-	 */
-	generate() {
-		const limit = 3;
-
-		for (let i = 0; i < limit; i++) {
-			this.coaches.push({
-				id: `${i}`,
-				name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-				birthday: faker.time.recent(),
-				image: faker.image.imageUrl(),
-			});
-		}
-	}
-
-	/**
-	 * Finds all coaches in the object array
-	 * @returns all the coaches in the array
+	 * Finds all coaches in the database
+	 * @returns all the coaches in the database
 	 */
 	async find() {
-		const coaches = this.coaches;
-
-		if (!coaches) {
-			throw boom.notFound('no hay entrenadores');
-		}
-
-		return coaches;
+		return [];
 	}
 
 	/**
 	 * Finds the coach with the provided id
-	 * @param {*} id coach id
+	 * @param {number} id - coach id
 	 * @returns coach that matches the id
 	 */
 	async findOne(id) {
-		const coach = this.coaches.find((item) => item.id === id);
-
-		if (!coach) {
-			throw boom.notFound('entrenador no encontrado');
-		}
-
-		return coach;
+		return { id };
 	}
 
 	/**
 	 * Creates a coach with the provided data
-	 * @param {*} data coach data
+	 * @param {*} data - coach data
 	 * @returns coach created
 	 */
 	async create(data) {
-		const newCoach = {
-			id: `${this.coaches.length}`,
-			...data,
-		};
-		this.coaches.push(newCoach);
-		return newCoach;
+		return data;
 	}
 
 	/**
 	 * Updates partially the coach with the provided id
-	 * @param {*} id coach id
-	 * @param {*} changes coach data to update
+	 * @param {number} id - coach id
+	 * @param {*} changes - coach data to update
 	 * @returns coach updated
 	 */
 	async update(id, changes) {
-		const index = this.coaches.findIndex((item) => item.id === id);
-		const coach = this.coaches[index];
-
-		if (index === -1) {
-			throw boom.notFound('entrenador no encontrado');
-		}
-
-		this.coaches[index] = {
-			...coach,
-			...changes,
-		};
-		return this.coaches[index];
+		return { id, changes };
 	}
 
 	/**
 	 * Deletes the coach with the provided id
-	 * @param {*} id coach id
+	 * @param {number} id - coach id
 	 * @returns coach deleted
 	 */
 	async delete(id) {
-		const index = this.coaches.findIndex((item) => item.id === id);
-
-		if (index === -1) {
-			throw boom.notFound('entrenador no encontrado');
-		}
-
-		this.coaches.splice(index, 1);
 		return { id };
 	}
 }

@@ -8,8 +8,8 @@ class AdminsService {
 	constructor() {}
 
 	/**
-	 * Finds all admins in the object array
-	 * @returns all the admins in the array
+	 * Finds all admins in the database
+	 * @returns all the admins in database
 	 */
 	async find() {
 		const response = await models.Admin.findAll();

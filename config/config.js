@@ -1,5 +1,16 @@
 require('dotenv').config();
 
+/**
+ * @description description of each environment variable
+ * @typedef {Object} field definition
+ * @property {*} env - define environment type production || dev
+ * @property {*} port - server port
+ * @property {*} dbPort - database port
+ * @property {*} dbHost - database host name
+ * @property {*} dbName - database name
+ * @property {*} dbUser - database user name
+ * @property {*} dbPassword - database user password
+ */
 const config = {
 	env: process.env.NODE_ENV || 'dev',
 	port: process.env.PORT || 3000,
