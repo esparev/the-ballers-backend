@@ -1,16 +1,12 @@
 const boom = require('@hapi/boom');
 
-const pool = require('../libs/postgres.pool');
+const sequelize = require('../libs/sequelize');
 
 /**
  * Service layer with CRUD methods
  */
 class AdminsService {
-	constructor() {
-		this.pool = pool;
-		// Listen pool connection in case of an error
-		this.pool.on('error', (err) => console.log(err));
-	}
+	constructor() {}
 
 	/**
 	 * Finds all admins in the object array
@@ -18,8 +14,8 @@ class AdminsService {
 	 */
 	async find() {
 		const query = 'SELECT * FROM admin';
-		const response = await this.pool.query(query);
-		return response.rows;
+		const [data] = await sequelize.query(query);
+		return data;
 	}
 
 	/**

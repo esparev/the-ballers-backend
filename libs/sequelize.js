@@ -1,5 +1,5 @@
 const { config } = require('../config/config');
-const { Pool } = require('pg');
+const { Sequelize } = require('sequelize');
 
 // Encoding delicate data
 const USER = encodeURIComponent(config.dbUser);
@@ -7,11 +7,9 @@ const PASSWORD = encodeURIComponent(config.dbPassword);
 // Unique URL connection to the postgres database
 const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
 
-/**
- * Connects to the database provided within the URL
- * only once to avoid unnecessary or excessive
- * request connection to the same database
- */
-const pool = new Pool({ connectionString: URI });
+const sequelize = new Sequelize(URI, {
+	dialect: 'postgres',
+	logging: console.log,
+});
 
-module.exports = pool;
+module.exports = sequelize;
