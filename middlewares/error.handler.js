@@ -1,9 +1,11 @@
+const { ValidationError } = require('sequelize');
+
 /**
- * Handles errors and shows it to the client
- * @param {*} err error
- * @param {*} req request object
- * @param {*} res response object
- * @param {*} next next middleware
+ * Handles general errors and shows it to the client
+ * @param {*} err - error
+ * @param {*} req - request object
+ * @param {*} res - response object
+ * @param {*} next - next middleware
  */
 function errorHandler(err, req, res, next) {
 	res.status(500).json({
@@ -14,10 +16,10 @@ function errorHandler(err, req, res, next) {
 
 /**
  * Handles errors of boom type and shows it to the client
- * @param {*} err error
- * @param {*} req request object
- * @param {*} res response object
- * @param {*} next next middleware
+ * @param {*} err - error
+ * @param {*} req - request object
+ * @param {*} res - response object
+ * @param {*} next - next middleware
  */
 function boomErrorHandler(err, req, res, next) {
 	if (err.isBoom) {
@@ -27,4 +29,22 @@ function boomErrorHandler(err, req, res, next) {
 	next(err);
 }
 
-module.exports = { errorHandler, boomErrorHandler };
+/**
+ * Handles sequelize orm errors and shows it to the client
+ * @param {*} err - error
+ * @param {*} req - request object
+ * @param {*} res - response object
+ * @param {*} next - next middleware
+ */
+function ormErrorHandler(err, req, res, next) {
+	if (err instanceof ValidationError) {
+		res.status(409).json({
+			statusCode: 409,
+			message: err.name,
+			errors: err.errors,
+		});
+	}
+	next();
+}
+
+module.exports = { errorHandler, boomErrorHandler, ormErrorHandler };
