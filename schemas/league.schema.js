@@ -1,4 +1,8 @@
 const Joi = require('joi');
+const {
+	createAddressSchema,
+	updateAddressSchema,
+} = require('./address.schema');
 
 // Data rules
 const id = Joi.number().integer();
@@ -15,20 +19,22 @@ const getLeagueSchema = Joi.object({
 
 const createLeagueSchema = Joi.object({
 	name: name.required(),
-	responsable: responsable,
-	phone: phone,
+	responsable,
+	phone,
 	ageStart: ageStart.required(),
 	ageEnd: ageEnd.required(),
-	logo: logo,
+	logo,
+	address: createAddressSchema,
 });
 
 const updateLeagueSchema = Joi.object({
-	name: name,
-	responsable: responsable,
-	phone: phone,
-	ageStart: ageStart,
-	ageEnd: ageEnd,
-	logo: logo,
+	name,
+	responsable,
+	phone,
+	ageStart,
+	ageEnd,
+	logo,
+	address: updateAddressSchema,
 });
 
 module.exports = { getLeagueSchema, createLeagueSchema, updateLeagueSchema };

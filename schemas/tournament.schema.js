@@ -4,6 +4,8 @@ const Joi = require('joi');
 const id = Joi.number().integer();
 const title = Joi.string().max(255);
 const link = Joi.string().uri();
+const createdAt = Joi.date();
+const author = Joi.string().max(100);
 const cover = Joi.string().uri();
 
 const getTournamentSchema = Joi.object({
@@ -13,13 +15,17 @@ const getTournamentSchema = Joi.object({
 const createTournamentSchema = Joi.object({
 	title: title.required(),
 	link: link.required(),
-	cover: cover,
+	createdAt,
+	author,
+	cover,
 });
 
 const updateTournamentSchema = Joi.object({
-	title: title,
-	link: link,
-	cover: cover,
+	title,
+	link,
+	createdAt,
+	author,
+	cover,
 });
 
 module.exports = {

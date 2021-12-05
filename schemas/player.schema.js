@@ -4,6 +4,7 @@ const Joi = require('joi');
 const id = Joi.number().integer();
 const name = Joi.string().max(100);
 const position = Joi.string().max(100);
+const birthday = Joi.string().isoDate();
 const image = Joi.string().uri();
 const teamId = Joi.number().integer();
 
@@ -13,16 +14,18 @@ const getPlayerSchema = Joi.object({
 
 const createPlayerSchema = Joi.object({
 	name: name.required(),
-	position: position,
-	image: image,
+	position,
+	birthday,
+	image,
 	teamId: teamId.required(),
 });
 
 const updatePlayerSchema = Joi.object({
-	name: name,
-	position: position,
-	image: image,
-	teamId: teamId,
+	name,
+	position,
+	birthday,
+	image,
+	teamId,
 });
 
 module.exports = { getPlayerSchema, createPlayerSchema, updatePlayerSchema };

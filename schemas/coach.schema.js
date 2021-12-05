@@ -14,15 +14,15 @@ const getCoachSchema = Joi.object({
 const createCoachSchema = Joi.object({
 	name: name.required(),
 	birthday: birthday,
-	image: image,
+	image,
 	teamId: teamId.required(),
 });
 
 const updateCoachSchema = Joi.object({
-	name: name,
-	birthday: birthday,
-	image: image,
-	teamId: teamId,
+	name,
+	birthday,
+	image,
+	teamId,
 });
 
 module.exports = { getCoachSchema, createCoachSchema, updateCoachSchema };

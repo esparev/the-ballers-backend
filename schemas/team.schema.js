@@ -14,15 +14,15 @@ const getTeamSchema = Joi.object({
 const createTeamSchema = Joi.object({
 	name: name.required(),
 	manager: manager.required(),
-	logo: logo,
+	logo,
 	leagueId: leagueId.required(),
 });
 
 const updateTeamSchema = Joi.object({
-	name: name,
-	manager: manager,
-	logo: logo,
-	leagueId: leagueId,
+	name,
+	manager,
+	logo,
+	leagueId,
 });
 
 module.exports = { getTeamSchema, createTeamSchema, updateTeamSchema };

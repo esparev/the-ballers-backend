@@ -13,18 +13,18 @@ const getAdminSchema = Joi.object({
 });
 
 const createAdminSchema = Joi.object({
-	isHero: isHero.required(),
+	isHero,
 	name: name.required(),
 	email: email.required(),
 	password: password.required(),
-	image: image,
+	image,
 });
 
 const updateAdminSchema = Joi.object({
-	name: name,
-	email: email,
-	password: password,
-	image: image,
+	name,
+	email,
+	password,
+	image,
 });
 
 module.exports = { getAdminSchema, createAdminSchema, updateAdminSchema };
