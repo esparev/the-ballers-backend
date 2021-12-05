@@ -1,4 +1,5 @@
 const boom = require('@hapi/boom');
+const { models } = require('../libs/sequelize');
 
 /**
  * Service layer with CRUD methods
@@ -11,7 +12,8 @@ class NewsService {
 	 * @returns all the news in the array
 	 */
 	async find() {
-		return [];
+		const response = await models.News.findAll();
+		return response;
 	}
 
 	/**

@@ -1,7 +1,7 @@
-const { Model, DataTypes } = require('sequelize');
+const { Model, DataTypes, Sequelize } = require('sequelize');
 
 // Database table name
-const ADMIN_TABLE = 'admin';
+const TOURNAMENT_TABLE = 'tournament';
 
 /**
  * Schema model to create in the database
@@ -12,36 +12,35 @@ const ADMIN_TABLE = 'admin';
  * @property {boolean} primaryKey - define is primary key
  * @property {*} defaultValue - default value of the field
  * @property {boolean} type - expresion to match SQL type
- * @property {boolean} unique - define as unique the field
  * @property {boolean} field - rename the field
  */
-const AdminSchema = {
+const TournamentSchema = {
 	id: {
 		allowNull: false,
 		autoIncrement: true,
 		primaryKey: true,
 		type: DataTypes.INTEGER,
 	},
-	isHero: {
-		allowNull: false,
-		field: 'is_hero',
-		defaultValue: false,
-		type: DataTypes.BOOLEAN,
-	},
-	name: {
-		allowNull: false,
-		type: DataTypes.STRING(100),
-	},
-	email: {
-		allowNull: false,
-		unique: true,
-		type: DataTypes.STRING(100),
-	},
-	password: {
+	title: {
 		allowNull: false,
 		type: DataTypes.STRING,
 	},
-	image: {
+	link: {
+		allowNull: false,
+		type: DataTypes.STRING,
+	},
+	createdAt: {
+		allowNull: false,
+		field: 'created_at',
+		defaultValue: Sequelize.NOW,
+		type: DataTypes.DATE,
+	},
+	author: {
+		allowNull: false,
+		defaultValue: 'Asociación de Beisbolistas Michoacanos',
+		type: DataTypes.STRING(100),
+	},
+	cover: {
 		allowNull: true,
 		defaultValue: 'https://image.com',
 		type: DataTypes.STRING,
@@ -51,7 +50,7 @@ const AdminSchema = {
 /**
  * Model class
  */
-class Admin extends Model {
+class Tournament extends Model {
 	/**
 	 * @param {*} sequelize - ORM connection type
 	 * @property {any} sequelize - ORM connection type
@@ -62,11 +61,11 @@ class Admin extends Model {
 	static config(sequelize) {
 		return {
 			sequelize,
-			tableName: ADMIN_TABLE,
-			modelName: 'Admin',
+			tableName: TOURNAMENT_TABLE,
+			modelName: 'Tournament',
 			timestamps: false,
 		};
 	}
 }
 
-module.exports = { ADMIN_TABLE, AdminSchema, Admin };
+module.exports = { TOURNAMENT_TABLE, TournamentSchema, Tournament };

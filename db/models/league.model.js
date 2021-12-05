@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 
 // Database table name
-const ADMIN_TABLE = 'admin';
+const LEAGUE_TABLE = 'league';
 
 /**
  * Schema model to create in the database
@@ -12,36 +12,38 @@ const ADMIN_TABLE = 'admin';
  * @property {boolean} primaryKey - define is primary key
  * @property {*} defaultValue - default value of the field
  * @property {boolean} type - expresion to match SQL type
- * @property {boolean} unique - define as unique the field
  * @property {boolean} field - rename the field
  */
-const AdminSchema = {
+const LeagueSchema = {
 	id: {
 		allowNull: false,
 		autoIncrement: true,
 		primaryKey: true,
 		type: DataTypes.INTEGER,
 	},
-	isHero: {
-		allowNull: false,
-		field: 'is_hero',
-		defaultValue: false,
-		type: DataTypes.BOOLEAN,
-	},
 	name: {
 		allowNull: false,
 		type: DataTypes.STRING(100),
 	},
-	email: {
+	responsable: {
 		allowNull: false,
-		unique: true,
 		type: DataTypes.STRING(100),
 	},
-	password: {
-		allowNull: false,
-		type: DataTypes.STRING,
+	phone: {
+		allowNull: true,
+		type: DataTypes.STRING(10),
 	},
-	image: {
+	ageStart: {
+		allowNull: true,
+		field: 'age_start',
+		type: DataTypes.INTEGER,
+	},
+	ageEnd: {
+		allowNull: true,
+		field: 'age_end',
+		type: DataTypes.INTEGER,
+	},
+	logo: {
 		allowNull: true,
 		defaultValue: 'https://image.com',
 		type: DataTypes.STRING,
@@ -51,7 +53,7 @@ const AdminSchema = {
 /**
  * Model class
  */
-class Admin extends Model {
+class League extends Model {
 	/**
 	 * @param {*} sequelize - ORM connection type
 	 * @property {any} sequelize - ORM connection type
@@ -62,11 +64,11 @@ class Admin extends Model {
 	static config(sequelize) {
 		return {
 			sequelize,
-			tableName: ADMIN_TABLE,
-			modelName: 'Admin',
+			tableName: LEAGUE_TABLE,
+			modelName: 'League',
 			timestamps: false,
 		};
 	}
 }
 
-module.exports = { ADMIN_TABLE, AdminSchema, Admin };
+module.exports = { LEAGUE_TABLE, LeagueSchema, League };
