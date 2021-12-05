@@ -8,21 +8,26 @@ const {
 	getNewsSchema,
 	createNewsSchema,
 	updateNewsSchema,
+	queryNewsSchema,
 } = require('../schemas/news.schema');
 
 /**
  * News main route
  * Shows all News
  */
-router.get('/', async (req, res, next) => {
-	try {
-		const news = await service.find();
+router.get(
+	'/',
+	validatorHandler(queryNewsSchema, 'query'),
+	async (req, res, next) => {
+		try {
+			const news = await service.find(req.query);
 
-		res.status(200).json(news);
-	} catch (error) {
-		next(error);
+			res.status(200).json(news);
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Individual News route

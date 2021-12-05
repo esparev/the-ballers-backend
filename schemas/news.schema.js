@@ -8,6 +8,9 @@ const createdAt = Joi.date();
 const author = Joi.string().max(100);
 const cover = Joi.string().uri();
 
+const limit = Joi.number().integer();
+const offset = Joi.number().integer();
+
 const getNewsSchema = Joi.object({
 	id: id.required(),
 });
@@ -28,4 +31,14 @@ const updateNewsSchema = Joi.object({
 	cover,
 });
 
-module.exports = { getNewsSchema, createNewsSchema, updateNewsSchema };
+const queryNewsSchema = Joi.object({
+	limit,
+	offset,
+});
+
+module.exports = {
+	getNewsSchema,
+	createNewsSchema,
+	updateNewsSchema,
+	queryNewsSchema,
+};

@@ -11,8 +11,14 @@ class TournamentsService {
 	 * Finds all tournaments in the database
 	 * @returns all the tournaments in the database
 	 */
-	async find() {
-		const response = await models.Tournament.findAll();
+	async find(query) {
+		const options = {};
+		const { limit, offset } = query;
+		if (limit && offset) {
+			options.limit = limit;
+			options.offset = offset;
+		}
+		const response = await models.Tournament.findAll(options);
 		return response;
 	}
 
@@ -24,7 +30,7 @@ class TournamentsService {
 	async findOne(id) {
 		const tournament = await models.Tournament.findByPk(id);
 		if (!tournament) {
-			throw boom.notFound('torneo no encontrado');
+			throw boom.notFound('Torneo no encontrado');
 		}
 		return tournament;
 	}

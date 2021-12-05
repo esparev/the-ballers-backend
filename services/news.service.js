@@ -11,8 +11,14 @@ class NewsService {
 	 * Finds all news in the object array
 	 * @returns all the news in the array
 	 */
-	async find() {
-		const response = await models.News.findAll();
+	async find(query) {
+		const options = {};
+		const { limit, offset } = query;
+		if (limit && offset) {
+			options.limit = limit;
+			options.offset = offset;
+		}
+		const response = await models.News.findAll(options);
 		return response;
 	}
 
@@ -24,7 +30,7 @@ class NewsService {
 	async findOne(id) {
 		const news = await models.News.findByPk(id);
 		if (!news) {
-			throw boom.notFound('noticia no encontrada');
+			throw boom.notFound('Noticia no encontrada');
 		}
 		return news;
 	}

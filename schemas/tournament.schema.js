@@ -8,6 +8,9 @@ const createdAt = Joi.date();
 const author = Joi.string().max(100);
 const cover = Joi.string().uri();
 
+const limit = Joi.number().integer();
+const offset = Joi.number().integer();
+
 const getTournamentSchema = Joi.object({
 	id: id.required(),
 });
@@ -28,8 +31,14 @@ const updateTournamentSchema = Joi.object({
 	cover,
 });
 
+const queryTournamentSchema = Joi.object({
+	limit,
+	offset,
+});
+
 module.exports = {
 	getTournamentSchema,
 	createTournamentSchema,
 	updateTournamentSchema,
+	queryTournamentSchema,
 };

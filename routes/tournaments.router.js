@@ -8,21 +8,26 @@ const {
 	getTournamentSchema,
 	createTournamentSchema,
 	updateTournamentSchema,
+	queryTournamentSchema,
 } = require('../schemas/tournament.schema');
 
 /**
  * Tournaments main route
  * Shows all Tournaments
  */
-router.get('/', async (req, res, next) => {
-	try {
-		const tournaments = await service.find();
+router.get(
+	'/',
+	validatorHandler(queryTournamentSchema, 'query'),
+	async (req, res, next) => {
+		try {
+			const tournaments = await service.find(req.query);
 
-		res.status(200).json(tournaments);
-	} catch (error) {
-		next(error);
+			res.status(200).json(tournaments);
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Individual Tournament route
