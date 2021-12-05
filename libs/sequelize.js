@@ -13,11 +13,5 @@ const sequelize = new Sequelize(URI, {
 });
 
 setupModels(sequelize);
-/**
- * With the models previously created, sync will
- * create a structure to follow depending on the
- * schema's configuration
- */
-sequelize.sync();
 
 module.exports = sequelize;
