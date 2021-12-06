@@ -12,10 +12,10 @@ class LeaguesService {
 	 * @returns all the leagues in the database
 	 */
 	async find() {
-		const response = await models.League.findAll({
+		const leagues = await models.League.findAll({
 			include: ['address'],
 		});
-		return response;
+		return leagues;
 	}
 
 	/**

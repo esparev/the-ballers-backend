@@ -24,8 +24,8 @@ class NewsService {
 		if (sort) {
 			options.order = [['created_at', sort]];
 		}
-		const response = await models.News.findAll(options);
-		return response;
+		const news = await models.News.findAll(options);
+		return news;
 	}
 
 	/**

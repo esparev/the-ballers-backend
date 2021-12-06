@@ -24,8 +24,8 @@ class TournamentsService {
 		if (sort) {
 			options.order = [['created_at', sort]];
 		}
-		const response = await models.Tournament.findAll(options);
-		return response;
+		const tournaments = await models.Tournament.findAll(options);
+		return tournaments;
 	}
 
 	/**

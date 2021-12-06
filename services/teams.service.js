@@ -12,10 +12,10 @@ class TeamsService {
 	 * @returns all the teams in the database
 	 */
 	async find() {
-		const response = await models.Team.findAll({
+		const teams = await models.Team.findAll({
 			include: ['league'],
 		});
-		return response;
+		return teams;
 	}
 
 	/**

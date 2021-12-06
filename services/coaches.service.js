@@ -12,10 +12,10 @@ class CoachesService {
 	 * @returns all the coaches in the database
 	 */
 	async find() {
-		const response = await models.Coach.findAll({
+		const coaches = await models.Coach.findAll({
 			include: ['team'],
 		});
-		return response;
+		return coaches;
 	}
 
 	/**

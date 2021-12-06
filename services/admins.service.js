@@ -12,8 +12,8 @@ class AdminsService {
 	 * @returns all the admins in database
 	 */
 	async find() {
-		const response = await models.Admin.findAll();
-		return response;
+		const admins = await models.Admin.findAll();
+		return admins;
 	}
 
 	/**

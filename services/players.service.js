@@ -12,10 +12,10 @@ class PlayersService {
 	 * @returns all the players in the database
 	 */
 	async find() {
-		const response = await models.Player.findAll({
+		const players = await models.Player.findAll({
 			include: ['team'],
 		});
-		return response;
+		return players;
 	}
 
 	/**
