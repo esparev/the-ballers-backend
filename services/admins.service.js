@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const boom = require('@hapi/boom');
 const { models } = require('../libs/sequelize');
 
@@ -33,12 +34,18 @@ class AdminsService {
 	}
 
 	/**
-	 * Creates an admin with the provided data
+	 * Creates an admin with the provided data and
+	 * encrypts the admin's password with a hash method
 	 * @param {*} data - admin data
 	 * @returns admin created
 	 */
 	async create(data) {
-		const newAdmin = await models.Admin.create(data);
+		const hash = await bcrypt.hash(data.password, 13);
+		const newAdmin = await models.Admin.create({
+			...data,
+			password: hash,
+		});
+		delete newAdmin.dataValues.password;
 		return newAdmin;
 	}
 

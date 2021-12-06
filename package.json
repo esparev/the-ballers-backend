@@ -6,12 +6,12 @@
     "dev": "nodemon -L index.js",
     "start": "node index.js",
     "lint": "eslint",
-		"migrations:generate": "sequelize-cli migration:generate --name",
-		"migrations:run": "sequelize-cli db:migrate",
-		"migrations:revert": "sequelize-cli db:migrate:undo",
-		"seed:generate": "sequelize-cli seed:generate --name",
-		"seed:all": "sequelize-cli db:seed:all",
-		"seed:undo": "sequelize-cli db:seed:undo"
+    "migrations:generate": "sequelize-cli migration:generate --name",
+    "migrations:run": "sequelize-cli db:migrate",
+    "migrations:revert": "sequelize-cli db:migrate:undo",
+    "seed:generate": "sequelize-cli seed:generate --name",
+    "seed:all": "sequelize-cli db:seed:all",
+    "seed:undo": "sequelize-cli db:seed:undo"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +24,8 @@
     "prettier": "^2.5.0"
   },
   "dependencies": {
-		"@hapi/boom": "^9.1.4",
+    "@hapi/boom": "^9.1.4",
+    "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
@@ -33,7 +34,7 @@
     "pg": "^8.7.1",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.12.0-alpha.1",
-		"sequelize-cli": "^6.3.0"
+    "sequelize-cli": "^6.3.0"
   },
   "description": ""
 }
