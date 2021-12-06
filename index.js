@@ -1,6 +1,7 @@
 const express = require('express');
 const routerApi = require('./routes');
 const cors = require('cors');
+require('./utils/auth');
 
 const { checkApiKey } = require('./middlewares/auth.handler');
 const {
@@ -14,6 +15,7 @@ const {
 const app = express();
 const port = 3000;
 
+// Home route
 app.get('/', checkApiKey, (req, res) => {
 	res.send('BEISMICH API');
 });

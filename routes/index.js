@@ -8,6 +8,7 @@ const playersRouter = require('./players.router');
 const coachesRouter = require('./coaches.router');
 const addressesRouter = require('./addresses.router');
 const adminsRouter = require('./admins.router');
+const authRouter = require('./auth.router');
 
 /**
  * Controls the routing system for modular and mountable routes
@@ -27,6 +28,7 @@ function routerApi(app) {
 	router.use('/entrenadores', coachesRouter);
 	router.use('/direcciones', addressesRouter);
 	router.use('/admins', adminsRouter);
+	router.use('/auth', authRouter);
 }
 
 module.exports = routerApi;
