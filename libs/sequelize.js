@@ -2,15 +2,23 @@ const { Sequelize } = require('sequelize');
 const { config } = require('../config/config');
 const setupModels = require('../db/models');
 
-// Encoding delicate data
-const USER = encodeURIComponent(config.dbUser);
-const PASSWORD = encodeURIComponent(config.dbPassword);
-// Unique URL connection to the postgres database
-const URI = `postgres://${USER}:${PASSWORD}@${config.dbHost}:${config.dbPort}/${config.dbName}`;
-
-const sequelize = new Sequelize(URI, {
+const options = {
 	dialect: 'postgres',
-});
+	logging: config.isProd ? false : console.log,
+};
+
+if (config.isProd) {
+	options.dialectOptions = {
+		ssl: {
+			rejectUnauthorized: false,
+		},
+	};
+}
+
+/**
+ * Creates ORM connection via sequelize
+ */
+const sequelize = new Sequelize(config.dbUrl, options);
 
 setupModels(sequelize);
 
