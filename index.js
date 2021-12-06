@@ -2,6 +2,7 @@ const express = require('express');
 const routerApi = require('./routes');
 const cors = require('cors');
 
+const { checkApiKey } = require('./middlewares/auth.handler');
 const {
 	logErrors,
 	errorHandler,
@@ -13,7 +14,7 @@ const {
 const app = express();
 const port = 3000;
 
-app.get('/', (req, res) => {
+app.get('/', checkApiKey, (req, res) => {
 	res.send('BEISMICH API');
 });
 
