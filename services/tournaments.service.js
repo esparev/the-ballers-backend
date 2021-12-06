@@ -12,11 +12,17 @@ class TournamentsService {
 	 * @returns all the tournaments in the database
 	 */
 	async find(query) {
-		const options = {};
+		const options = {
+			order: [],
+		};
 		const { limit, offset } = query;
 		if (limit && offset) {
 			options.limit = limit;
 			options.offset = offset;
+		}
+		const { sort } = query;
+		if (sort) {
+			options.order = [['created_at', sort]];
 		}
 		const response = await models.Tournament.findAll(options);
 		return response;

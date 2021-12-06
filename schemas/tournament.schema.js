@@ -7,9 +7,10 @@ const link = Joi.string().uri();
 const createdAt = Joi.date();
 const author = Joi.string().max(100);
 const cover = Joi.string().uri();
-
+// Query params
 const limit = Joi.number().integer();
 const offset = Joi.number().integer();
+const sort = Joi.string();
 
 const getTournamentSchema = Joi.object({
 	id: id.required(),
@@ -34,6 +35,7 @@ const updateTournamentSchema = Joi.object({
 const queryTournamentSchema = Joi.object({
 	limit,
 	offset,
+	sort,
 });
 
 module.exports = {
