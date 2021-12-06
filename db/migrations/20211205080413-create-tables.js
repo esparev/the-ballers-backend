@@ -15,22 +15,22 @@ const { TournamentSchema, TOURNAMENT_TABLE } = require('../models/tournament.mod
 module.exports = {
 	up: async (queryInterface) => {
 		await queryInterface.createTable(ADMIN_TABLE, AdminSchema);
-		await queryInterface.createTable(ADMIN_TABLE, AddressSchema);
-		await queryInterface.createTable(ADMIN_TABLE, LeagueSchema);
-		await queryInterface.createTable(ADMIN_TABLE, TeamSchema);
-		await queryInterface.createTable(ADMIN_TABLE, PlayerSchema);
-		await queryInterface.createTable(ADMIN_TABLE, CoachSchema);
-		await queryInterface.createTable(ADMIN_TABLE, NewsSchema);
-		await queryInterface.createTable(ADMIN_TABLE, TournamentSchema);
+		await queryInterface.createTable(ADDRESS_TABLE, AddressSchema);
+		await queryInterface.createTable(LEAGUE_TABLE, LeagueSchema);
+		await queryInterface.createTable(TEAM_TABLE, TeamSchema);
+		await queryInterface.createTable(PLAYER_TABLE, PlayerSchema);
+		await queryInterface.createTable(COACH_TABLE, CoachSchema);
+		await queryInterface.createTable(NEWS_TABLE, NewsSchema);
+		await queryInterface.createTable(TOURNAMENT_TABLE, TournamentSchema);
 	},
 
 	down: async (queryInterface) => {
 		await queryInterface.dropTable(ADMIN_TABLE);
-		await queryInterface.dropTable(ADDRESS_TABLE);
-		await queryInterface.dropTable(LEAGUE_TABLE);
-		await queryInterface.dropTable(TEAM_TABLE);
 		await queryInterface.dropTable(PLAYER_TABLE);
 		await queryInterface.dropTable(COACH_TABLE);
+		await queryInterface.dropTable(TEAM_TABLE);
+		await queryInterface.dropTable(LEAGUE_TABLE);
+		await queryInterface.dropTable(ADDRESS_TABLE);
 		await queryInterface.dropTable(NEWS_TABLE);
 		await queryInterface.dropTable(TOURNAMENT_TABLE);
 	},

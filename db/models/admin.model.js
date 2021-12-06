@@ -54,7 +54,7 @@ const AdminSchema = {
 	},
 	image: {
 		allowNull: true,
-		defaultValue: 'https://image.com',
+		defaultValue: 'https://user.com/admin',
 		type: DataTypes.STRING,
 	},
 };
