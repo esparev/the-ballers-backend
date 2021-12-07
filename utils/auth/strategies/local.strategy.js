@@ -1,8 +1,8 @@
 const { Strategy } = require('passport-local');
-const AdminsService = require('../../../services/admins.service');
-const service = new AdminsService();
 const boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
+const AdminsService = require('../../../services/admins.service');
+const service = new AdminsService();
 
 /**
  * Local strategy with various validations to protect

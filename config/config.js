@@ -8,6 +8,7 @@ require('dotenv').config();
  * @property {*} port - server port
  * @property {*} dbUrl - database url
  * @property {*} apiKey - api key token
+ * @property {*} jwtSecret - jsonwebtoken secret
  */
 const config = {
 	env: process.env.NODE_ENV || 'dev',
@@ -15,6 +16,7 @@ const config = {
 	port: process.env.PORT || 3000,
 	dbUrl: process.env.DATABASE_URL,
 	apiKey: process.env.API_KEY,
+	jwtSecret: process.env.JWT_SECRET,
 };
 
 module.exports = { config };

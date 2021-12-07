@@ -18,18 +18,6 @@ class AdminsService {
 	}
 
 	/**
-	 * Finds the admin with the provided email
-	 * @param {string} email - admin email
-	 * @returns admin that matches the email
-	 */
-	async findByEmail(email) {
-		const admin = await models.Admin.findOne({
-			where: { email },
-		});
-		return admin;
-	}
-
-	/**
 	 * Finds the admin with the provided id
 	 * @param {number} id - admin id
 	 * @returns admin that matches the id
@@ -42,6 +30,18 @@ class AdminsService {
 		if (admin.isHero) {
 			throw boom.unauthorized('No tienes permisos');
 		}
+		return admin;
+	}
+
+	/**
+	 * Finds the admin with the provided email
+	 * @param {string} email - admin email
+	 * @returns admin that matches the email
+	 */
+	async findByEmail(email) {
+		const admin = await models.Admin.findOne({
+			where: { email },
+		});
 		return admin;
 	}
 
