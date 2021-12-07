@@ -5,10 +5,12 @@ const AdminsService = require('../../../services/admins.service');
 const service = new AdminsService();
 
 /**
- * Local strategy with various validations to protect
- * the account of the admin, from validating the existence
- * of an email to the comparison of the provided password
- * with the stored password
+ * Passport strategy for authenticating with a username and
+ * password with various validations to protect the
+ * account of the admin.
+ * From validating the existence of a username to
+ * the comparison of the provided password with
+ * the stored password
  */
 const LocalStrategy = new Strategy(
 	{

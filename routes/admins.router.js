@@ -1,8 +1,10 @@
 const express = require('express');
-const AdminsService = require('../services/admins.service');
-
+const passport = require('passport');
 const router = express.Router();
+
+const AdminsService = require('../services/admins.service');
 const service = new AdminsService();
+
 const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getAdminSchema,
@@ -14,15 +16,19 @@ const {
  * Admins main route
  * Shows all Admins
  */
-router.get('/', async (req, res, next) => {
-	try {
-		const admins = await service.find();
+router.get(
+	'/',
+	passport.authenticate('jwt', { session: false }),
+	async (req, res, next) => {
+		try {
+			const admins = await service.find();
 
-		res.status(200).json(admins);
-	} catch (error) {
-		next(error);
+			res.status(200).json(admins);
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 /**
  * Individual Admin route
@@ -30,6 +36,7 @@ router.get('/', async (req, res, next) => {
  */
 router.get(
 	'/:id',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getAdminSchema, 'params'),
 	async (req, res, next) => {
 		try {
@@ -49,6 +56,7 @@ router.get(
  */
 router.post(
 	'/',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(createAdminSchema, 'body'),
 	async (req, res, next) => {
 		try {
@@ -71,6 +79,7 @@ router.post(
  */
 router.patch(
 	'/:id',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getAdminSchema, 'params'),
 	validatorHandler(updateAdminSchema, 'body'),
 	async (req, res, next) => {
@@ -93,18 +102,22 @@ router.patch(
  * Delete Admin route
  * Deletes the Admin with the provided id
  */
-router.delete('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const admin = await service.delete(id);
+router.delete(
+	'/:id',
+	passport.authenticate('jwt', { session: false }),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const admin = await service.delete(id);
 
-		res.status(200).json({
-			admin,
-			message: 'admin eliminado',
-		});
-	} catch (error) {
-		next(error);
+			res.status(200).json({
+				admin,
+				message: 'admin eliminado',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 module.exports = router;

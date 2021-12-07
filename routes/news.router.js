@@ -1,8 +1,10 @@
 const express = require('express');
-const NewsService = require('../services/news.service');
-
+const passport = require('passport');
 const router = express.Router();
+
+const NewsService = require('../services/news.service');
 const service = new NewsService();
+
 const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getNewsSchema,
@@ -54,6 +56,7 @@ router.get(
  */
 router.post(
 	'/',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(createNewsSchema, 'body'),
 	async (req, res, next) => {
 		try {
@@ -76,6 +79,7 @@ router.post(
  */
 router.patch(
 	'/:id',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getNewsSchema, 'params'),
 	validatorHandler(updateNewsSchema, 'body'),
 	async (req, res, next) => {
@@ -98,18 +102,22 @@ router.patch(
  * Delete News route
  * Deletes the News with the provided id
  */
-router.delete('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const oneNews = await service.delete(id);
+router.delete(
+	'/:id',
+	passport.authenticate('jwt', { session: false }),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const oneNews = await service.delete(id);
 
-		res.status(200).json({
-			oneNews,
-			message: 'noticia eliminada',
-		});
-	} catch (error) {
-		next(error);
+			res.status(200).json({
+				oneNews,
+				message: 'noticia eliminada',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 module.exports = router;

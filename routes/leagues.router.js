@@ -1,8 +1,10 @@
 const express = require('express');
-const LeaguesService = require('../services/leagues.service');
-
+const passport = require('passport');
 const router = express.Router();
+
+const LeaguesService = require('../services/leagues.service');
 const service = new LeaguesService();
+
 const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getLeagueSchema,
@@ -49,6 +51,7 @@ router.get(
  */
 router.post(
 	'/',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(createLeagueSchema, 'body'),
 	async (req, res, next) => {
 		try {
@@ -71,6 +74,7 @@ router.post(
  */
 router.patch(
 	'/:id',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getLeagueSchema, 'params'),
 	validatorHandler(updateLeagueSchema, 'body'),
 	async (req, res, next) => {
@@ -93,18 +97,22 @@ router.patch(
  * Delete League route
  * Deletes the League with the provided id
  */
-router.delete('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const league = await service.delete(id);
+router.delete(
+	'/:id',
+	passport.authenticate('jwt', { session: false }),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const league = await service.delete(id);
 
-		res.status(200).json({
-			league,
-			message: 'liga eliminada',
-		});
-	} catch (error) {
-		next(error);
+			res.status(200).json({
+				league,
+				message: 'liga eliminada',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 module.exports = router;

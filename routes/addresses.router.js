@@ -1,8 +1,10 @@
 const express = require('express');
-const AddressesService = require('../services/addresses.service');
-
 const router = express.Router();
+const passport = require('passport');
+
+const AddressesService = require('../services/addresses.service');
 const service = new AddressesService();
+
 const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getAddressSchema,
@@ -49,6 +51,7 @@ router.get(
  */
 router.post(
 	'/',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(createAddressSchema, 'body'),
 	async (req, res, next) => {
 		try {
@@ -71,6 +74,7 @@ router.post(
  */
 router.patch(
 	'/:id',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getAddressSchema, 'params'),
 	validatorHandler(updateAddressSchema, 'body'),
 	async (req, res, next) => {
@@ -93,18 +97,22 @@ router.patch(
  * Delete Address route
  * Deletes the Address with the provided id
  */
-router.delete('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const address = await service.delete(id);
+router.delete(
+	'/:id',
+	passport.authenticate('jwt', { session: false }),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const address = await service.delete(id);
 
-		res.status(200).json({
-			address,
-			message: 'direccion eliminada',
-		});
-	} catch (error) {
-		next(error);
+			res.status(200).json({
+				address,
+				message: 'direccion eliminada',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 module.exports = router;

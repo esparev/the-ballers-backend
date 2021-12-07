@@ -1,8 +1,10 @@
 const express = require('express');
-const PlayersService = require('../services/players.service');
-
+const passport = require('passport');
 const router = express.Router();
+
+const PlayersService = require('../services/players.service');
 const service = new PlayersService();
+
 const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getPlayerSchema,
@@ -49,6 +51,7 @@ router.get(
  */
 router.post(
 	'/',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(createPlayerSchema, 'body'),
 	async (req, res, next) => {
 		try {
@@ -71,6 +74,7 @@ router.post(
  */
 router.patch(
 	'/:id',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getPlayerSchema, 'params'),
 	validatorHandler(updatePlayerSchema, 'body'),
 	async (req, res, next) => {
@@ -93,18 +97,22 @@ router.patch(
  * Delete Player route
  * Deletes the Player with the provided id
  */
-router.delete('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const player = await service.delete(id);
+router.delete(
+	'/:id',
+	passport.authenticate('jwt', { session: false }),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const player = await service.delete(id);
 
-		res.status(200).json({
-			player,
-			message: 'jugador eliminado',
-		});
-	} catch (error) {
-		next(error);
+			res.status(200).json({
+				player,
+				message: 'jugador eliminado',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 module.exports = router;

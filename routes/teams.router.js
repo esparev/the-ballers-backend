@@ -1,8 +1,10 @@
 const express = require('express');
-const TeamsService = require('../services/teams.service');
-
+const passport = require('passport');
 const router = express.Router();
+
+const TeamsService = require('../services/teams.service');
 const service = new TeamsService();
+
 const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getTeamSchema,
@@ -49,6 +51,7 @@ router.get(
  */
 router.post(
 	'/',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(createTeamSchema, 'body'),
 	async (req, res, next) => {
 		try {
@@ -71,6 +74,7 @@ router.post(
  */
 router.patch(
 	'/:id',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getTeamSchema, 'params'),
 	validatorHandler(updateTeamSchema, 'body'),
 	async (req, res, next) => {
@@ -93,18 +97,22 @@ router.patch(
  * Delete Team route
  * Deletes the Team with the provided id
  */
-router.delete('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const team = await service.delete(id);
+router.delete(
+	'/:id',
+	passport.authenticate('jwt', { session: false }),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const team = await service.delete(id);
 
-		res.status(200).json({
-			team,
-			message: 'equipo eliminado',
-		});
-	} catch (error) {
-		next(error);
+			res.status(200).json({
+				team,
+				message: 'equipo eliminado',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 module.exports = router;

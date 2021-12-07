@@ -1,8 +1,10 @@
 const express = require('express');
-const TournamentsService = require('../services/tournaments.service');
-
+const passport = require('passport');
 const router = express.Router();
+
+const TournamentsService = require('../services/tournaments.service');
 const service = new TournamentsService();
+
 const validatorHandler = require('../middlewares/validator.handler');
 const {
 	getTournamentSchema,
@@ -54,6 +56,7 @@ router.get(
  */
 router.post(
 	'/',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(createTournamentSchema, 'body'),
 	async (req, res, next) => {
 		try {
@@ -76,6 +79,7 @@ router.post(
  */
 router.patch(
 	'/:id',
+	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getTournamentSchema, 'params'),
 	validatorHandler(updateTournamentSchema, 'body'),
 	async (req, res, next) => {
@@ -98,18 +102,22 @@ router.patch(
  * Delete Tournament route
  * Deletes the Tournament with the provided id
  */
-router.delete('/:id', async (req, res, next) => {
-	try {
-		const { id } = req.params;
-		const tournament = await service.delete(id);
+router.delete(
+	'/:id',
+	passport.authenticate('jwt', { session: false }),
+	async (req, res, next) => {
+		try {
+			const { id } = req.params;
+			const tournament = await service.delete(id);
 
-		res.status(200).json({
-			tournament,
-			message: 'torneo eliminado',
-		});
-	} catch (error) {
-		next(error);
+			res.status(200).json({
+				tournament,
+				message: 'torneo eliminado',
+			});
+		} catch (error) {
+			next(error);
+		}
 	}
-});
+);
 
 module.exports = router;
