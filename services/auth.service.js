@@ -51,6 +51,7 @@ class AuthService {
 			scope: admin.role,
 		};
 		const token = jwt.sign(payload, config.jwtSecret);
+		delete admin.dataValues.recoveryToken;
 		return {
 			admin,
 			token,

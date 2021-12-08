@@ -58,6 +58,7 @@ class AdminsService {
 			password: hash,
 		});
 		delete newAdmin.dataValues.password;
+		delete newAdmin.dataValues.recoveryToken;
 		return newAdmin;
 	}
 
