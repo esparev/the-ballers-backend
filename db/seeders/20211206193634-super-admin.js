@@ -6,7 +6,7 @@ module.exports = {
 	up: async (queryInterface) => {
 		await queryInterface.bulkInsert(ADMIN_TABLE, [
 			{
-				is_hero: true,
+				role: 'hero',
 				name: 'JoseMa Esparev',
 				email: 'esparev@hotmail.com',
 				password:

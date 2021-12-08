@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 // Data rules
 const id = Joi.number().integer();
-const isHero = Joi.boolean();
+const role = Joi.string();
 const name = Joi.string().max(100);
 const email = Joi.string().email();
 const password = Joi.string();
@@ -13,7 +13,7 @@ const getAdminSchema = Joi.object({
 });
 
 const createAdminSchema = Joi.object({
-	isHero,
+	role,
 	name: name.required(),
 	email: email.required(),
 	password: password.required(),

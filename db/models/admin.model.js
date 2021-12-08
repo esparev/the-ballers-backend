@@ -23,14 +23,13 @@ const AdminSchema = {
 		primaryKey: true,
 		type: DataTypes.INTEGER,
 	},
-	isHero: {
+	role: {
 		allowNull: false,
-		field: 'is_hero',
-		defaultValue: false,
-		type: DataTypes.BOOLEAN,
+		defaultValue: 'admin',
+		type: DataTypes.STRING,
 		validate: {
 			isHero(value) {
-				if (value) {
+				if (value === 'hero') {
 					throw boom.forbidden('No esta permitido esta accion');
 				}
 			},

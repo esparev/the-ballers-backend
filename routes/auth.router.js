@@ -20,7 +20,7 @@ router.post(
 				// Subject to identify the admin
 				sub: admin.id,
 				// Permissions of the admin
-				scope: admin.isHero,
+				scope: admin.role,
 			};
 			const token = jwt.sign(payload, config.jwtSecret);
 			res.status(201).json({
