@@ -28,7 +28,21 @@ router.post(
 router.post('/recuperar', async (req, res, next) => {
 	try {
 		const { email } = req.body;
-		const response = await service.sendMail(email);
+		const response = await service.sendRecovery(email);
+		res.json(response);
+	} catch (error) {
+		next(error);
+	}
+});
+
+/**
+ * Recovery route
+ * Recover password with email
+ */
+router.post('/cambiar-contra', async (req, res, next) => {
+	try {
+		const { token, newPassword } = req.body;
+		const response = await service.changePassword(token, newPassword);
 		res.json(response);
 	} catch (error) {
 		next(error);

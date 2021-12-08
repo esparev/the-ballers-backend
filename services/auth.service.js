@@ -58,34 +58,66 @@ class AuthService {
 	}
 
 	/**
-	 * Sends and email to the provided email
+	 * Provides information to the mail
 	 * @param {*} email - admin email
-	 * @returns message
+	 * @returns send mail
 	 */
-	async sendMail(email) {
+	async sendRecovery(email) {
 		// Validates if an admin with the provided email exists
 		const admin = await service.findByEmail(email);
 		if (!admin) {
 			throw boom.unauthorized();
 		}
+
+		const payload = { sub: admin.id };
+		const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '15m' });
+		const link = `https://beismich.netlify.app/recuperar?token=${token}`;
+		await service.update(admin.id, { recoveryToken: token });
+
+		const mail = {
+			from: config.smtpEmail, // sender address
+			to: `${admin.email}`, // list of receivers
+			subject: 'Recuperar contraseña', // Subject line
+			html: `<b>Ingresa a este link: ${link}</b>`, // html body
+		};
+		const response = await this.sendMail(mail);
+		return response;
+	}
+
+	async changePassword(token, newPassword) {
+		try {
+			const payload = jwt.verify(token, config.jwtSecret);
+			const admin = await service.findOne(payload.sub);
+			if (admin.recoveryToken !== token) {
+				throw boom.unauthorized();
+			}
+			const hash = await bcrypt.hash(newPassword, 13);
+			await service.update(admin.id, { recoveryToken: null, password: hash });
+			return { message: 'Contraseña modificada' };
+		} catch (error) {
+			throw boom.unauthorized();
+		}
+	}
+
+	/**
+	 * Sends a mail to the email info with the nodemailer
+	 * transporter
+	 * @param {*} infoMail - admin email
+	 * @returns message
+	 */
+	async sendMail(infoMail) {
 		// create reusable transporter object using the default SMTP transport
 		const transporter = nodemailer.createTransport({
 			host: 'smtp.gmail.com',
 			secure: true, // true for 465, false for other ports
 			port: 465,
 			auth: {
-				user: 'jm.esparev@gmail.com',
-				pass: config.emailPass,
+				user: config.smtpEmail,
+				pass: config.smtpPassword,
 			},
 		});
 		// send mail with defined transport object
-		await transporter.sendMail({
-			from: 'jm.esparev@gmail.com', // sender address
-			to: `${admin.email}`, // list of receivers
-			subject: 'Recuperar contraseña', // Subject line
-			text: 'Link para recuperar tu contraseña', // plain text body
-			html: '<b>Link para recuperar tu contraseña</b>', // html body
-		});
+		await transporter.sendMail(infoMail);
 		return { message: 'mail enviado' };
 	}
 }
