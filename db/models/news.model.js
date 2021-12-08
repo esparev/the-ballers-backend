@@ -42,7 +42,6 @@ const NewsSchema = {
 	},
 	cover: {
 		allowNull: true,
-		defaultValue: 'https://image.com',
 		type: DataTypes.STRING,
 	},
 };

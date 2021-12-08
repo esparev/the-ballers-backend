@@ -42,7 +42,6 @@ const TournamentSchema = {
 	},
 	cover: {
 		allowNull: true,
-		defaultValue: 'https://image.com',
 		type: DataTypes.STRING,
 	},
 };

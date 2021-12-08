@@ -32,7 +32,7 @@ const CoachSchema = {
 	},
 	image: {
 		allowNull: true,
-		defaultValue: 'https://image.com',
+		defaultValue: 'https://i.imgur.com/CFJ2k8J.png',
 		type: DataTypes.STRING,
 	},
 	teamId: {

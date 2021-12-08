@@ -51,9 +51,14 @@ const AdminSchema = {
 		allowNull: false,
 		type: DataTypes.STRING,
 	},
+	recoveryToken: {
+		allowNull: true,
+		field: 'recovery_token',
+		type: DataTypes.STRING,
+	},
 	image: {
 		allowNull: true,
-		defaultValue: 'https://user.com/admin',
+		defaultValue: 'https://i.imgur.com/CFJ2k8J.png',
 		type: DataTypes.STRING,
 	},
 };

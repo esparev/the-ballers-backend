@@ -46,7 +46,7 @@ const LeagueSchema = {
 	},
 	logo: {
 		allowNull: true,
-		defaultValue: 'https://image.com',
+		defaultValue: 'https://i.imgur.com/PEZQ6jS.png',
 		type: DataTypes.STRING,
 	},
 	addressId: {

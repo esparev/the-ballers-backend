@@ -11,7 +11,7 @@ module.exports = {
 				email: 'esparev@hotmail.com',
 				password:
 					'$2b$13$dljcz53YfZHHKJI6igQXIOxXo7r.p4aEf2sIWKd5P/6awtZVdctnW',
-				image: '',
+				image: 'https://i.imgur.com/CFJ2k8J.png',
 			},
 		]);
 	},

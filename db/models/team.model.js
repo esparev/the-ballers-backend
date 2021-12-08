@@ -32,7 +32,7 @@ const TeamSchema = {
 	},
 	logo: {
 		allowNull: true,
-		defaultValue: 'https://image.com',
+		defaultValue: 'https://i.imgur.com/chid3RN.png',
 		type: DataTypes.STRING,
 	},
 	leagueId: {
