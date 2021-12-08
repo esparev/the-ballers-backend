@@ -9,6 +9,7 @@ require('dotenv').config();
  * @property {*} dbUrl - database url
  * @property {*} apiKey - api key token
  * @property {*} jwtSecret - jsonwebtoken secret
+ * @property {*} emailPass - smtp email password
  */
 const config = {
 	env: process.env.NODE_ENV || 'dev',
@@ -17,6 +18,7 @@ const config = {
 	dbUrl: process.env.DATABASE_URL,
 	apiKey: process.env.API_KEY,
 	jwtSecret: process.env.JWT_SECRET,
+	emailPass: process.env.EMAIL_PASS,
 };
 
 module.exports = { config };

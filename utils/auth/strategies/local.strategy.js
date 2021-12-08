@@ -1,16 +1,11 @@
 const { Strategy } = require('passport-local');
-const boom = require('@hapi/boom');
-const bcrypt = require('bcrypt');
-const AdminsService = require('../../../services/admins.service');
-const service = new AdminsService();
+const AuthService = require('../../../services/auth.service');
+const service = new AuthService();
 
 /**
  * Passport strategy for authenticating with a username and
  * password with various validations to protect the
  * account of the admin.
- * From validating the existence of a username to
- * the comparison of the provided password with
- * the stored password
  */
 const LocalStrategy = new Strategy(
 	{
@@ -19,19 +14,7 @@ const LocalStrategy = new Strategy(
 	},
 	async (email, password, done) => {
 		try {
-			// Validates if an admin with the provided email exists
-			const admin = await service.findByEmail(email);
-			if (!admin) {
-				done(boom.unauthorized(), false);
-			}
-			// Validates if the entered password matches the password stored in the database
-			const isMatch = await bcrypt.compare(password, admin.password);
-			if (!isMatch) {
-				done(boom.unauthorized(), false);
-			}
-			// Remove password from return response
-			delete admin.dataValues.password;
-			// Successful validation
+			const admin = await service.getUser(email, password);
 			done(null, admin);
 		} catch (error) {
 			done(error, false);
