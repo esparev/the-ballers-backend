@@ -4,7 +4,6 @@ const cors = require('cors');
 const passport = require('passport');
 require('./utils/auth');
 
-const { checkApiKey } = require('./middlewares/auth.handler');
 const {
 	logErrors,
 	errorHandler,
@@ -17,14 +16,31 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Home route
-app.get('/', checkApiKey, (req, res) => {
+app.get('/', (req, res) => {
 	res.send('BEISMICH API');
 });
 
 // Middlewares
 app.use(passport.initialize());
 app.use(express.json());
-app.use(cors());
+
+const whitelist = [
+	'http://localhost:8080',
+	'http://localhost:3000',
+	'http://localhost:3003',
+	'https://beismich.netlify.app',
+];
+const options = {
+	origin: (origin, callback) => {
+		if (whitelist.includes(origin) || !origin) {
+			callback(null, true);
+		} else {
+			callback(new Error('No permitido'));
+		}
+	},
+};
+
+app.use(cors(options));
 // Router Api
 routerApi(app);
 // Error middlewares
