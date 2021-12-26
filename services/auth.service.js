@@ -72,14 +72,20 @@ class AuthService {
 
 		const payload = { sub: admin.id };
 		const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '15m' });
-		const link = `https://beismich.netlify.app/recuperar?token=${token}`;
+		const link = `https://beismich.netlify.app/#/recuperar?token=${token}`;
 		await service.update(admin.id, { recoveryToken: token });
 
 		const mail = {
-			from: config.smtpEmail, // sender address
+			from: `BEISMICH <${config.smtpEmail}>`, // sender address
 			to: `${admin.email}`, // list of receivers
 			subject: 'Recuperar contraseña', // Subject line
-			html: `<b>Ingresa a este link: ${link}</b>`, // html body
+			html: `¡Hola, <b>${admin.name}</b>!
+			</br>
+			</br>
+			<b>Ingresa a este link para cambiar tu contraseña:</b>
+			</br>
+			</br>
+			<a href='${link}'>Cambiar contraseña</a>`, // html body
 		};
 		const response = await this.sendMail(mail);
 		return response;
