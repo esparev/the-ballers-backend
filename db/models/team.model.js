@@ -27,7 +27,7 @@ const TeamSchema = {
 		type: DataTypes.STRING(100),
 	},
 	manager: {
-		allowNull: false,
+		allowNull: true,
 		type: DataTypes.STRING(100),
 	},
 	logo: {

@@ -13,7 +13,7 @@ const getTeamSchema = Joi.object({
 
 const createTeamSchema = Joi.object({
 	name: name.required(),
-	manager: manager.required(),
+	manager,
 	logo,
 	leagueId: leagueId.required(),
 });
