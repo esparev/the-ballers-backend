@@ -65,7 +65,7 @@ router.post(
 
 			res.status(201).json({
 				newNews,
-				message: 'noticia creada',
+				message: 'news created',
 			});
 		} catch (error) {
 			next(error);
@@ -90,7 +90,7 @@ router.patch(
 
 			res.status(200).json({
 				oneNews,
-				message: 'noticia actualizada',
+				message: 'news updated',
 			});
 		} catch (error) {
 			next(error);
@@ -112,7 +112,7 @@ router.delete(
 
 			res.status(200).json({
 				oneNews,
-				message: 'noticia eliminada',
+				message: 'news deleted',
 			});
 		} catch (error) {
 			next(error);

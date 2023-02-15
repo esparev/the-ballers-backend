@@ -28,7 +28,7 @@ class TeamsService {
 			include: ['player', 'coach'],
 		});
 		if (!team) {
-			throw boom.notFound('Equipo no encontrado');
+			throw boom.notFound('team not found');
 		}
 		return team;
 	}

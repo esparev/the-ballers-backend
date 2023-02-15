@@ -36,7 +36,7 @@ class NewsService {
 	async findOne(id) {
 		const news = await models.News.findByPk(id);
 		if (!news) {
-			throw boom.notFound('Noticia no encontrada');
+			throw boom.notFound('news not found');
 		}
 		return news;
 	}

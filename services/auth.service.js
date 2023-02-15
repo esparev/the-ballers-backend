@@ -72,20 +72,20 @@ class AuthService {
 
 		const payload = { sub: admin.id };
 		const token = jwt.sign(payload, config.jwtSecret, { expiresIn: '15m' });
-		const link = `https://beismich.netlify.app/#/recuperar?token=${token}`;
+		const link = `https://the-ballers.netlify.app/recover?token=${token}`;
 		await service.update(admin.id, { recoveryToken: token });
 
 		const mail = {
-			from: `BEISMICH <${config.smtpEmail}>`, // sender address
+			from: `The Ballers <${config.smtpEmail}>`, // sender address
 			to: `${admin.email}`, // list of receivers
-			subject: 'Recuperar contraseña', // Subject line
-			html: `¡Hola, <b>${admin.name}</b>!
+			subject: 'Password recovery', // subject line
+			html: `¡Hey, <b>${admin.name}</b>!
 			</br>
 			</br>
-			<b>Ingresa a este link para cambiar tu contraseña:</b>
+			<b>Enter this link to change your password:</b>
 			</br>
 			</br>
-			<a href='${link}'>Cambiar contraseña</a>`, // html body
+			<a href='${link}'>Change password</a>`, // html body
 		};
 		const response = await this.sendMail(mail);
 		return response;
@@ -100,7 +100,7 @@ class AuthService {
 			}
 			const hash = await bcrypt.hash(newPassword, 13);
 			await service.update(admin.id, { recoveryToken: null, password: hash });
-			return { message: 'Contraseña modificada' };
+			return { message: 'the password has been changed' };
 		} catch (error) {
 			throw boom.unauthorized();
 		}
@@ -125,7 +125,7 @@ class AuthService {
 		});
 		// send mail with defined transport object
 		await transporter.sendMail(infoMail);
-		return { message: 'mail enviado' };
+		return { message: 'email sent' };
 	}
 }
 

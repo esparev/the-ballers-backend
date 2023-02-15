@@ -60,7 +60,7 @@ router.post(
 
 			res.status(201).json({
 				newLeague,
-				message: 'liga creada',
+				message: 'league created',
 			});
 		} catch (error) {
 			next(error);
@@ -85,7 +85,7 @@ router.patch(
 
 			res.status(200).json({
 				league,
-				message: 'liga actualizada',
+				message: 'league updated',
 			});
 		} catch (error) {
 			next(error);
@@ -107,7 +107,7 @@ router.delete(
 
 			res.status(200).json({
 				league,
-				message: 'liga eliminada',
+				message: 'league deleted',
 			});
 		} catch (error) {
 			next(error);

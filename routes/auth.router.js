@@ -9,7 +9,7 @@ const service = new AuthService();
  * Authenticates via the local strategy without a session
  */
 router.post(
-	'/iniciar-sesion',
+	'/login',
 	passport.authenticate('local', { session: false }),
 	async (req, res, next) => {
 		try {
@@ -25,7 +25,7 @@ router.post(
  * Recovery route
  * Recover password with email
  */
-router.post('/recuperar', async (req, res, next) => {
+router.post('/recover', async (req, res, next) => {
 	try {
 		const { email } = req.body;
 		const response = await service.sendRecovery(email);
@@ -39,7 +39,7 @@ router.post('/recuperar', async (req, res, next) => {
  * Recovery route
  * Recover password with email
  */
-router.post('/cambiar-contra', async (req, res, next) => {
+router.post('/change-password', async (req, res, next) => {
 	try {
 		const { token, newPassword } = req.body;
 		const response = await service.changePassword(token, newPassword);

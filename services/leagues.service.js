@@ -28,7 +28,7 @@ class LeaguesService {
 			include: ['team'],
 		});
 		if (!league) {
-			throw boom.notFound('Liga no encontrada');
+			throw boom.notFound('league not found');
 		}
 		return league;
 	}

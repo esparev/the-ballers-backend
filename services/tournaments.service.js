@@ -36,7 +36,7 @@ class TournamentsService {
 	async findOne(id) {
 		const tournament = await models.Tournament.findByPk(id);
 		if (!tournament) {
-			throw boom.notFound('Torneo no encontrado');
+			throw boom.notFound('tournament not found');
 		}
 		return tournament;
 	}

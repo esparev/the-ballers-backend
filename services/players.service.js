@@ -26,7 +26,7 @@ class PlayersService {
 	async findOne(id) {
 		const player = await models.Player.findByPk(id);
 		if (!player) {
-			throw boom.notFound('Jugador no encontrado');
+			throw boom.notFound('player not found');
 		}
 		return player;
 	}

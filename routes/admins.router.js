@@ -65,7 +65,7 @@ router.post(
 
 			res.status(201).json({
 				newAdmin,
-				message: 'admin creado',
+				message: 'admin created',
 			});
 		} catch (error) {
 			next(error);
@@ -90,7 +90,7 @@ router.patch(
 
 			res.status(200).json({
 				admin,
-				message: 'admin actualizado',
+				message: 'admin updated',
 			});
 		} catch (error) {
 			next(error);
@@ -112,7 +112,7 @@ router.delete(
 
 			res.status(200).json({
 				admin,
-				message: 'admin eliminado',
+				message: 'admin deleted',
 			});
 		} catch (error) {
 			next(error);

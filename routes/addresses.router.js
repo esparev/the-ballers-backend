@@ -60,7 +60,7 @@ router.post(
 
 			res.status(201).json({
 				newAddress,
-				message: 'direccion creada',
+				message: 'address created',
 			});
 		} catch (error) {
 			next(error);
@@ -85,7 +85,7 @@ router.patch(
 
 			res.status(200).json({
 				address,
-				message: 'direccion actualizada',
+				message: 'address updated',
 			});
 		} catch (error) {
 			next(error);
@@ -107,7 +107,7 @@ router.delete(
 
 			res.status(200).json({
 				address,
-				message: 'direccion eliminada',
+				message: 'address deleted',
 			});
 		} catch (error) {
 			next(error);

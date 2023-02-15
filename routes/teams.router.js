@@ -60,7 +60,7 @@ router.post(
 
 			res.status(201).json({
 				newTeam,
-				message: 'equipo creado',
+				message: 'team created',
 			});
 		} catch (error) {
 			next(error);
@@ -85,7 +85,7 @@ router.patch(
 
 			res.status(200).json({
 				team,
-				message: 'equipo actualizado',
+				message: 'team updated',
 			});
 		} catch (error) {
 			next(error);
@@ -107,7 +107,7 @@ router.delete(
 
 			res.status(200).json({
 				team,
-				message: 'equipo eliminado',
+				message: 'team deleted',
 			});
 		} catch (error) {
 			next(error);

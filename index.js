@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000;
 
 // Home route
 app.get('/', (req, res) => {
-	res.send('BEISMICH API');
+	res.send("The Ballers' API");
 });
 
 // Middlewares
@@ -28,15 +28,15 @@ const whitelist = [
 	'http://localhost:8080',
 	'http://localhost:3000',
 	'http://localhost:3003',
-        'http://127.0.0.1:3003',
-	'https://beismich.netlify.app',
+	'http://127.0.0.1:3003',
+	'https://the-ballers.netlify.app',
 ];
 const options = {
 	origin: (origin, callback) => {
 		if (whitelist.includes(origin) || !origin) {
 			callback(null, true);
 		} else {
-			callback(new Error('No permitido'));
+			callback(new Error('Not allowed'));
 		}
 	},
 };

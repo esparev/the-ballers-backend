@@ -85,7 +85,7 @@ router.patch(
 
 			res.status(200).json({
 				player,
-				message: 'jugador actualizado',
+				message: 'player updated',
 			});
 		} catch (error) {
 			next(error);
@@ -107,7 +107,7 @@ router.delete(
 
 			res.status(200).json({
 				player,
-				message: 'jugador eliminado',
+				message: 'player deleted',
 			});
 		} catch (error) {
 			next(error);

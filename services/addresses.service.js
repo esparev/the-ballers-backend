@@ -24,7 +24,7 @@ class AddressesService {
 	async findOne(id) {
 		const address = await models.Address.findByPk(id);
 		if (!address) {
-			throw boom.notFound('direccion no encontrada');
+			throw boom.notFound('address not found');
 		}
 		return address;
 	}

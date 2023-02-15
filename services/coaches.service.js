@@ -26,7 +26,7 @@ class CoachesService {
 	async findOne(id) {
 		const coach = await models.Coach.findByPk(id);
 		if (!coach) {
-			throw boom.notFound('Entrenador no encontrado');
+			throw boom.notFound('coach not found');
 		}
 		return coach;
 	}

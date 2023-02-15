@@ -65,7 +65,7 @@ router.post(
 
 			res.status(201).json({
 				newTournament,
-				message: 'torneo creado',
+				message: 'tournament created',
 			});
 		} catch (error) {
 			next(error);
@@ -90,7 +90,7 @@ router.patch(
 
 			res.status(200).json({
 				tournament,
-				message: 'torneo actualizado',
+				message: 'tournament updated',
 			});
 		} catch (error) {
 			next(error);
@@ -112,7 +112,7 @@ router.delete(
 
 			res.status(200).json({
 				tournament,
-				message: 'torneo eliminado',
+				message: 'tournament deleted',
 			});
 		} catch (error) {
 			next(error);

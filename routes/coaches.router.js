@@ -59,7 +59,7 @@ router.post(
 
 			res.status(201).json({
 				newCoach,
-				message: 'entrenador creado',
+				message: 'coach created',
 			});
 		} catch (error) {
 			next(error);
@@ -84,7 +84,7 @@ router.patch(
 
 			res.status(200).json({
 				coach,
-				message: 'entrenador actualizado',
+				message: 'coach updated',
 			});
 		} catch (error) {
 			next(error);
@@ -106,7 +106,7 @@ router.delete(
 
 			res.status(200).json({
 				coach,
-				message: 'entrenador eliminado',
+				message: 'coach deleted',
 			});
 		} catch (error) {
 			next(error);

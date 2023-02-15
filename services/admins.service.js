@@ -25,10 +25,10 @@ class AdminsService {
 	async findOne(id) {
 		const admin = await models.Admin.findByPk(id);
 		if (!admin) {
-			throw boom.notFound('Admin no encontrado');
+			throw boom.notFound('admin not found');
 		}
 		if (admin.isHero) {
-			throw boom.unauthorized('No tienes permisos');
+			throw boom.unauthorized("you don't have permission");
 		}
 		return admin;
 	}

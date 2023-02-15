@@ -20,13 +20,13 @@ function routerApi(app) {
 	// Parent route
 	app.use('/api/v1', router);
 	// Child routes
-	router.use('/noticias', newsRouter);
-	router.use('/torneos', tournamentsRouter);
-	router.use('/ligas', leaguesRouter);
-	router.use('/equipos', teamsRouter);
-	router.use('/jugadores', playersRouter);
-	router.use('/entrenadores', coachesRouter);
-	router.use('/direcciones', addressesRouter);
+	router.use('/news', newsRouter);
+	router.use('/tournaments', tournamentsRouter);
+	router.use('/leagues', leaguesRouter);
+	router.use('/teams', teamsRouter);
+	router.use('/players', playersRouter);
+	router.use('/coaches', coachesRouter);
+	router.use('/addresses', addressesRouter);
 	router.use('/admins', adminsRouter);
 	router.use('/auth', authRouter);
 }
