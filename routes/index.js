@@ -18,7 +18,7 @@ function routerApi(app) {
 	const router = express.Router();
 
 	// Parent route
-	app.use('/api/v1', router);
+	app.use('/api/v2', router);
 	// Child routes
 	router.use('/news', newsRouter);
 	router.use('/tournaments', tournamentsRouter);
