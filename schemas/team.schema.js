@@ -6,7 +6,7 @@ const slug = Joi.string().min(1).max(255);
 const name = Joi.string().max(100);
 const manager = Joi.string().max(100);
 const logo = Joi.string().uri();
-const leagueId = Joi.number().integer();
+const clubId = Joi.number().integer();
 
 const getTeamSchema = Joi.object({
 	slug: slug.required(),
@@ -17,7 +17,7 @@ const createTeamSchema = Joi.object({
 	name: name.required(),
 	manager,
 	logo,
-	leagueId: leagueId.required(),
+	clubId: clubId.required(),
 });
 
 const updateTeamSchema = Joi.object({
@@ -25,7 +25,7 @@ const updateTeamSchema = Joi.object({
 	name,
 	manager,
 	logo,
-	leagueId,
+	clubId,
 });
 
 module.exports = { getTeamSchema, createTeamSchema, updateTeamSchema };

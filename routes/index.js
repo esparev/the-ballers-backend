@@ -2,7 +2,7 @@ const express = require('express');
 
 const newsRouter = require('./news.router');
 const tournamentsRouter = require('./tournaments.router');
-const leaguesRouter = require('./leagues.router');
+const clubsRouter = require('./clubs.router');
 const teamsRouter = require('./teams.router');
 const playersRouter = require('./players.router');
 const coachesRouter = require('./coaches.router');
@@ -22,7 +22,7 @@ function routerApi(app) {
 	// Child routes
 	router.use('/news', newsRouter);
 	router.use('/tournaments', tournamentsRouter);
-	router.use('/leagues', leaguesRouter);
+	router.use('/clubs', clubsRouter);
 	router.use('/teams', teamsRouter);
 	router.use('/players', playersRouter);
 	router.use('/coaches', coachesRouter);

@@ -2,7 +2,7 @@ const { Model, DataTypes } = require('sequelize');
 
 // Database table name
 const TEAM_TABLE = 'team';
-const { LEAGUE_TABLE } = require('./league.model');
+const { CLUB_TABLE } = require('./club.model');
 
 /**
  * Schema model to create in the database
@@ -40,12 +40,12 @@ const TeamSchema = {
 		defaultValue: 'https://i.imgur.com/Ud9fo7R.png',
 		type: DataTypes.STRING,
 	},
-	leagueId: {
+	clubId: {
 		allowNull: false,
-		field: 'league_id',
+		field: 'club_id',
 		type: DataTypes.INTEGER,
 		references: {
-			model: LEAGUE_TABLE,
+			model: CLUB_TABLE,
 			key: 'id',
 		},
 		onUpdate: 'CASCADE',
@@ -62,14 +62,14 @@ class Team extends Model {
 	 * @param {*} models
 	 */
 	static associate(models) {
-		// One to one (1-1) relation between Team and League
-		this.belongsTo(models.League, { as: 'league' });
-		// One to many (1-N) relation between Team and Players
+		// One to one (1-1) relation between team and club
+		this.belongsTo(models.Club, { as: 'club' });
+		// One to many (1-N) relation between team and players
 		this.hasMany(models.Player, {
 			as: 'player',
 			foreignKey: 'teamId',
 		});
-		// One to many (1-N) relation between Team and Coaches
+		// One to many (1-N) relation between team and coaches
 		this.hasMany(models.Coach, {
 			as: 'coach',
 			foreignKey: 'teamId',

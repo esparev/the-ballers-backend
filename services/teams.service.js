@@ -13,7 +13,7 @@ class TeamsService {
 	 */
 	async find() {
 		const teams = await models.Team.findAll({
-			include: ['league'],
+			include: ['club'],
 		});
 		return teams;
 	}

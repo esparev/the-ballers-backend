@@ -1,7 +1,7 @@
 const { Model, DataTypes } = require('sequelize');
 
 // Database table name
-const LEAGUE_TABLE = 'league';
+const CLUB_TABLE = 'club';
 const { ADDRESS_TABLE } = require('./address.model');
 
 /**
@@ -15,7 +15,7 @@ const { ADDRESS_TABLE } = require('./address.model');
  * @property {boolean} type - expresion to match SQL type
  * @property {boolean} field - rename the field
  */
-const LeagueSchema = {
+const ClubSchema = {
 	id: {
 		allowNull: false,
 		autoIncrement: true,
@@ -71,18 +71,18 @@ const LeagueSchema = {
 /**
  * Model class
  */
-class League extends Model {
+class Club extends Model {
 	/**
 	 * Associates relations between models
 	 * @param {*} models
 	 */
 	static associate(models) {
-		// One to one (1-1) relation between League and Address
+		// One to one (1-1) relation between club and address
 		this.belongsTo(models.Address, { as: 'address' });
-		// One to many (1-N) relation between League and Teams
+		// One to many (1-N) relation between club and teams
 		this.hasMany(models.Team, {
 			as: 'team',
-			foreignKey: 'leagueId',
+			foreignKey: 'clubId',
 		});
 	}
 
@@ -96,11 +96,11 @@ class League extends Model {
 	static config(sequelize) {
 		return {
 			sequelize,
-			tableName: LEAGUE_TABLE,
-			modelName: 'League',
+			tableName: CLUB_TABLE,
+			modelName: 'Club',
 			timestamps: false,
 		};
 	}
 }
 
-module.exports = { LEAGUE_TABLE, LeagueSchema, League };
+module.exports = { CLUB_TABLE, ClubSchema, Club };

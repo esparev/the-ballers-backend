@@ -2,43 +2,43 @@ const express = require('express');
 const passport = require('passport');
 const router = express.Router();
 
-const LeaguesService = require('../services/leagues.service');
-const service = new LeaguesService();
+const ClubsService = require('../services/clubs.service');
+const service = new ClubsService();
 
 const validatorHandler = require('../middlewares/validator.handler');
 const {
-	getLeagueSchema,
-	createLeagueSchema,
-	updateLeagueSchema,
-} = require('../schemas/league.schema');
+	getClubSchema,
+	createClubSchema,
+	updateClubSchema,
+} = require('../schemas/club.schema');
 
 /**
- * Leagues main route
- * Shows all Leagues
+ * Clubs main route
+ * Shows all clubs
  */
 router.get('/', async (req, res, next) => {
 	try {
-		const leagues = await service.find();
+		const clubs = await service.find();
 
-		res.status(200).json(leagues);
+		res.status(200).json(clubs);
 	} catch (error) {
 		next(error);
 	}
 });
 
 /**
- * Individual League route
- * Shows the League with the provided slug
+ * Individual club route
+ * Shows the club with the provided slug
  */
 router.get(
 	'/:slug',
-	validatorHandler(getLeagueSchema, 'params'),
+	validatorHandler(getClubSchema, 'params'),
 	async (req, res, next) => {
 		try {
 			const { slug } = req.params;
-			const league = await service.findBySlug(slug);
+			const club = await service.findBySlug(slug);
 
-			res.status(200).json(league);
+			res.status(200).json(club);
 		} catch (error) {
 			next(error);
 		}
@@ -46,21 +46,21 @@ router.get(
 );
 
 /**
- * Add League route
- * Creates a League with the provided data in body
+ * Add club route
+ * Creates a club with the provided data in body
  */
 router.post(
 	'/',
 	passport.authenticate('jwt', { session: false }),
-	validatorHandler(createLeagueSchema, 'body'),
+	validatorHandler(createClubSchema, 'body'),
 	async (req, res, next) => {
 		try {
 			const body = req.body;
-			const newLeague = await service.create(body);
+			const newClub = await service.create(body);
 
 			res.status(201).json({
-				newLeague,
-				message: 'league created',
+				newClub,
+				message: 'club created',
 			});
 		} catch (error) {
 			next(error);
@@ -69,23 +69,23 @@ router.post(
 );
 
 /**
- * Edit League route
- * Updates partial or entire data of the League with the provided slug
+ * Edit club route
+ * Updates partial or entire data of the club with the provided slug
  */
 router.patch(
 	'/:slug',
 	passport.authenticate('jwt', { session: false }),
-	validatorHandler(getLeagueSchema, 'params'),
-	validatorHandler(updateLeagueSchema, 'body'),
+	validatorHandler(getClubSchema, 'params'),
+	validatorHandler(updateClubSchema, 'body'),
 	async (req, res, next) => {
 		try {
 			const { slug } = req.params;
 			const body = req.body;
-			const league = await service.update(slug, body);
+			const club = await service.update(slug, body);
 
 			res.status(200).json({
-				league,
-				message: 'league updated',
+				club,
+				message: 'club updated',
 			});
 		} catch (error) {
 			next(error);
@@ -94,8 +94,8 @@ router.patch(
 );
 
 /**
- * Delete League route
- * Deletes the League with the provided slug
+ * Delete club route
+ * Deletes the club with the provided slug
  */
 router.delete(
 	'/:slug',
@@ -103,11 +103,11 @@ router.delete(
 	async (req, res, next) => {
 		try {
 			const { slug } = req.params;
-			const league = await service.delete(slug);
+			const club = await service.delete(slug);
 
 			res.status(200).json({
-				league,
-				message: 'league deleted',
+				club,
+				message: 'club deleted',
 			});
 		} catch (error) {
 			next(error);

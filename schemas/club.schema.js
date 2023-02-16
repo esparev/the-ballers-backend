@@ -14,11 +14,11 @@ const ageStart = Joi.number().integer().max(60);
 const ageEnd = Joi.number().integer().max(60);
 const logo = Joi.string().uri();
 
-const getLeagueSchema = Joi.object({
+const getClubSchema = Joi.object({
 	slug: slug.required(),
 });
 
-const createLeagueSchema = Joi.object({
+const createClubSchema = Joi.object({
 	slug: slug.required(),
 	name: name.required(),
 	responsable,
@@ -29,7 +29,7 @@ const createLeagueSchema = Joi.object({
 	address: createAddressSchema,
 });
 
-const updateLeagueSchema = Joi.object({
+const updateClubSchema = Joi.object({
 	slug,
 	name,
 	responsable,
@@ -40,4 +40,4 @@ const updateLeagueSchema = Joi.object({
 	address: updateAddressSchema,
 });
 
-module.exports = { getLeagueSchema, createLeagueSchema, updateLeagueSchema };
+module.exports = { getClubSchema, createClubSchema, updateClubSchema };
