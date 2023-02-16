@@ -2,16 +2,18 @@ const Joi = require('joi');
 
 // Data rules
 const id = Joi.number().integer();
-const name = Joi.string().max(100);
+const slug = Joi.string().min(1).max(255);
+const name = Joi.string().min(1).max(255);
 const birthday = Joi.string().isoDate();
 const image = Joi.string().uri();
 const teamId = Joi.number().integer();
 
 const getCoachSchema = Joi.object({
-	id: id.required(),
+	slug: slug.required(),
 });
 
 const createCoachSchema = Joi.object({
+	slug: slug.required(),
 	name: name.required(),
 	birthday: birthday,
 	image,
@@ -19,6 +21,7 @@ const createCoachSchema = Joi.object({
 });
 
 const updateCoachSchema = Joi.object({
+	slug,
 	name,
 	birthday,
 	image,

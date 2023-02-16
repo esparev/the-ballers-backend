@@ -23,6 +23,11 @@ const AdminSchema = {
 		primaryKey: true,
 		type: DataTypes.INTEGER,
 	},
+	slug: {
+		allowNull: false,
+		unique: true,
+		type: DataTypes.STRING,
+	},
 	role: {
 		allowNull: false,
 		defaultValue: 'admin',
@@ -30,7 +35,7 @@ const AdminSchema = {
 		validate: {
 			isHero(value) {
 				if (value === 'hero') {
-					throw boom.forbidden('No esta permitido esta accion');
+					throw boom.forbidden('this action is not allowed');
 				}
 			},
 		},
@@ -58,7 +63,7 @@ const AdminSchema = {
 	},
 	image: {
 		allowNull: true,
-		defaultValue: 'https://i.imgur.com/CFJ2k8J.png',
+		defaultValue: 'https://i.imgur.com/ntT9DE5.png',
 		type: DataTypes.STRING,
 	},
 };

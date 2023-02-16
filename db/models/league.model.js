@@ -22,6 +22,11 @@ const LeagueSchema = {
 		primaryKey: true,
 		type: DataTypes.INTEGER,
 	},
+	slug: {
+		allowNull: false,
+		unique: true,
+		type: DataTypes.STRING,
+	},
 	name: {
 		allowNull: false,
 		type: DataTypes.STRING(100),
@@ -46,7 +51,7 @@ const LeagueSchema = {
 	},
 	logo: {
 		allowNull: true,
-		defaultValue: 'https://i.imgur.com/PEZQ6jS.png',
+		defaultValue: 'https://i.imgur.com/eRO5VO5.png',
 		type: DataTypes.STRING,
 	},
 	addressId: {

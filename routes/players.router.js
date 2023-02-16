@@ -28,15 +28,15 @@ router.get('/', async (req, res, next) => {
 
 /**
  * Individual Player route
- * Shows the Player with the provided id
+ * Shows the Player with the provided slug
  */
 router.get(
-	'/:id',
+	'/:slug',
 	validatorHandler(getPlayerSchema, 'params'),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
-			const player = await service.findOne(id);
+			const { slug } = req.params;
+			const player = await service.findBySlug(slug);
 
 			res.status(200).json(player);
 		} catch (error) {
@@ -70,18 +70,18 @@ router.post(
 
 /**
  * Edit Player route
- * Updates partial or entire data of the Player with the provided id
+ * Updates partial or entire data of the Player with the provided slug
  */
 router.patch(
-	'/:id',
+	'/:slug',
 	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getPlayerSchema, 'params'),
 	validatorHandler(updatePlayerSchema, 'body'),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
+			const { slug } = req.params;
 			const body = req.body;
-			const player = await service.update(id, body);
+			const player = await service.update(slug, body);
 
 			res.status(200).json({
 				player,
@@ -95,15 +95,15 @@ router.patch(
 
 /**
  * Delete Player route
- * Deletes the Player with the provided id
+ * Deletes the Player with the provided slug
  */
 router.delete(
-	'/:id',
+	'/:slug',
 	passport.authenticate('jwt', { session: false }),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
-			const player = await service.delete(id);
+			const { slug } = req.params;
+			const player = await service.delete(slug);
 
 			res.status(200).json({
 				player,

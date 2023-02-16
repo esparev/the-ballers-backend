@@ -27,15 +27,15 @@ router.get('/', async (req, res, next) => {
 
 /**
  * Individual Coach route
- * Shows the Coach with the provided id
+ * Shows the Coach with the provided slug
  */
 router.get(
-	'/:id',
+	'/:slug',
 	validatorHandler(getCoachSchema, 'params'),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
-			const coach = await service.findOne(id);
+			const { slug } = req.params;
+			const coach = await service.findBySlug(slug);
 
 			res.status(200).json(coach);
 		} catch (error) {
@@ -69,18 +69,18 @@ router.post(
 
 /**
  * Edit Coach route
- * Updates partial or entire data of the Coach with the provided id
+ * Updates partial or entire data of the Coach with the provided slug
  */
 router.patch(
-	'/:id',
+	'/:slug',
 	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getCoachSchema, 'params'),
 	validatorHandler(updateCoachSchema, 'body'),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
+			const { slug } = req.params;
 			const body = req.body;
-			const coach = await service.update(id, body);
+			const coach = await service.update(slug, body);
 
 			res.status(200).json({
 				coach,
@@ -94,15 +94,15 @@ router.patch(
 
 /**
  * Delete Coach route
- * Deletes the Coach with the provided id
+ * Deletes the Coach with the provided slug
  */
 router.delete(
-	'/:id',
+	'/:slug',
 	passport.authenticate('jwt', { session: false }),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
-			const coach = await service.delete(id);
+			const { slug } = req.params;
+			const coach = await service.delete(slug);
 
 			res.status(200).json({
 				coach,

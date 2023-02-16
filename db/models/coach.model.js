@@ -22,6 +22,11 @@ const CoachSchema = {
 		primaryKey: true,
 		type: DataTypes.INTEGER,
 	},
+	slug: {
+		allowNull: false,
+		unique: true,
+		type: DataTypes.STRING,
+	},
 	name: {
 		allowNull: false,
 		type: DataTypes.STRING(100),
@@ -32,7 +37,7 @@ const CoachSchema = {
 	},
 	image: {
 		allowNull: true,
-		defaultValue: 'https://i.imgur.com/CFJ2k8J.png',
+		defaultValue: 'https://i.imgur.com/yZAaM1a.png',
 		type: DataTypes.STRING,
 	},
 	teamId: {

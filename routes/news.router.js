@@ -33,15 +33,15 @@ router.get(
 
 /**
  * Individual News route
- * Shows the News with the provided id
+ * Shows the News with the provided slug
  */
 router.get(
-	'/:id',
+	'/:slug',
 	validatorHandler(getNewsSchema, 'params'),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
-			const oneNews = await service.findOne(id);
+			const { slug } = req.params;
+			const oneNews = await service.findBySlug(slug);
 
 			res.status(200).json(oneNews);
 		} catch (error) {
@@ -75,18 +75,18 @@ router.post(
 
 /**
  * Edit News route
- * Updates partial or entire data of the News with the provided id
+ * Updates partial or entire data of the News with the provided slug
  */
 router.patch(
-	'/:id',
+	'/:slug',
 	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getNewsSchema, 'params'),
 	validatorHandler(updateNewsSchema, 'body'),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
+			const { slug } = req.params;
 			const body = req.body;
-			const oneNews = await service.update(id, body);
+			const oneNews = await service.update(slug, body);
 
 			res.status(200).json({
 				oneNews,
@@ -100,15 +100,15 @@ router.patch(
 
 /**
  * Delete News route
- * Deletes the News with the provided id
+ * Deletes the News with the provided slug
  */
 router.delete(
-	'/:id',
+	'/:slug',
 	passport.authenticate('jwt', { session: false }),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
-			const oneNews = await service.delete(id);
+			const { slug } = req.params;
+			const oneNews = await service.delete(slug);
 
 			res.status(200).json({
 				oneNews,

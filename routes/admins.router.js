@@ -32,16 +32,16 @@ router.get(
 
 /**
  * Individual Admin route
- * Shows the Admin with the provided id
+ * Shows the Admin with the provided slug
  */
 router.get(
-	'/:id',
+	'/:slug',
 	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getAdminSchema, 'params'),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
-			const admin = await service.findOne(id);
+			const { slug } = req.params;
+			const admin = await service.findBySlug(slug);
 
 			res.status(200).json(admin);
 		} catch (error) {
@@ -75,18 +75,18 @@ router.post(
 
 /**
  * Edit Admin route
- * Updates partial or entire data of the Admin with the provided id
+ * Updates partial or entire data of the Admin with the provided slug
  */
 router.patch(
-	'/:id',
+	'/:slug',
 	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getAdminSchema, 'params'),
 	validatorHandler(updateAdminSchema, 'body'),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
+			const { slug } = req.params;
 			const body = req.body;
-			const admin = await service.update(id, body);
+			const admin = await service.update(slug, body);
 
 			res.status(200).json({
 				admin,
@@ -100,15 +100,15 @@ router.patch(
 
 /**
  * Delete Admin route
- * Deletes the Admin with the provided id
+ * Deletes the Admin with the provided slug
  */
 router.delete(
-	'/:id',
+	'/:slug',
 	passport.authenticate('jwt', { session: false }),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
-			const admin = await service.delete(id);
+			const { slug } = req.params;
+			const admin = await service.delete(slug);
 
 			res.status(200).json({
 				admin,

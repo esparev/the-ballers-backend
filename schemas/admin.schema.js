@@ -2,17 +2,19 @@ const Joi = require('joi');
 
 // Data rules
 const id = Joi.number().integer();
-const role = Joi.string();
-const name = Joi.string().max(100);
-const email = Joi.string().email();
-const password = Joi.string();
+const slug = Joi.string().min(1).max(255);
+const role = Joi.string().min(1).max(255);
+const name = Joi.string().min(1).max(255);
+const email = Joi.string().email().min(1).max(255);
+const password = Joi.string().min(1).max(255);
 const image = Joi.string().uri();
 
 const getAdminSchema = Joi.object({
-	id: id.required(),
+	slug: slug.required(),
 });
 
 const createAdminSchema = Joi.object({
+	slug: slug.required(),
 	role,
 	name: name.required(),
 	email: email.required(),
@@ -21,6 +23,7 @@ const createAdminSchema = Joi.object({
 });
 
 const updateAdminSchema = Joi.object({
+	slug,
 	name,
 	email,
 	password,

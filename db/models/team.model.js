@@ -22,6 +22,11 @@ const TeamSchema = {
 		primaryKey: true,
 		type: DataTypes.INTEGER,
 	},
+	slug: {
+		allowNull: false,
+		unique: true,
+		type: DataTypes.STRING,
+	},
 	name: {
 		allowNull: false,
 		type: DataTypes.STRING(100),
@@ -32,7 +37,7 @@ const TeamSchema = {
 	},
 	logo: {
 		allowNull: true,
-		defaultValue: 'https://i.imgur.com/chid3RN.png',
+		defaultValue: 'https://i.imgur.com/Ud9fo7R.png',
 		type: DataTypes.STRING,
 	},
 	leagueId: {

@@ -6,18 +6,20 @@ const {
 
 // Data rules
 const id = Joi.number().integer();
-const name = Joi.string().max(100);
-const responsable = Joi.string().max(100);
+const slug = Joi.string().min(1).max(255);
+const name = Joi.string().min(1).max(255);
+const responsable = Joi.string().min(1).max(255);
 const phone = Joi.string().max(10);
 const ageStart = Joi.number().integer().max(60);
 const ageEnd = Joi.number().integer().max(60);
 const logo = Joi.string().uri();
 
 const getLeagueSchema = Joi.object({
-	id: id.required(),
+	slug: slug.required(),
 });
 
 const createLeagueSchema = Joi.object({
+	slug: slug.required(),
 	name: name.required(),
 	responsable,
 	phone,
@@ -28,6 +30,7 @@ const createLeagueSchema = Joi.object({
 });
 
 const updateLeagueSchema = Joi.object({
+	slug,
 	name,
 	responsable,
 	phone,

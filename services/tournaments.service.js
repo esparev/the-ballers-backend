@@ -42,6 +42,21 @@ class TournamentsService {
 	}
 
 	/**
+	 * Finds the tournament with the provided slug
+	 * @param {string} slug - tournament slug
+	 * @returns {Object} - tournament that matches the slug
+	 */
+	async findBySlug(slug) {
+		const tournament = await models.Tournament.findOne({
+			where: { slug },
+		});
+		if (!tournament) {
+			throw boom.notFound('tournament not found');
+		}
+		return tournament;
+	}
+
+	/**
 	 * Creates a tournament with the provided data
 	 * @param {*} data - tournament data
 	 * @returns tournament created
@@ -52,26 +67,26 @@ class TournamentsService {
 	}
 
 	/**
-	 * Updates partially the tournament with the provided id
-	 * @param {number} id - tournament id
+	 * Updates partially the tournament with the provided slug
+	 * @param {number} slug - tournament slug
 	 * @param {*} changes - tournament data to update
 	 * @returns tournament updated
 	 */
-	async update(id, changes) {
-		const tournament = await this.findOne(id);
+	async update(slug, changes) {
+		const tournament = await this.findBySlug(slug);
 		const response = await tournament.update(changes);
 		return response;
 	}
 
 	/**
-	 * Deletes the tournament with the provided id
-	 * @param {number} id - tournament id
+	 * Deletes the tournament with the provided slug
+	 * @param {number} slug - tournament slug
 	 * @returns tournament deleted
 	 */
-	async delete(id) {
-		const tournament = await this.findOne(id);
+	async delete(slug) {
+		const tournament = await this.findBySlug(slug);
 		await tournament.destroy();
-		return { id };
+		return { slug };
 	}
 }
 

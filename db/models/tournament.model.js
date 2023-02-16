@@ -21,6 +21,11 @@ const TournamentSchema = {
 		primaryKey: true,
 		type: DataTypes.INTEGER,
 	},
+	slug: {
+		allowNull: false,
+		unique: true,
+		type: DataTypes.STRING,
+	},
 	title: {
 		allowNull: false,
 		type: DataTypes.STRING,

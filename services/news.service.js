@@ -42,6 +42,21 @@ class NewsService {
 	}
 
 	/**
+	 * Finds the news with the provided slug
+	 * @param {string} slug - news slug
+	 * @returns {Object} - news that matches the slug
+	 */
+	async findBySlug(slug) {
+		const news = await models.News.findOne({
+			where: { slug },
+		});
+		if (!news) {
+			throw boom.notFound('news not found');
+		}
+		return news;
+	}
+
+	/**
 	 * Creates a news with the provided data
 	 * @param {*} data - news data
 	 * @returns news created
@@ -52,26 +67,26 @@ class NewsService {
 	}
 
 	/**
-	 * Updates partially the news with the provided id
-	 * @param {number} id - news id
+	 * Updates partially the news with the provided slug
+	 * @param {number} slug - news slug
 	 * @param {*} changes - news data to update
 	 * @returns news updated
 	 */
-	async update(id, changes) {
-		const news = await this.findOne(id);
+	async update(slug, changes) {
+		const news = await this.findBySlug(slug);
 		const response = await news.update(changes);
 		return response;
 	}
 
 	/**
-	 * Deletes the news with the provided id
-	 * @param {number} id - news id
+	 * Deletes the news with the provided slug
+	 * @param {number} slug - news slug
 	 * @returns news deleted
 	 */
-	async delete(id) {
-		const news = await this.findOne(id);
+	async delete(slug) {
+		const news = await this.findBySlug(slug);
 		await news.destroy();
-		return { id };
+		return { slug };
 	}
 }
 

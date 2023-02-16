@@ -27,8 +27,23 @@ class AdminsService {
 		if (!admin) {
 			throw boom.notFound('admin not found');
 		}
-		if (admin.isHero) {
+		if (!admin.isHero) {
 			throw boom.unauthorized("you don't have permission");
+		}
+		return admin;
+	}
+
+	/**
+	 * Finds the admin with the provided slug
+	 * @param {string} slug - admin slug
+	 * @returns {Object} - admin that matches the slug
+	 */
+	async findBySlug(slug) {
+		const admin = await models.Admin.findOne({
+			where: { slug },
+		});
+		if (!admin) {
+			throw boom.notFound('admin not found');
 		}
 		return admin;
 	}
@@ -63,26 +78,26 @@ class AdminsService {
 	}
 
 	/**
-	 * Updates partially the admin with the provided id
-	 * @param {number} id - admin id
+	 * Updates partially the admin with the provided slug
+	 * @param {number} slug - admin slug
 	 * @param {*} changes - admin data to update
 	 * @returns admin updated
 	 */
-	async update(id, changes) {
-		const admin = await this.findOne(id);
+	async update(slug, changes) {
+		const admin = await this.findBySlug(slug);
 		const response = await admin.update(changes);
 		return response;
 	}
 
 	/**
-	 * Deletes the admin with the provided id
-	 * @param {number} id - admin id
+	 * Deletes the admin with the provided slug
+	 * @param {number} slug - admin slug
 	 * @returns admin deleted
 	 */
-	async delete(id) {
-		const admin = await this.findOne(id);
+	async delete(slug) {
+		const admin = await this.findBySlug(slug);
 		await admin.destroy();
-		return { id };
+		return { slug };
 	}
 }
 

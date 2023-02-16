@@ -33,15 +33,15 @@ router.get(
 
 /**
  * Individual Tournament route
- * Shows the Tournament with the provided id
+ * Shows the Tournament with the provided slug
  */
 router.get(
-	'/:id',
+	'/:slug',
 	validatorHandler(getTournamentSchema, 'params'),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
-			const tournament = await service.findOne(id);
+			const { slug } = req.params;
+			const tournament = await service.findBySlug(slug);
 
 			res.status(200).json(tournament);
 		} catch (error) {
@@ -75,18 +75,18 @@ router.post(
 
 /**
  * Edit Tournament route
- * Updates partial or entire data of the Tournament with the provided id
+ * Updates partial or entire data of the Tournament with the provided slug
  */
 router.patch(
-	'/:id',
+	'/:slug',
 	passport.authenticate('jwt', { session: false }),
 	validatorHandler(getTournamentSchema, 'params'),
 	validatorHandler(updateTournamentSchema, 'body'),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
+			const { slug } = req.params;
 			const body = req.body;
-			const tournament = await service.update(id, body);
+			const tournament = await service.update(slug, body);
 
 			res.status(200).json({
 				tournament,
@@ -100,15 +100,15 @@ router.patch(
 
 /**
  * Delete Tournament route
- * Deletes the Tournament with the provided id
+ * Deletes the Tournament with the provided slug
  */
 router.delete(
-	'/:id',
+	'/:slug',
 	passport.authenticate('jwt', { session: false }),
 	async (req, res, next) => {
 		try {
-			const { id } = req.params;
-			const tournament = await service.delete(id);
+			const { slug } = req.params;
+			const tournament = await service.delete(slug);
 
 			res.status(200).json({
 				tournament,

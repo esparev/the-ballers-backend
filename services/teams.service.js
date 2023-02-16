@@ -34,6 +34,21 @@ class TeamsService {
 	}
 
 	/**
+	 * Finds the team with the provided slug
+	 * @param {string} slug - team slug
+	 * @returns {Object} - team that matches the slug
+	 */
+	async findBySlug(slug) {
+		const team = await models.Team.findOne({
+			where: { slug },
+		});
+		if (!team) {
+			throw boom.notFound('team not found');
+		}
+		return team;
+	}
+
+	/**
 	 * Creates a team with the provided data
 	 * @param {*} data - team data
 	 * @returns team created
@@ -44,26 +59,26 @@ class TeamsService {
 	}
 
 	/**
-	 * Updates partially the team with the provided id
-	 * @param {number} id - team id
+	 * Updates partially the team with the provided slug
+	 * @param {number} slug - team slug
 	 * @param {*} changes - team data to update
 	 * @returns team updated
 	 */
-	async update(id, changes) {
-		const team = await this.findOne(id);
+	async update(slug, changes) {
+		const team = await this.findBySlug(slug);
 		const response = await team.update(changes);
 		return response;
 	}
 
 	/**
-	 * Deletes the team with the provided id
-	 * @param {number} id - team id
+	 * Deletes the team with the provided slug
+	 * @param {number} slug - team slug
 	 * @returns team deleted
 	 */
-	async delete(id) {
-		const team = await this.findOne(id);
+	async delete(slug) {
+		const team = await this.findBySlug(slug);
 		await team.destroy();
-		return { id };
+		return { slug };
 	}
 }
 

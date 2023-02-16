@@ -22,6 +22,11 @@ const PlayerSchema = {
 		primaryKey: true,
 		type: DataTypes.INTEGER,
 	},
+	slug: {
+		allowNull: false,
+		unique: true,
+		type: DataTypes.STRING,
+	},
 	name: {
 		allowNull: false,
 		type: DataTypes.STRING(100),
@@ -36,7 +41,7 @@ const PlayerSchema = {
 	},
 	image: {
 		allowNull: true,
-		defaultValue: 'https://i.imgur.com/CFJ2k8J.png',
+		defaultValue: 'https://i.imgur.com/DYFNi99.png',
 		type: DataTypes.STRING,
 	},
 	teamId: {

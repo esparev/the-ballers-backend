@@ -32,6 +32,21 @@ class CoachesService {
 	}
 
 	/**
+	 * Finds the coach with the provided slug
+	 * @param {string} slug - coach slug
+	 * @returns {Object} - coach that matches the slug
+	 */
+	async findBySlug(slug) {
+		const coach = await models.Coach.findOne({
+			where: { slug },
+		});
+		if (!coach) {
+			throw boom.notFound('coach not found');
+		}
+		return coach;
+	}
+
+	/**
 	 * Creates a coach with the provided data
 	 * @param {*} data - coach data
 	 * @returns coach created
@@ -42,26 +57,26 @@ class CoachesService {
 	}
 
 	/**
-	 * Updates partially the coach with the provided id
-	 * @param {number} id - coach id
+	 * Updates partially the coach with the provided slug
+	 * @param {number} slug - coach slug
 	 * @param {*} changes - coach data to update
 	 * @returns coach updated
 	 */
-	async update(id, changes) {
-		const coach = await this.findOne(id);
+	async update(slug, changes) {
+		const coach = await this.findBySlug(slug);
 		const response = await coach.update(changes);
 		return response;
 	}
 
 	/**
-	 * Deletes the coach with the provided id
-	 * @param {number} id - coach id
+	 * Deletes the coach with the provided slug
+	 * @param {number} slug - coach slug
 	 * @returns coach deleted
 	 */
-	async delete(id) {
-		const coach = await this.findOne(id);
+	async delete(slug) {
+		const coach = await this.findBySlug(slug);
 		await coach.destroy();
-		return { id };
+		return { slug };
 	}
 }
 

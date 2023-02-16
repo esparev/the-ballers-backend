@@ -34,6 +34,22 @@ class LeaguesService {
 	}
 
 	/**
+	 * Finds the league with the provided slug
+	 * @param {string} slug - league slug
+	 * @returns {Object} - league that matches the slug
+	 */
+	async findBySlug(slug) {
+		const league = await models.League.findOne({
+			where: { slug },
+			include: ['team'],
+		});
+		if (!league) {
+			throw boom.notFound('league not found');
+		}
+		return league;
+	}
+
+	/**
 	 * Creates a league with the provided data
 	 * @param {*} data - league data
 	 * @returns league created
@@ -46,26 +62,26 @@ class LeaguesService {
 	}
 
 	/**
-	 * Updates partially the league with the provided id
-	 * @param {number} id - league id
+	 * Updates partially the league with the provided slug
+	 * @param {number} slug - league slug
 	 * @param {*} changes - league data to update
 	 * @returns league updated
 	 */
-	async update(id, changes) {
-		const league = await this.findOne(id);
+	async update(slug, changes) {
+		const league = await this.findBySlug(slug);
 		const response = await league.update(changes);
 		return response;
 	}
 
 	/**
-	 * Deletes the league with the provided id
-	 * @param {number} id - league id
+	 * Deletes the league with the provided slug
+	 * @param {number} slug - league slug
 	 * @returns league deleted
 	 */
-	async delete(id) {
-		const league = await this.findOne(id);
+	async delete(slug) {
+		const league = await this.findBySlug(slug);
 		await league.destroy();
-		return { id };
+		return { slug };
 	}
 }
 

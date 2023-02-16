@@ -2,6 +2,7 @@ const Joi = require('joi');
 
 // Data rules
 const id = Joi.number().integer();
+const slug = Joi.string().min(1).max(255);
 const title = Joi.string().max(255);
 const description = Joi.string().max(1000);
 const createdAt = Joi.date();
@@ -13,10 +14,11 @@ const offset = Joi.number().integer();
 const sort = Joi.string();
 
 const getNewsSchema = Joi.object({
-	id: id.required(),
+	slug: slug.required(),
 });
 
 const createNewsSchema = Joi.object({
+	slug: slug.required(),
 	title: title.required(),
 	description: description.required(),
 	createdAt,
@@ -25,6 +27,7 @@ const createNewsSchema = Joi.object({
 });
 
 const updateNewsSchema = Joi.object({
+	slug,
 	title,
 	description,
 	createdAt,

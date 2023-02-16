@@ -32,6 +32,21 @@ class PlayersService {
 	}
 
 	/**
+	 * Finds the player with the provided slug
+	 * @param {string} slug - player slug
+	 * @returns {Object} - player that matches the slug
+	 */
+	async findBySlug(slug) {
+		const player = await models.Player.findOne({
+			where: { slug },
+		});
+		if (!player) {
+			throw boom.notFound('player not found');
+		}
+		return player;
+	}
+
+	/**
 	 * Creates a player with the provided data
 	 * @param {*} data - player data
 	 * @returns player created
@@ -42,26 +57,26 @@ class PlayersService {
 	}
 
 	/**
-	 * Updates partially the player with the provided id
-	 * @param {number} id - player id
+	 * Updates partially the player with the provided slug
+	 * @param {number} slug - player slug
 	 * @param {*} changes - player data to update
 	 * @returns player updated
 	 */
-	async update(id, changes) {
-		const player = await this.findOne(id);
+	async update(slug, changes) {
+		const player = await this.findBySlug(slug);
 		const response = await player.update(changes);
 		return response;
 	}
 
 	/**
-	 * Deletes the player with the provided id
-	 * @param {number} id - player id
+	 * Deletes the player with the provided slug
+	 * @param {number} slug - player slug
 	 * @returns player deleted
 	 */
-	async delete(id) {
-		const player = await this.findOne(id);
+	async delete(slug) {
+		const player = await this.findBySlug(slug);
 		await player.destroy();
-		return { id };
+		return { slug };
 	}
 }
 
