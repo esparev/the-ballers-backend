@@ -4,7 +4,7 @@ const Joi = require('joi');
 const id = Joi.number().integer();
 const slug = Joi.string().min(1).max(255);
 const title = Joi.string().max(255);
-const link = Joi.string().uri();
+const description = Joi.string().max(1000);
 const createdAt = Joi.date();
 const author = Joi.string().max(100);
 const cover = Joi.string().uri();
@@ -20,7 +20,7 @@ const getTournamentSchema = Joi.object({
 const createTournamentSchema = Joi.object({
 	slug: slug.required(),
 	title: title.required(),
-	link: link.required(),
+	description: description.required(),
 	createdAt,
 	author,
 	cover,
@@ -29,7 +29,7 @@ const createTournamentSchema = Joi.object({
 const updateTournamentSchema = Joi.object({
 	slug,
 	title,
-	link,
+	description,
 	createdAt,
 	author,
 	cover,

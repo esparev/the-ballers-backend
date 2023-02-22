@@ -30,9 +30,9 @@ const TournamentSchema = {
 		allowNull: false,
 		type: DataTypes.STRING,
 	},
-	link: {
+	description: {
 		allowNull: false,
-		type: DataTypes.STRING,
+		type: DataTypes.STRING(2000),
 	},
 	createdAt: {
 		allowNull: false,
@@ -42,7 +42,7 @@ const TournamentSchema = {
 	},
 	author: {
 		allowNull: false,
-		defaultValue: 'Asociación de Beisbolistas Michoacanos',
+		defaultValue: 'JoseMa Esparev',
 		type: DataTypes.STRING(100),
 	},
 	cover: {
