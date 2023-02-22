@@ -11,7 +11,7 @@
 		"migrations:revert": "sequelize-cli db:migrate:undo",
 		"seed:generate": "sequelize-cli seed:generate --name",
 		"seed:all": "sequelize-cli db:seed:all",
-		"seed:undo": "sequelize-cli db:seed:undo"
+		"seed:undo": "sequelize-cli db:seed:undo:all"
 	},
 	"keywords": [],
 	"author": "",
