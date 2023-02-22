@@ -32,7 +32,7 @@ const NewsSchema = {
 	},
 	description: {
 		allowNull: false,
-		type: DataTypes.STRING(1000),
+		type: DataTypes.STRING(2000),
 	},
 	createdAt: {
 		allowNull: false,
@@ -42,7 +42,7 @@ const NewsSchema = {
 	},
 	author: {
 		allowNull: false,
-		defaultValue: 'Asociación de Beisbolistas Michoacanos',
+		defaultValue: 'JoseMa Esparev',
 		type: DataTypes.STRING(100),
 	},
 	cover: {
