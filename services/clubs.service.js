@@ -25,7 +25,7 @@ class ClubsService {
 	 */
 	async findOne(id) {
 		const club = await models.Club.findByPk(id, {
-			include: ['team'],
+			include: ['team', 'address'],
 		});
 		if (!club) {
 			throw boom.notFound('club not found');
@@ -41,7 +41,7 @@ class ClubsService {
 	async findBySlug(slug) {
 		const club = await models.Club.findOne({
 			where: { slug },
-			include: ['team'],
+			include: ['team', 'address'],
 		});
 		if (!club) {
 			throw boom.notFound('club not found');
