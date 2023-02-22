@@ -41,6 +41,7 @@ class TeamsService {
 	async findBySlug(slug) {
 		const team = await models.Team.findOne({
 			where: { slug },
+			include: ['player', 'coach'],
 		});
 		if (!team) {
 			throw boom.notFound('team not found');
