@@ -6,6 +6,7 @@ module.exports = {
 	up: async (queryInterface, Sequelize) => {
 		await queryInterface.bulkInsert(PLAYER_TABLE, [
 			{
+				id: 1,
 				slug: 'mohamed',
 				name: 'Mohamed Agudo',
 				position: 'Catcher',
@@ -13,6 +14,7 @@ module.exports = {
 				team_id: 1,
 			},
 			{
+				id: 2,
 				slug: 'cuellar',
 				name: 'Jesus Antonio Cuellar',
 				position: 'Catcher',
@@ -20,6 +22,7 @@ module.exports = {
 				team_id: 1,
 			},
 			{
+				id: 3,
 				slug: 'cheran',
 				name: 'Alan Mololongo',
 				position: 'Catcher',
@@ -27,6 +30,7 @@ module.exports = {
 				team_id: 1,
 			},
 			{
+				id: 4,
 				slug: 'alanbrito',
 				name: 'Alan Brito',
 				position: 'Catcher',
@@ -34,6 +38,7 @@ module.exports = {
 				team_id: 1,
 			},
 			{
+				id: 5,
 				slug: 'avellana',
 				name: 'Javier Avellana',
 				position: 'Catcher',
@@ -41,6 +46,7 @@ module.exports = {
 				team_id: 1,
 			},
 			{
+				id: 6,
 				slug: 'bonifacio',
 				name: 'Bonifacio Aroca',
 				position: 'Catcher',
@@ -48,6 +54,7 @@ module.exports = {
 				team_id: 2,
 			},
 			{
+				id: 7,
 				slug: 'lalo-vaquero',
 				name: 'Eduardo Jose Vaquero',
 				position: 'Catcher',
@@ -55,6 +62,7 @@ module.exports = {
 				team_id: 2,
 			},
 			{
+				id: 8,
 				slug: 'albatros',
 				name: 'Luis Francisco Alba',
 				position: 'Catcher',
@@ -62,6 +70,7 @@ module.exports = {
 				team_id: 2,
 			},
 			{
+				id: 9,
 				slug: 'federico',
 				name: 'Federico Vargas',
 				position: 'Catcher',
@@ -69,6 +78,7 @@ module.exports = {
 				team_id: 2,
 			},
 			{
+				id: 10,
 				slug: 'hipolito',
 				name: 'Hipolito de Castro',
 				position: 'Catcher',
@@ -76,6 +86,7 @@ module.exports = {
 				team_id: 2,
 			},
 			{
+				id: 11,
 				slug: 'rey',
 				name: 'Rafael Rey',
 				position: 'Catcher',
@@ -83,6 +94,7 @@ module.exports = {
 				team_id: 3,
 			},
 			{
+				id: 12,
 				slug: 'jacinto',
 				name: 'Jacinto Perez',
 				position: 'Catcher',
@@ -90,6 +102,7 @@ module.exports = {
 				team_id: 3,
 			},
 			{
+				id: 13,
 				slug: 'agustin',
 				name: 'Agustin Pérez',
 				position: 'Catcher',
@@ -97,6 +110,7 @@ module.exports = {
 				team_id: 3,
 			},
 			{
+				id: 14,
 				slug: 'german',
 				name: 'German Bermejo',
 				position: 'Catcher',
@@ -104,6 +118,7 @@ module.exports = {
 				team_id: 3,
 			},
 			{
+				id: 15,
 				slug: 'rufino',
 				name: 'Rufino Sandoval',
 				position: 'Catcher',
@@ -111,6 +126,7 @@ module.exports = {
 				team_id: 3,
 			},
 			{
+				id: 16,
 				slug: 'triple-p',
 				name: 'Pedro Pablo Plaza',
 				position: 'Catcher',
@@ -118,6 +134,7 @@ module.exports = {
 				team_id: 4,
 			},
 			{
+				id: 17,
 				slug: 'florin',
 				name: 'Florin Miguel',
 				position: 'Catcher',
@@ -125,6 +142,7 @@ module.exports = {
 				team_id: 4,
 			},
 			{
+				id: 18,
 				slug: 'charly',
 				name: 'Carlos Antonio Becerra',
 				position: 'Catcher',
@@ -132,6 +150,7 @@ module.exports = {
 				team_id: 4,
 			},
 			{
+				id: 19,
 				slug: 'iker',
 				name: 'Iker Carrascosa',
 				position: 'Catcher',
@@ -139,6 +158,7 @@ module.exports = {
 				team_id: 4,
 			},
 			{
+				id: 20,
 				slug: 'luismi',
 				name: 'Luis Alfonso Salinas',
 				position: 'Catcher',
