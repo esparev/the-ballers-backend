@@ -31,7 +31,7 @@ const ClubSchema = {
 		allowNull: false,
 		type: DataTypes.STRING(100),
 	},
-	responsable: {
+	responsible: {
 		allowNull: false,
 		type: DataTypes.STRING(100),
 	},
