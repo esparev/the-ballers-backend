@@ -39,6 +39,7 @@ class CoachesService {
 	async findBySlug(slug) {
 		const coach = await models.Coach.findOne({
 			where: { slug },
+			include: ['team'],
 		});
 		if (!coach) {
 			throw boom.notFound('coach not found');
