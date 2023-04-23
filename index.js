@@ -30,6 +30,7 @@ const whitelist = [
 	'http://localhost:3003',
 	'http://127.0.0.1:3003',
 	'https://the-ballers.netlify.app',
+	'https://esparev-the-ballers.netlify.app',
 ];
 const options = {
 	origin: (origin, callback) => {
