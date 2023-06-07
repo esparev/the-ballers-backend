@@ -16,9 +16,8 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Home route
-app.get('/', (req, res) => {
-	res.send("The Ballers' API");
-});
+app.use('/static', express.static(__dirname + '/public/static'));
+app.get('/', express.static('public'));
 
 // Middlewares
 app.use(passport.initialize());
